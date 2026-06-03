@@ -1,11 +1,20 @@
-import {useEffect} from 'react'
+import { useEffect } from "react";
 
-export useTimeout=(callback, timeout)=>useEffect({
-  const timer = setTimeout(callback, timeout)
-  return ()=>clearTimeout(timer)
-},[])
+export const useTimeout = (callback, timeout, deps = []) =>
+  useEffect(() => {
+    const timer = setTimeout(callback, timeout);
+    return () => clearTimeout(timer);
+  }, [timeout, ...deps]);
 
-export useInterval=(callback, interval)=>useEffect({
-  const timer = setInterval(callback, interval)
-  return ()=>clearInterval(timer)
-},[])
+export const useInterval = (callback, interval, deps = []) =>
+  useEffect(() => {
+    const timer = setInterval(callback, interval);
+    return () => clearInterval(timer);
+  }, [interval, ...deps]);
+
+export const useIntervalNow = (callback, interval, deps = []) =>
+  useEffect(() => {
+    const timer = setInterval(callback, interval);
+    callback();
+    return () => clearInterval(timer);
+  }, [interval, ...deps]);
