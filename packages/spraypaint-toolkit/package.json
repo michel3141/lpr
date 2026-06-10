@@ -1,0 +1,31 @@
+{
+  "name": "@lpr/spraypaint-toolkit",
+  "author":"michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "version": "0.0.0",
+  "description": "Aide à la connexion et à la création de resources",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,md}'",
+    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
+    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'"
+  },
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "license": "ISC",
+  "peerDependencies": {
+    "spraypaint": "^0.10.*"
+  },
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "@rails/actioncable": "^7.1.3"
+  }
+}
