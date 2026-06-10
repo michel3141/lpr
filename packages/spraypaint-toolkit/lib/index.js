@@ -1,7 +1,7 @@
 import { SpraypaintBase, Scope } from 'spraypaint';
-import { createConsumer } from '@rails/actioncable';
+// import { createConsumer } from '@rails/actioncable';
 
-export { createConsumer };
+// export { createConsumer };
 
 function data() {
   return {
