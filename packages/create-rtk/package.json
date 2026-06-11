@@ -1,13 +1,12 @@
 {
   "name": "@lpr/create-rtk",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "bin": {
     "create-rtk": "index.js"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "devDependencies": {
     "prettier": "^3.8.4",
     "vite": "^8.0.3"
