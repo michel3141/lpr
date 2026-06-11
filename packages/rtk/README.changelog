@@ -1,1 +1,4 @@
-1.2.0 suppression de react-redux pour un remplacement minimaliste
+0.2.0 suppression de react-redux pour un remplacement minimaliste
+1.0.0
+addListener rencoie un listener et ne commence pas à écouter directement
+idem pour le reducer : il n'est plus ajouter automatiquement, c'est au dev de prendre ça en charge
