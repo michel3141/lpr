@@ -1,3 +1,3 @@
 export function buildConstants(sliceName, options) {
-  return `export { name } from '../package.json';`;
+  return `export { name } from './package.json';`;
 }

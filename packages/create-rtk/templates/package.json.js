@@ -4,6 +4,7 @@ export function buildPackageJson(sliceName, options) {
   "name": "@lpr/${sliceName}",
   "version": "0.0.0",
   "description": "",
+  "type": "module",
   "exports": {
     ".": "./dist/index.js",
     "./actions": "./dist/actions.js",
@@ -11,7 +12,8 @@ export function buildPackageJson(sliceName, options) {
     "./constants": "./dist/constants.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
     "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,html,md}'",
     "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
     "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'",

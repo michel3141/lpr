@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { writeFiles } from './writeFiles.js';
+import { initializeProject } from './initializeProject.js';
 
 export function createProject(sliceName, options) {
-  const { react, verbose } = options;
+  const { react, verbose, init } = options;
   const targetDir = path.resolve(process.cwd(), sliceName);
 
   if (fs.existsSync(targetDir)) {
@@ -14,6 +15,10 @@ export function createProject(sliceName, options) {
   fs.mkdirSync(targetDir, { recursive: true });
 
   writeFiles(sliceName, { ...options, targetDir });
+
+  if (init) {
+    initializeProject(sliceName, { ...options, targetDir });
+  }
 
   if (verbose) {
     console.log('Generated slice:', sliceName);
