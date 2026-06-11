@@ -1,13 +1,12 @@
 import { configureStore, addListener } from '@reduxjs/toolkit';
 // getDefaultMiddleware inclus redux-thunk
 import {
-  reducers as rtkReducers,
-  listenerMiddleware,
+  /* reducers as rtkReducers, no magical reducer import */
+  /* listenerMiddleware as XXX,no magical listener import */
   symbols,
 } from './constants';
-// import createLogger, { isDevMode } from '@lpr/logger';
-const createLogger = (X) => () => console.log('TODO LOGGER IN REPOSITORY', X);
-const isDevMode = true;
+import createLogger from '@lpr/logger';
+import isDevMode from '@lpr/is-dev-mode';
 
 const logger = createLogger('rtk-createStore');
 
@@ -22,7 +21,9 @@ const logger = createLogger('rtk-createStore');
 
 export function createStore({
   preloadedState = {},
+  reducer,
   reducers,
+  slices = [],
   middlewares = [],
   ignoredPaths = [],
   ignoredActions = [],
@@ -33,6 +34,31 @@ export function createStore({
   rtkLogger,
   consoleLogger,
 }) {
+  const allReducers = { ...reducers };
+  const sliceListener = createListenerMiddleware();
+  for (const { name, reducer, listeners } of [slices].flat(Infinity)) {
+    logger('INFO', `adding slice '${name}'`);
+    if (reducer) {
+      if (name in allReducers) {
+        logger('WARNING', `duplicate slice key: '${name}'`);
+      }
+      allReducers[name] = reducer;
+      if (
+        reducer.persistenceListeners &&
+        reducer.persistenceListeners.length > 0
+      ) {
+        logger('INFO', `adding persistence for reducer '${name}'`);
+        reducer.persistenceListeners.forEach(sliceListener.startListening);
+      }
+    }
+    if (listeners) {
+      logger('INFO', `adding listeners for '${name}'`);
+      [listeners]
+        .flat(Infinity)
+        .filter(Boolean)
+        .forEach(sliceListener.startListening);
+    }
+  }
   const loggerMiddleware = (store) => (next) => (action) => {
     const log = (...args) => {
       if (rtkLogger?.type && rtkLogger.type !== action.type) {
@@ -51,10 +77,13 @@ export function createStore({
   };
   const store = configureStore({
     preloadedState,
-    reducer: { ...rtkReducers, ...reducers }, // accept object slices
+    // passe a root reducer
+    // TODO : mix reducer and allReducers
+    reducer: reducer || allReducers, // { /*...rtkReducers no magic reducer import */ ...reducers }, // accept object slices
     middleware: (getDefaultMiddleware) => [
       loggerMiddleware,
-      listenerMiddleware.middleware,
+      /* XXX.middleware,no magical listener import */
+      sliceListener.middleware,
       ...getDefaultMiddleware({
         serializableCheck: serializableCheck && {
           // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
@@ -81,15 +110,15 @@ export function createStore({
     logger(['Ignore serializable actions: ', ...ignoredActions].join('\n  * '));
   }
   if (isDevMode) {
-    logger('reducers', Object.keys({ ...rtkReducers, ...reducers }));
+    logger('reducers', Object.keys({ /* ...rtkReducers */ ...reducers }));
     logger('preloadedState', Object.keys(preloadedState));
-    for (const rtkKey in rtkReducers) {
-      for (const key in reducers) {
-        if (key === rtkKey) {
-          logger('WARNING', `duplicate key: '${key}'`);
-        }
-      }
-    }
+    //     for (const rtkKey in rtkReducers) {
+    //       for (const key in reducers) {
+    //         if (key === rtkKey) {
+    //           logger('WARNING', `duplicate key: '${key}'`);
+    //         }
+    //       }
+    //     }
   }
   if (isDevMode) {
     [...symbols.listeners]

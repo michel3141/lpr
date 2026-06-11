@@ -32,7 +32,7 @@ const defaultConsoleLogger = (level, event, action) => {
   if (type) {
     const parts = type.split(/(\/)/);
     let lastColor = 'grey';
-    let output = payload;
+    let output = null;
     if (parts.length >= 5) {
       if (parts[4] === 'pending') {
         lastColor = 'orange';
@@ -125,7 +125,9 @@ export const createActionsHook =
  */
 function createReactStore({
   preloadedState,
+  reducer,
   reducers,
+  slices,
   middlewares,
   ignoredPaths,
   ignoredActions,
@@ -140,7 +142,9 @@ function createReactStore({
 }) {
   const store = createStore({
     preloadedState,
+    reducer,
     reducers,
+    slices,
     middlewares,
     ignoredPaths,
     ignoredActions,

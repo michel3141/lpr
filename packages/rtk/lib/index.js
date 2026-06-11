@@ -8,15 +8,16 @@ import {
   removeListener as removeListenerAction,
   clearAllListeners as clearAllListenersAction,
 } from '@reduxjs/toolkit';
+import isDevMode from '@lpr/is-dev-mode';
 import { camelize } from 'inflected';
 import { createStore } from './createStore';
-import { reducers, symbols, listenerMiddleware } from './constants';
+import {
+  reducers,
+  symbols /* listenerMiddleware as XXX no magical listener import */,
+} from './constants';
 import { boot } from '../actions';
+
 export { addListenerAction, removeListenerAction, clearAllListenersAction };
-
-// import { isDevMode } from '@lpr/logger';
-const isDevMode = true;
-
 const mkSelect = (prop) => 'select' + camelize(prop);
 
 const normalizedSelectors = (selectors) =>
@@ -29,6 +30,7 @@ const normalizedSelectors = (selectors) =>
   );
 
 const addListener = (actionCreator, baseEffect, logger = console.log) => {
+  const listenerMiddleware = [];
   const effect = (action, thunkApi) => {
     if (logger) {
       logger(`triggered '${action.type}'`);
@@ -51,7 +53,7 @@ const addListener = (actionCreator, baseEffect, logger = console.log) => {
         )}`
       );
     } else {
-      listenerMiddleware.startListening({
+      listenerMiddleware.push({
         matcher: isAnyOf(...actionCreator),
         effect,
       });
@@ -62,11 +64,12 @@ const addListener = (actionCreator, baseEffect, logger = console.log) => {
     );
   } else if (actionCreator.type) {
     symbols.listeners.add(actionCreator);
-    listenerMiddleware.startListening({ actionCreator, effect });
+    listenerMiddleware.push({ actionCreator, effect });
   } else {
     symbols.listeners.add('fn=' + actionCreator);
-    listenerMiddleware.startListening({ matcher: actionCreator, effect });
+    listenerMiddleware.push({ matcher: actionCreator, effect });
   }
+  return listenerMiddleware;
 };
 
 const rtk = (name) => {
@@ -108,7 +111,6 @@ const rtk = (name) => {
                 `${main}` /* main peut être une action */,
                 prepareAction[key]
               );
-
               // extended[subType].fulfilled = extended[subType]
             }
           }
@@ -141,7 +143,8 @@ const rtk = (name) => {
             key
           );
           initialState[key] = value;
-          listenerMiddleware.startListening(listenerOptions);
+          /* XXX.startListening(listenerOptions); no magical listeners import */
+          listeners.push(listenerOptions);
           // for reducers
           actionMatchers.push(actionMatcher);
         });
@@ -162,6 +165,7 @@ const rtk = (name) => {
         }
         builder.addDefaultCase(defaultCaseReducer);
       });
+      reducers[name].persistenceListeners = listeners;
       return reducers[name];
     },
 
@@ -283,7 +287,7 @@ export {
   symbols,
   addListener,
   onBoot,
-  listenerMiddleware as listener,
+  /* XXX as listener, no magical listener import */
   payload,
   _, // payload wrapper
   no_, // no args payload wrapper
