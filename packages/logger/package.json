@@ -1,7 +1,7 @@
 {
   "name": "@lpr/logger",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "type": "module",
   "exports": {
