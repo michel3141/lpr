@@ -1,7 +1,7 @@
 {
   "name": "@lpr/create-rtk",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "bin": {
     "create-rtk": "index.js"
