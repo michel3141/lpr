@@ -1,0 +1,21 @@
+{
+  "name": "@lpr/create-rtk",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "types": "./index.d.ts",
+    "default": "./dist/counter.js"
+  },
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^8.0.3"
+  }
+}
