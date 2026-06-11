@@ -6,17 +6,7 @@
   "bin": {
     "create-rtk": "index.js"
   },
-  "exports": {
-    "types": "./index.d.ts",
-    "default": "./dist/counter.js"
-  },
-  "files": [
-    "dist",
-    "index.d.ts"
-  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
   },
   "devDependencies": {
     "prettier": "^3.8.4",
