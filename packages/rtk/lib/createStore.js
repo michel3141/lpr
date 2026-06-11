@@ -38,14 +38,20 @@ export function createStore({
   rtkLogger,
   consoleLogger,
 }) {
+  const allSlices = {};
   const allReducers = { ...reducers };
   const sliceListener = createListenerMiddleware();
   for (const { name, reducer, listeners } of [slices].flat(Infinity)) {
+    if (!name) {
+      throw new Error('unamed slice');
+    }
+    if (allSlices[name]) {
+      logger('WARNING', `duplicate slice key: '${name}'`);
+      continue;
+    }
+    allSlices[name] = true;
     logger('INFO', `adding slice '${name}'`);
     if (reducer) {
-      if (name in allReducers) {
-        logger('WARNING', `duplicate slice key: '${name}'`);
-      }
       allReducers[name] = reducer;
       if (
         reducer.persistenceListeners &&
