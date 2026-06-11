@@ -5,7 +5,16 @@
   "bin": {
     "create-rtk": "index.js"
   },
-  "scripts": {},
+  "files": [
+    "index.js",
+    "lib",
+    "templates"
+  ],
+  "scripts": {
+    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,html,md}'",
+    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
+    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'"
+  },
   "devDependencies": {
     "prettier": "^3.8.4",
     "vite": "^8.0.3"
