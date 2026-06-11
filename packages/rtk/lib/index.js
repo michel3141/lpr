@@ -133,6 +133,7 @@ const rtk = (name) => {
     ) => {
       actionMatchers = actionMatchers || [];
 
+      const listeners = [];
       Object.entries(initialState)
         .filter(
           ([key, value]) => typeof value === 'object' && value?._persisted
