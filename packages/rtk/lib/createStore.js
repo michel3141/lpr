@@ -1,4 +1,8 @@
-import { configureStore, addListener } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  addListener,
+  createListenerMiddleware,
+} from '@reduxjs/toolkit';
 // getDefaultMiddleware inclus redux-thunk
 import {
   /* reducers as rtkReducers, no magical reducer import */
