@@ -9,11 +9,9 @@ import { useSyncExternalStore, createContext, useContext } from 'react';
 
 import isDevMode from '@lpr/is-dev-mode';
 
-const StoreContext = createContext('initial value' + Math.random());
-console.log('ZZZ CONTEXT INIT', StoreContext);
-const useStore = () =>
-  console.log('ZZZ CONTEXT USESTORE', StoreContext, useContext(StoreContext)) ||
-  useContext(StoreContext);
+// DEBUG initial-value => pour tracker les contexts importés plusieurs fois
+const StoreContext = createContext('initial-value=' + Math.random());
+const useStore = () => useContext(StoreContext);
 
 const useDispatch = () => useStore()?.dispatch;
 const useSelector = (selector) => {
