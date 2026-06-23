@@ -10,7 +10,10 @@ import { useSyncExternalStore, createContext, useContext } from 'react';
 import isDevMode from '@lpr/is-dev-mode';
 
 const StoreContext = createContext();
-const useStore = () => useContext(StoreContext);
+console.log('ZZZ CONTEXT INIT', StoreContext);
+const useStore = () =>
+  console.log('ZZZ CONTEXT USESTORE', StoreContext, useContext(StoreContext)) ||
+  useContext(StoreContext);
 
 const useDispatch = () => useStore()?.dispatch;
 const useSelector = (selector) => {
