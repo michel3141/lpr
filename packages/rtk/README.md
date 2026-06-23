@@ -21,4 +21,9 @@ import rtkAutoexport from './rollup-plugin-rtk-autoexport';
       plugins: [react(), rtkAutoexport()],
     });
 
+# publication
+
+pnpm build
+bump p|m|M
+pnpm publish
 ~

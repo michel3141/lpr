@@ -10,7 +10,12 @@ import { useSyncExternalStore, createContext, useContext } from 'react';
 import isDevMode from '@lpr/is-dev-mode';
 
 const StoreContext = createContext();
-const useStore = () => useContext(StoreContext);
+const useStore = () => {
+  const store = useContext(StoreContext);
+  console.log('STORE', store);
+  return store;
+};
+
 const useDispatch = () => useStore().dispatch;
 const useSelector = (selector) => {
   const store = useContext(StoreContext);
@@ -157,6 +162,7 @@ function createReactStore({
   });
   store.dispatch(boot(bootParams));
   return function RtkReactStoreProvider({ children }) {
+    console.log('STORE', store);
     return createElement(StoreContext, { value: store }, children);
   };
 }
