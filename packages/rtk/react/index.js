@@ -12,7 +12,7 @@ import isDevMode from '@lpr/is-dev-mode';
 const StoreContext = createContext();
 const useStore = () => {
   const store = useContext(StoreContext);
-  console.log('STORE', store);
+  console.log('STORE USE', store);
   return store;
 };
 
@@ -160,9 +160,10 @@ function createReactStore({
     rtkLogger,
     consoleLogger,
   });
+    console.log('STORE CREATE', store);
   store.dispatch(boot(bootParams));
   return function RtkReactStoreProvider({ children }) {
-    console.log('STORE', store);
+    console.log('STORE REACT DOM', store);
     return createElement(StoreContext, { value: store }, children);
   };
 }
