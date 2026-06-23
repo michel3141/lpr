@@ -13,6 +13,7 @@ const StoreContext = createContext();
 const useStore = () => {
   const store = useContext(StoreContext);
   console.log('STORE USE', store);
+  if (!store) throw Error('FUCK')
   return store;
 };
 
@@ -160,10 +161,8 @@ function createReactStore({
     rtkLogger,
     consoleLogger,
   });
-    console.log('STORE CREATE', store);
   store.dispatch(boot(bootParams));
   return function RtkReactStoreProvider({ children }) {
-    console.log('STORE REACT DOM', store);
     return createElement(StoreContext, { value: store }, children);
   };
 }
