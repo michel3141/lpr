@@ -88,6 +88,7 @@ export const useSlice = ({ actions, thunks, selectors }) => {
     }
   }
   const dispatch = useDispatch();
+  console.log('DEBUG DISPATCH', dispatch)
   const dispatchs = useMemo(
     () => bindActionCreators({ ...actions, ...thunks }, dispatch),
     [dispatch, actions, thunks]
