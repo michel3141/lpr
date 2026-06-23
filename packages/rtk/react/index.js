@@ -16,9 +16,9 @@ const useDispatch = () => useStore()?.dispatch;
 const useSelector = (selector) => {
   const store = useStore();
 
-  return useSyncExternalStore(store.subscribe, () =>
+  return store ? useSyncExternalStore(store.subscribe, () =>
     selector(store.getState())
-  );
+  ) : {}
 };
 
 const defaultConsoleLogger = (level, event, action) => {
