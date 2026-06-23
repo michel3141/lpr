@@ -10,16 +10,11 @@ import { useSyncExternalStore, createContext, useContext } from 'react';
 import isDevMode from '@lpr/is-dev-mode';
 
 const StoreContext = createContext();
-const useStore = () => {
-  const store = useContext(StoreContext);
-  console.log('STORE USE', store);
-  if (!store) throw Error('FUCK')
-  return store;
-};
+const useStore = () => useContext(StoreContext);
 
-const useDispatch = () => useStore().dispatch;
+const useDispatch = () => useStore()?.dispatch;
 const useSelector = (selector) => {
-  const store = useContext(StoreContext);
+  const store = useStore();
 
   return useSyncExternalStore(store.subscribe, () =>
     selector(store.getState())
@@ -88,7 +83,7 @@ export const useSlice = ({ actions, thunks, selectors }) => {
     }
   }
   const dispatch = useDispatch();
-  console.log('DEBUG DISPATCH', dispatch)
+  console.log('DEBUG DISPATCH', dispatch);
   const dispatchs = useMemo(
     () => bindActionCreators({ ...actions, ...thunks }, dispatch),
     [dispatch, actions, thunks]
