@@ -9,7 +9,7 @@ import { useSyncExternalStore, createContext, useContext } from 'react';
 
 import isDevMode from '@lpr/is-dev-mode';
 
-const StoreContext = createContext('initial value');
+const StoreContext = createContext('initial value' + Math.random());
 console.log('ZZZ CONTEXT INIT', StoreContext);
 const useStore = () =>
   console.log('ZZZ CONTEXT USESTORE', StoreContext, useContext(StoreContext)) ||
