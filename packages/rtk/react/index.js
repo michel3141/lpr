@@ -14,11 +14,9 @@ const useStore = () => useContext(StoreContext);
 
 const useDispatch = () => useStore()?.dispatch;
 const useSelector = (selector) => {
-  const store = useStore();
+  const { subscribe, getState } = useStore();
 
-  return useSyncExternalStore(store.subscribe, () =>
-    selector(store.getState())
-  );
+  return useSyncExternalStore(subscribe, () => selector(getState()));
 };
 
 const defaultConsoleLogger = (level, event, action) => {
@@ -77,15 +75,12 @@ export const useSlice = ({ actions, thunks, selectors }) => {
     if (name.startsWith('select')) {
       const hookName = name.replace('select', 'use');
       /* eslint-disable react-hooks/rules-of-hooks */
-      console.log('ZZZ1', hookName);
       selections[hookName] = (...params) =>
         useSelector((state) => selector(state, ...params));
-      console.log('ZZZ1', selections[hookName]);
       /* eslint-enable react-hooks/rules-of-hooks */
     }
   }
   const dispatch = useDispatch();
-  console.log('DEBUG DISPATCH', dispatch);
   const dispatchs = useMemo(
     () => bindActionCreators({ ...actions, ...thunks }, dispatch),
     [dispatch, actions, thunks]
