@@ -1,7 +1,18 @@
-import isDevMode from '@lpr/is-dev-mode'
+import isDevMode from '@lpr/is-dev-mode';
+const state = {
+  forceDebug: false,
+};
+
+export const forceDebug = (value) => {
+  if (value === true || value === false) {
+    state.forceDebug = value;
+  } else {
+    throw Error('Invalid argument');
+  }
+};
 
 export const logger = (...args) => {
-  isDevMode && console.log(...args);
+  (isDevMode || state.forceDebug) && console.log(...args);
   //  fetch(
   //    url +
   //      '/' +

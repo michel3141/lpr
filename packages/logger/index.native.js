@@ -1,5 +1,17 @@
 import { logger as rnLogger, consoleTransport } from 'react-native-logs';
 
+const state = {
+  forceDebug: false,
+};
+
+export const forceDebug = (value) => {
+  if (value === true || value === false) {
+    state.forceDebug = value;
+  } else {
+    throw Error('Invalid argument');
+  }
+};
+
 const config = {
   levels: {
     debug: 0,
@@ -24,6 +36,7 @@ const config = {
     },
   },
 };
+
 const RN = rnLogger.createLogger(config);
 
 // const url = 'http://192.168.3.230:12345';
@@ -37,7 +50,7 @@ export const stringify = (...args) =>
     .join(' ');
 
 export const logger = (...args) => {
-  RN.info(...args);
+  (isDevMode || state.forceDebug) && RN.info(...args);
 };
 
 export default function createLogger(name) {
