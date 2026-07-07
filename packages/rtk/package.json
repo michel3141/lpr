@@ -31,7 +31,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@lpr/is-dev-mode": "^0.1.0",
+    "@lpr/is-dev-mode": "^0.1.1",
     "@lpr/logger": "^0.0.2",
     "@prettier/sync": "^0.5.1",
     "@reduxjs/toolkit": "^2.12.0",
