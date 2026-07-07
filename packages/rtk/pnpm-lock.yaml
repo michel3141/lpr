@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.1
       '@lpr/logger':
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.2
+        version: 0.0.2
       '@prettier/sync':
         specifier: ^0.5.1
         version: 0.5.5(prettier@3.8.4)
@@ -152,8 +152,8 @@ packages:
   '@lpr/is-dev-mode@0.1.1':
     resolution: {integrity: sha512-/ythwbdmDouwxeeojWFnjIaH2Iz+p9gAk0pVHCmWR/0bPGKD+Zlif/EV2XAlgLJKe0ngAphx+NfxTNr2tDy2fw==}
 
-  '@lpr/logger@0.0.1':
-    resolution: {integrity: sha512-cyyZV9Vs1wBXeUhp08kkuBYSYu43d6yhkwSPEPMnR9X1HLNWQX64oPKvj7Opi9EScag5o4WPVUfjEdwteHOCMg==}
+  '@lpr/logger@0.0.2':
+    resolution: {integrity: sha512-/2rVxFL0vcrZOTW7YkWuCENzWRuzvhmXOHHgaA5IC1r1ohd2kYGkJpm/1ugpeT9y+wfV0GyiIo1Qgy7FRDO82Q==}
 
   '@napi-rs/wasm-runtime@1.1.5':
     resolution: {integrity: sha512-AWPoBRJ9tsnVhor4sjO7rkni+7p+2IAEFj6cx06UgP10jkQHqay/36uRV/bFkgrh18D9vb4cr8Q0Pthskgzy+Q==}
@@ -2050,7 +2050,7 @@ snapshots:
 
   '@lpr/is-dev-mode@0.1.1': {}
 
-  '@lpr/logger@0.0.1':
+  '@lpr/logger@0.0.2':
     dependencies:
       '@lpr/is-dev-mode': 0.1.1
       react-native-logs: 5.6.0
