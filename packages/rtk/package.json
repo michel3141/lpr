@@ -5,16 +5,14 @@
   "description": "easy use redux-toolkit",
   "type": "module",
   "files": [
-    "dist",
+    "lib",
+    "react",
+    "actions",
     "cli"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    },
-    "./react": {
-      "import": "./dist/react.js"
-    }
+    ".": "./lib/index.js",
+    "./react": "./react/index.js"
   },
   "bin": {
     "rtk-slice": "./cli/index.mjs",
@@ -23,7 +21,7 @@
     "rtk-listeners": "./cli/listeners.mjs"
   },
   "scripts": {
-    "build": "vite build",
+    "UNUSED:build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,md}'",
     "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
