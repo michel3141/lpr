@@ -1,7 +1,7 @@
 {
   "name": "@lpr/rtk",
   "author": "MicheL <michel@itneo.fr>",
-  "version": "1.0.22",
+  "version": "1.1.0",
   "description": "easy use redux-toolkit",
   "type": "module",
   "files": [
