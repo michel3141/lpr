@@ -1,16 +1,16 @@
 // supprimé je pense que ça faisait un merdier avec les import reacts
 // import { Provider, useDispatch, useSelector } from 'react-redux';
-import { createElement, useMemo } from 'react';
-import { bindActionCreators } from 'redux';
-import { boot } from '../actions';
-import createStore from '../lib/createStore';
+import { createElement, useMemo } from "react";
+import { bindActionCreators } from "redux";
+import { boot } from "../actions";
+import createStore from "../lib/createStore";
 
-import { useSyncExternalStore, createContext, useContext } from 'react';
+import { useSyncExternalStore, createContext, useContext } from "react";
 
-import isDevMode from '@lpr/is-dev-mode';
+import isDevMode from "@lpr/is-dev-mode";
 
 // DEBUG initial-value => pour tracker les contexts importés plusieurs fois
-const StoreContext = createContext('initial-value=' + Math.random());
+const StoreContext = createContext("initial-value=" + Math.random());
 const useStore = () => useContext(StoreContext);
 
 const useDispatch = () => useStore()?.dispatch;
@@ -22,45 +22,45 @@ const useSelector = (selector) => {
 
 const defaultConsoleLogger = (level, event, action) => {
   const { type, payload, error, meta } = action;
-  if (event !== 'ACTION') {
+  if (event !== "ACTION") {
     return;
   }
-  if (level === 'DEBUG' && !isDevMode) {
+  if (level === "DEBUG" && !isDevMode) {
     return;
   }
 
   if (type) {
     const parts = type.split(/(\/)/);
-    let lastColor = 'grey';
+    let lastColor = "grey";
     let output = null;
     if (parts.length >= 5) {
-      if (parts[4] === 'pending') {
-        lastColor = 'orange';
+      if (parts[4] === "pending") {
+        lastColor = "orange";
         output = meta.arg;
       }
-      if (parts[4] === 'fulfilled') {
-        lastColor = 'green';
+      if (parts[4] === "fulfilled") {
+        lastColor = "green";
         output = payload;
       }
-      if (parts[4] === 'rejected') {
-        lastColor = 'red';
+      if (parts[4] === "rejected") {
+        lastColor = "red";
         output = error.message;
       }
     }
     const colors = [
-      'background-color: grey; color:black',
-      '',
-      'background-color: #98FB98; color:black',
-      '',
-      'color: white; background-color:' + lastColor,
+      "background-color: grey; color:black",
+      "",
+      "background-color: #98FB98; color:black",
+      "",
+      "color: white; background-color:" + lastColor,
     ].slice(0, parts.length);
-    console.info(parts.map((part) => `%c${part}`).join(''), ...colors, output);
+    console.info(parts.map((part) => `%c${part}`).join(""), ...colors, output);
   }
 };
 
 const alerts = {};
 export const useSlice = ({ actions, thunks, selectors }) => {
-  const keys = Object.keys({ ...actions, ...thunks, ...selectors }).join(', ');
+  const keys = Object.keys({ ...actions, ...thunks, ...selectors }).join(", ");
   if (!alerts[keys]) {
     console.warn("'rtk/react/useSlice' est déprécié: ", keys);
     alerts[keys] = true;
@@ -73,18 +73,17 @@ export const useSlice = ({ actions, thunks, selectors }) => {
 
   const selections = {};
   for (const [name, selector] of Object.entries({ ...selectors })) {
-    if (name.startsWith('select')) {
-      const hookName = name.replace('select', 'use');
+    if (name.startsWith("select")) {
+      const hookName = name.replace("select", "use");
       /* eslint-disable react-hooks/rules-of-hooks */
-      selections[hookName] = (...params) =>
-        useSelector((state) => selector(state, ...params));
+      selections[hookName] = (...params) => useSelector((state) => selector(state, ...params));
       /* eslint-enable react-hooks/rules-of-hooks */
     }
   }
   const dispatch = useDispatch();
   const dispatchs = useMemo(
     () => bindActionCreators({ ...actions, ...thunks }, dispatch),
-    [dispatch, actions, thunks]
+    [dispatch, actions, thunks],
   );
 
   return { ...selections, ...dispatchs };
@@ -93,11 +92,10 @@ export const useSlice = ({ actions, thunks, selectors }) => {
 export const createSelectorHooks = (selectors) => {
   const selections = {};
   for (const [name, selector] of Object.entries({ ...selectors })) {
-    if (name.startsWith('select')) {
-      const hookName = name.replace('select', 'use');
+    if (name.startsWith("select")) {
+      const hookName = name.replace("select", "use");
       /* eslint-disable react-hooks/rules-of-hooks */
-      selections[hookName] = (...params) =>
-        useSelector((state) => selector(state, ...params));
+      selections[hookName] = (...params) => useSelector((state) => selector(state, ...params));
       /* eslint-enable react-hooks/rules-of-hooks */
     }
   }
@@ -109,9 +107,8 @@ export const createActionsHook =
   () => {
     const dispatch = useDispatch();
     return useMemo(
-      () =>
-        bindActionCreators(Object.assign({}, ...actions_or_thunks), dispatch),
-      [dispatch]
+      () => bindActionCreators(Object.assign({}, ...actions_or_thunks), dispatch),
+      [dispatch],
     );
   };
 

@@ -1,8 +1,8 @@
-import rtk from '../lib';
+import rtk from "../lib";
 const log = () => {};
 export const serialize = (
   resource,
-  done = {} // pass includes instead of done ?
+  done = {}, // pass includes instead of done ?
 ) =>
   Object.entries(resource.relationships).reduce(
     (acc, [name, obj]) => {
@@ -18,7 +18,7 @@ export const serialize = (
             [uuid]: `self-ref: ${uuid}`,
           });
         } else {
-          log('DONE', uuid);
+          log("DONE", uuid);
         }
         return {
           ...acc,
@@ -26,8 +26,7 @@ export const serialize = (
         };
       }
     },
-    log('ATTR', `${resource.klass.jsonapiType}-${resource.id}`) ||
-      resource.attributes
+    log("ATTR", `${resource.klass.jsonapiType}-${resource.id}`) || resource.attributes,
   );
 
 export const reduceResource =
@@ -67,10 +66,7 @@ const spraypaintRtk = (name) => {
       (state) => state[name].last,
       (entities, last) => entities[last]?.dup(),
     ],
-    selectById: [
-      (state, { id }) => state.entities[name][id],
-      (resource) => resource?.dup(),
-    ],
+    selectById: [(state, { id }) => state.entities[name][id], (resource) => resource?.dup()],
     selectCollection: [
       (state) => state[name].ids,
       (state) => state[name].entities,
@@ -92,7 +88,7 @@ const spraypaintRtk = (name) => {
           const resource = selectResource(getState(), attributes);
           return resource.updateAttributes(attributes);
         },
-        find: async (id = '0', { getState, dispatch }) => {
+        find: async (id = "0", { getState, dispatch }) => {
           const Endpoint = selectEndpoint(getState());
           return (await Endpoint.find(id)).data;
         },

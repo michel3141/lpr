@@ -1,17 +1,17 @@
 #!/usr/bin/env node
-import { program } from 'commander';
-import { camelize } from 'inflected';
-import prettier from '@prettier/sync';
-import fs from 'fs';
+import { program } from "commander";
+import { camelize } from "inflected";
+import prettier from "@prettier/sync";
+import fs from "fs";
 
 const prettierOptions = {
   // TODO à lire depuis process.env.PWD
   semi: true,
   singleQuote: true,
   jsxSingleQuote: true,
-  trailingComma: 'all',
-  arrowParens: 'always',
-  parser: 'babel',
+  trailingComma: "all",
+  arrowParens: "always",
+  parser: "babel",
 };
 
 // import fs from 'fs';
@@ -21,14 +21,14 @@ const prettierOptions = {
 // })
 
 const output = [];
-const print = (...line) => output.push(...line, '\n');
+const print = (...line) => output.push(...line, "\n");
 const write = (...line) => output.push(...line);
 const dump = () => {
-  const res = output.join('');
+  const res = output.join("");
   output.length = 0;
   return prettier.format(res, prettierOptions);
 };
-const nl = () => output.push('\n');
+const nl = () => output.push("\n");
 
 function toFile(filename, content, options = {}) {
   if (!options.overwrite && fs.existsSync(filename)) {
@@ -44,9 +44,7 @@ function toFile(filename, content, options = {}) {
     }
   } else {
     if (options.verbose) {
-      const message = `writing ${
-        fs.existsSync(filename) ? '' : 'new'
-      } file '${filename}'`;
+      const message = `writing ${fs.existsSync(filename) ? "" : "new"} file '${filename}'`;
       console.log(message);
     }
     fs.writeFileSync(filename, content);
@@ -66,7 +64,7 @@ function build_index(name, options) {
   print("import './listeners';");
   print("import {reducer} from './reducer';");
   nl();
-  print('export {constants, selectors, actions, reducer};');
+  print("export {constants, selectors, actions, reducer};");
   // if (!options.react) write('// ');
   // print(
   //   `export const use${camelize(name)} = () => useSlice({actions, selectors});`
@@ -78,8 +76,8 @@ function build_index(name, options) {
 function build_listeners() {
   print("// import { onBoot, addListener } from '@lpr/rtk';");
   nl();
-  print('// onBoot(({ payload }, { dispatch, getState })=>{});');
-  print('// addListener(action, ({ payload }, { dispatch, getState })=>{});');
+  print("// onBoot(({ payload }, { dispatch, getState })=>{});");
+  print("// addListener(action, ({ payload }, { dispatch, getState })=>{});");
 
   return dump();
 }
@@ -88,11 +86,11 @@ function build_listeners() {
 function build_reducer() {
   print("import rtk /* , {set, update } */ from '@lpr/rtk';");
   print("import { name } from './constants';");
-  print('const { createReducer } = rtk(name);');
+  print("const { createReducer } = rtk(name);");
   nl();
-  print('const initialState = {};');
+  print("const initialState = {};");
   nl();
-  print('export const reducer = createReducer(initialState, {});');
+  print("export const reducer = createReducer(initialState, {});");
 
   return dump();
 }
@@ -100,10 +98,10 @@ function build_reducer() {
 // eslint-disable-next-line camelcase
 function build_actions(name, options) {
   print("import rtk /* , { no_, _ } */ from '@lpr/rtk';");
-  if (!options.react) write('// ');
+  if (!options.react) write("// ");
   print("import { createActionsHook } from '@lpr/rtk/react';");
   print("import { name } from './constants';");
-  print('const { createActions, createThunks } = rtk(name);');
+  print("const { createActions, createThunks } = rtk(name);");
   nl();
   print(`const ${camelize(name, false)}Actions = createActions({});`);
   nl();
@@ -115,12 +113,12 @@ function build_actions(name, options) {
 // eslint-disable-next-line camelcase
 function build_selectors(name, options) {
   print("import rtk /* , { select } */ from '@lpr/rtk';");
-  if (!options.react) write('// ');
+  if (!options.react) write("// ");
   print("import { createSelectorHooks } from '@lpr/rtk/react';");
   print("import { name } from './constants';");
-  print('const { createSelectors } = rtk(name);');
+  print("const { createSelectors } = rtk(name);");
   nl();
-  print('const selectors = createSelectors({});');
+  print("const selectors = createSelectors({});");
 
   return dump();
 }
@@ -139,7 +137,7 @@ function run(name, cwd, options) {
   // const destPath = process.cwd() + `/${name}`;
   // const destPath = (process.env.OLDPWD || process.env.PWD || process.cwd()) + `/${name}`;
   const destPath = (cwd || process.cwd()) + `/${name}`;
-  name = name.replace(/.*\//, '');
+  name = name.replace(/.*\//, "");
   if (write) {
     const writeOptions = {
       verbose: true,
@@ -171,67 +169,67 @@ function run(name, cwd, options) {
     });
   } else {
     console.log();
-    console.log('/*');
-    console.log(' * index.js');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * index.js");
+    console.log(" */");
     console.log();
     console.log(build_index(name, options));
 
     console.log();
-    console.log('/*');
-    console.log(' * constants.js');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * constants.js");
+    console.log(" */");
     console.log();
     console.log(build_constants(name, options));
 
     console.log();
-    console.log('/*');
-    console.log(' * selectors.js');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * selectors.js");
+    console.log(" */");
     console.log();
     console.log(build_selectors(name, options));
 
     console.log();
-    console.log('/*');
-    console.log(' * actions.js');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * actions.js");
+    console.log(" */");
     console.log();
     console.log(build_actions(name, options));
 
     console.log();
-    console.log('/*');
-    console.log(' * reducer.js');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * reducer.js");
+    console.log(" */");
     console.log();
     console.log(build_reducer(name, options));
 
     console.log();
-    console.log('/*');
-    console.log(' * listeners.js');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * listeners.js");
+    console.log(" */");
     console.log();
     console.log(build_listeners(name, options));
 
     console.log();
-    console.log('/*');
-    console.log(' * Destination :');
-    console.log(' */');
+    console.log("/*");
+    console.log(" * Destination :");
+    console.log(" */");
     console.log();
     console.log(destPath);
   }
 }
 
 program
-  .name('rtk-slice')
-  .description('génère un dossier slice dans /features')
-  .option('-m, --mono-file', 'toute la slice est définie dans index.js [TODO]')
-  .option('-w, --write', 'write to ./name')
-  .option('-W, --overwrite', 'overwrites index.js')
-  .option('-r, --react', 'uncomment react-hook creation')
-  .argument('<name>', 'slice name')
+  .name("rtk-slice")
+  .description("génère un dossier slice dans /features")
+  .option("-m, --mono-file", "toute la slice est définie dans index.js [TODO]")
+  .option("-w, --write", "write to ./name")
+  .option("-W, --overwrite", "overwrites index.js")
+  .option("-r, --react", "uncomment react-hook creation")
+  .argument("<name>", "slice name")
   .argument(
-    '<cwd>',
-    'dossier de destination ; $(pwd) est une bonne idée ; absolu ou relatif à la racice du projet '
+    "<cwd>",
+    "dossier de destination ; $(pwd) est une bonne idée ; absolu ou relatif à la racice du projet ",
   )
   .action(run);
 

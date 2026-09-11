@@ -1,33 +1,33 @@
 {
   "name": "@lpr/rtk",
-  "author": "MicheL <michel@itneo.fr>",
   "version": "1.1.0",
   "description": "easy use redux-toolkit",
-  "type": "module",
+  "license": "MIT",
+  "author": "MicheL <michel@itneo.fr>",
+  "bin": {
+    "rtk-deps": "./cli/deps.mjs",
+    "rtk-export": "./cli/export.mjs",
+    "rtk-listeners": "./cli/listeners.mjs",
+    "rtk-slice": "./cli/index.mjs"
+  },
   "files": [
     "lib",
     "react",
     "actions",
     "cli"
   ],
+  "type": "module",
   "exports": {
     ".": "./lib/index.js",
     "./react": "./react/index.js"
   },
-  "bin": {
-    "rtk-slice": "./cli/index.mjs",
-    "rtk-export": "./cli/export.mjs",
-    "rtk-deps": "./cli/deps.mjs",
-    "rtk-listeners": "./cli/listeners.mjs"
-  },
   "scripts": {
     "UNUSED:build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,md}'",
-    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
-    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'"
+    "p": "oxfmt",
+    "e": "oxlint",
+    "ef": "echo 'oxlint --fix ??'"
   },
-  "license": "MIT",
   "dependencies": {
     "@lpr/is-dev-mode": "^0.1.1",
     "@lpr/logger": "^0.0.2",
@@ -44,15 +44,9 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.2",
-    "eslint": "^8.41.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^16.0.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "madge": "^6.1.0",
-    "prettier": "^3.2.5",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
     "vite": "^8.0.14"
   },
   "peerDependencies": {

@@ -1,24 +1,24 @@
 #!/usr/bin/env node
-import { program } from 'commander';
-import esquery from 'esquery';
-import { Parser } from 'acorn';
-import acornJsx from 'acorn-jsx';
-import prettier from '@prettier/sync';
-import { camelize } from 'inflected';
-import fs from 'fs';
-import { globSync } from 'glob';
+import { program } from "commander";
+import esquery from "esquery";
+import { Parser } from "acorn";
+import acornJsx from "acorn-jsx";
+import prettier from "@prettier/sync";
+import { camelize } from "inflected";
+import fs from "fs";
+import { globSync } from "glob";
 
 const parseNodes = (nodes, source, tab) => {
   nodes.forEach((node) => parseNode(node, source, tab));
 };
-const parseNode = (node, source = '', tab = '') => {
+const parseNode = (node, source = "", tab = "") => {
   if (!node?.type) return;
-  console.log(tab + '\x1b[31;40m[' + node.type + ']\x1b[0m');
+  console.log(tab + "\x1b[31;40m[" + node.type + "]\x1b[0m");
   // const { start, end } = node;
   // console.log(tab + '\x1b[34;40m#' + source.slice(start, end) + '#\x1b[0m');
   let hasChild = false;
   for (const [id, child] of Object.entries(node)) {
-    const newTab = ' '.repeat(tab.length) + id + '>';
+    const newTab = " ".repeat(tab.length) + id + ">";
     if (Array.isArray(child)) {
       hasChild = child.reduce((a, c) => a || c?.type, hasChild);
       parseNodes(child, source, newTab);
@@ -28,12 +28,12 @@ const parseNode = (node, source = '', tab = '') => {
     }
   }
   if (!hasChild) {
-    console.log(' '.repeat(tab.length), source.slice(...node.range));
+    console.log(" ".repeat(tab.length), source.slice(...node.range));
   }
 };
 
-const mkSelect = (prop) => 'select' + camelize(prop);
-const mkUse = (prop) => 'use' + camelize(prop);
+const mkSelect = (prop) => "select" + camelize(prop);
+const mkUse = (prop) => "use" + camelize(prop);
 
 const autoexport = (rtkNode, options) => {
   const { rtk } = rtkNode;
@@ -46,22 +46,20 @@ const autoexport = (rtkNode, options) => {
 
 const autoexportActions = (rtkNode, { reactImports }) => {
   const { name, identifiers, node } = rtkNode;
-  print('// ---- actions ---------');
+  print("// ---- actions ---------");
   const actionIdentifiers = [];
   for (const actionIdentifier of identifiers) {
     const actionIdentifiersL2 = esquery(
       node,
-      `CallExpression  > * >Property[key.name=${actionIdentifier}]  > * > Property`
+      `CallExpression  > * >Property[key.name=${actionIdentifier}]  > * > Property`,
     ).map((x) => x.key.name);
-    if (actionIdentifiersL2.length === 0) actionIdentifiersL2.push('default');
+    if (actionIdentifiersL2.length === 0) actionIdentifiersL2.push("default");
     actionIdentifiers.push(
-      ...actionIdentifiersL2.map((x) =>
-        x === 'default' ? actionIdentifier : x
-      )
+      ...actionIdentifiersL2.map((x) => (x === "default" ? actionIdentifier : x)),
     );
   }
   if (actionIdentifiers.length) {
-    print(`export const { ${actionIdentifiers.join(', ')} } = ${name};`);
+    print(`export const { ${actionIdentifiers.join(", ")} } = ${name};`);
   } else {
     print(`export {${name} as __dont_use_me_${name} } // eslint friendly`);
   }
@@ -74,9 +72,9 @@ const autoexportActions = (rtkNode, { reactImports }) => {
 
 const autoexportThunks = (rtkNode, { reactImports }) => {
   const { name, identifiers } = rtkNode;
-  print('// ---- thunks ---------');
+  print("// ---- thunks ---------");
   if (identifiers.length) {
-    print(`export const { ${identifiers.join(', ')} } = ${name};`);
+    print(`export const { ${identifiers.join(", ")} } = ${name};`);
   } else {
     print(`export {${name} as __dont_use_me_${name} } // eslint friendly`);
   }
@@ -89,7 +87,7 @@ const autoexportThunks = (rtkNode, { reactImports }) => {
 
 const autoexportSpraypaintThunks = (rtkNode) => {
   const { name } = rtkNode;
-  print('// ---- spraypaint thunks ---------');
+  print("// ---- spraypaint thunks ---------");
   print(`export const { create, refresh, update, find } = ${name};`);
   nl();
   return dump();
@@ -97,14 +95,12 @@ const autoexportSpraypaintThunks = (rtkNode) => {
 
 const autoexportSelectors = (rtkNode, { reactImports }) => {
   const { name, identifiers } = rtkNode;
-  print('// ---- selectors ---------');
+  print("// ---- selectors ---------");
   if (identifiers.length) {
-    print(
-      `export const { ${identifiers.map(mkSelect).join(', ')} } = ${name};`
-    );
+    print(`export const { ${identifiers.map(mkSelect).join(", ")} } = ${name};`);
     if (reactImports.createSelectorHooks) {
       print(
-        `export const { ${identifiers.map(mkUse).join(', ')} } = createSelectorHooks(${name});`
+        `export const { ${identifiers.map(mkUse).join(", ")} } = createSelectorHooks(${name});`,
       );
     }
   } else {
@@ -126,9 +122,9 @@ const prettierOptions = {
   semi: true,
   singleQuote: true,
   jsxSingleQuote: true,
-  trailingComma: 'all',
-  arrowParens: 'always',
-  parser: 'babel',
+  trailingComma: "all",
+  arrowParens: "always",
+  parser: "babel",
 };
 
 // import fs from 'fs';
@@ -139,14 +135,14 @@ const prettierOptions = {
 
 const output = [];
 /* eslint-disable no-unused-vars */
-const print = (...line) => output.push(...line, '\n');
+const print = (...line) => output.push(...line, "\n");
 const write = (...line) => output.push(...line);
 const dump = () => {
-  const res = output.join('');
+  const res = output.join("");
   output.length = 0;
   return prettier.format(res, prettierOptions);
 };
-const nl = () => output.push('\n');
+const nl = () => output.push("\n");
 /* eslint-enable no-unused-vars */
 
 function toFile(filename, content, options = {}) {
@@ -163,9 +159,7 @@ function toFile(filename, content, options = {}) {
     }
   } else {
     if (options.verbose) {
-      const message = `writing ${
-        fs.existsSync(filename) ? '' : 'new'
-      } file '${filename}'`;
+      const message = `writing ${fs.existsSync(filename) ? "" : "new"} file '${filename}'`;
       console.log(message);
     }
     fs.writeFileSync(filename, content);
@@ -175,20 +169,20 @@ function toFile(filename, content, options = {}) {
 function run(files, options) {
   const { write, debug } = options;
   for (const file of globSync(files, {
-    ignore: ['node_modules/**'],
+    ignore: ["node_modules/**"],
   })) {
     const destPath = process.env.PWD + `/${file}`;
     if (!fs.existsSync(destPath)) continue;
     if (fs.lstatSync(destPath).isDirectory()) {
-      console.log('[TODO] scan dir:', destPath);
+      console.log("[TODO] scan dir:", destPath);
       continue;
     }
     let z;
-    const source = fs.readFileSync(destPath, 'utf8');
+    const source = fs.readFileSync(destPath, "utf8");
     try {
       z = Parser.extend(acornJsx()).parse(source, {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: "latest",
+        sourceType: "module",
         ranges: true,
       });
     } catch (e) {
@@ -198,34 +192,29 @@ function run(files, options) {
     if (debug) parseNode(z, source);
     const reactImports = esquery(
       z,
-      'ImportDeclaration > ImportSpecifier[imported.name=/createActionsHook|createSelectorHooks/]'
+      "ImportDeclaration > ImportSpecifier[imported.name=/createActionsHook|createSelectorHooks/]",
     ).reduce((acc, node) => ({ ...acc, [node.imported.name]: true }), {});
 
-    const rtkNodes = esquery(
-      z,
-      'Program > VariableDeclaration > VariableDeclarator'
-    )
-      .filter((x) => x.id.type === 'Identifier')
+    const rtkNodes = esquery(z, "Program > VariableDeclaration > VariableDeclarator")
+      .filter((x) => x.id.type === "Identifier")
       .filter((x) => Object.keys(autoexporters).includes(x.init.callee?.name))
       .map((node) => ({
         name: node.id.name,
         rtk: node.init.callee.name,
         identifiers: esquery(
           node,
-          `VariableDeclarator[id.name="${node.id.name}"] > CallExpression > * > Property`
-        ).map(
-          (x) => x.key.name || /* si computed */ source.slice(...x.key.range)
-        ),
+          `VariableDeclarator[id.name="${node.id.name}"] > CallExpression > * > Property`,
+        ).map((x) => x.key.name || /* si computed */ source.slice(...x.key.range)),
         node,
         file,
       }));
     print(...rtkNodes.map((node) => autoexport(node, { reactImports })));
     const addons = dump();
-    if (addons !== '') {
+    if (addons !== "") {
       // https://stackoverflow.com/questions/2575791/javascript-multiline-regexp-replace
-      if (write) print(source.replace(/\/\/ RTK-AUTOEXPORT[\s\S]*/m, ''));
-      if (write) print('// RTK-AUTOEXPORT');
-      if (!write) print('// ', destPath);
+      if (write) print(source.replace(/\/\/ RTK-AUTOEXPORT[\s\S]*/m, ""));
+      if (write) print("// RTK-AUTOEXPORT");
+      if (!write) print("// ", destPath);
       print(addons);
       if (write) {
         toFile(destPath, dump(), {
@@ -235,17 +224,17 @@ function run(files, options) {
         console.log(dump());
       }
     } else {
-      console.log(destPath, ': no change');
+      console.log(destPath, ": no change");
     }
   }
 }
 
 program
-  .name('rtk-export')
-  .description('ajoute les exports dans les fichier crée avec rtk')
-  .option('-w, --write', 'replace le contenu des fichiers')
-  .option('-d, --debug', 'show the parsed tree')
-  .argument('<filenames...>', 'files to transform')
+  .name("rtk-export")
+  .description("ajoute les exports dans les fichier crée avec rtk")
+  .option("-w, --write", "replace le contenu des fichiers")
+  .option("-d, --debug", "show the parsed tree")
+  .argument("<filenames...>", "files to transform")
   .action(run);
 
 program.parse();
