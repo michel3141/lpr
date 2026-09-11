@@ -13,20 +13,21 @@ const normalizedSelectors = (selectors) =>
     {},
   );
 
-const createSelectors =
+const createSelectorsFactory =
   (name) =>
   (selectorsMap = {}) => {
     const selectors = Object.entries(selectorsMap).reduce((acc, [selectorName, selector]) => {
       symbols.selectors[name].add(selectorName);
       const isArray = Array.isArray(selector);
       if (!isArray && typeof selector !== "function") {
-        if (selector === "default") {
-          selector = (state) => state[name][camelize(selectorName, false)];
-        } else if (selector === "all") {
-          selector = (state) => state[name];
-        } else {
-          selector = (state) => state[name][selector];
-        }
+        throw Error("depuis 1.1.1 constants selectors abandonnés");
+        // if (selector === "default") {
+        //   selector = (state) => state[name][camelize(selectorName, false)];
+        // } else if (selector === "all") {
+        //   selector = (state) => state[name];
+        // } else {
+        //   selector = (state) => state[name][selector];
+        // }
       }
       return {
         ...acc,
@@ -38,4 +39,4 @@ const createSelectors =
     return newSelectors;
   };
 
-export { createSelectors };
+export { createSelectorsFactory };
