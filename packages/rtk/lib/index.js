@@ -1,63 +1,13 @@
-import {
-  createAction,
-  createSelector,
-  createAsyncThunk,
-  isAnyOf,
-  addListener as addListenerAction,
-  removeListener as removeListenerAction,
-  clearAllListeners as clearAllListenersAction,
-} from "@reduxjs/toolkit";
+import { createAction, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { createStore } from "./createStore";
 import {
   reducers,
   symbols /* listenerMiddleware as XXX no magical listener import */,
 } from "./constants";
-import { boot } from "../actions";
 
 import { createReducerFactory, createSelectorsFactory } from "./factories";
 
 import { addDebug } from "./utils";
-
-export { addListenerAction, removeListenerAction, clearAllListenersAction };
-
-const addListener = (actionCreator, baseEffect, logger = console.log) => {
-  const listenerMiddleware = [];
-  const effect = (action, thunkApi) => {
-    if (logger) {
-      logger(`triggered '${action.type}'`);
-    }
-    baseEffect(action, thunkApi);
-  };
-  if (!actionCreator) {
-    logger("Something is wrong in addListener");
-    throw new Error("Something is wrong in addListener");
-  }
-  if (Array.isArray(actionCreator)) {
-    symbols.listeners.add(actionCreator.map((x) => x.toString()).join("|"));
-    const thunkList = actionCreator
-      .filter((action) => action.fulfilled)
-      .map((action) => action.typePrefix);
-    if (thunkList.length > 0) {
-      throw new Error(
-        `Use of a thunk instead of action inside addListener group: ${thunkList.join(", ")}`,
-      );
-    } else {
-      listenerMiddleware.push({
-        matcher: isAnyOf(...actionCreator),
-        effect,
-      });
-    }
-  } else if (actionCreator.fulfilled) {
-    throw new Error(`Thunk '${actionCreator.typePrefix}' as action in addListener`);
-  } else if (actionCreator.type) {
-    symbols.listeners.add(actionCreator);
-    listenerMiddleware.push({ actionCreator, effect });
-  } else {
-    symbols.listeners.add("fn=" + actionCreator);
-    listenerMiddleware.push({ matcher: actionCreator, effect });
-  }
-  return listenerMiddleware;
-};
 
 const rtk = (name) => {
   symbols.reducers[name] = symbols.reducers[name] || new Set();
@@ -98,14 +48,12 @@ const rtk = (name) => {
 
     createReducer: createReducerFactory(name),
     createListener: (listenersMap, listenerMatchers) => {
-      console.warn("rtk.createListener est obsolète. Utiliser rtk.addListener");
-      for (const listener in listenersMap) {
-        this.addListener(listener, listenersMap[listener]);
-      }
+      throw Error("depuis 1.1.1 createListener est supprimé. Utiliser addListener");
     },
     addListener: (actionCreator, effect) => {
-      console.warn("rtk(name).addListener est obsolète. Use :\nimport {addListener} from 'rtk'");
-      return addListener(actionCreator, effect);
+      throw Error(
+        "depuis 1.1.1 rtk(name).addListener est supprimé. Use :\nimport {addListener} from 'rtk'",
+      );
     },
 
     createSelectors: createSelectorsFactory(name),
@@ -161,21 +109,15 @@ const select = () => {
   throw Error("select n'est plus défini");
 };
 
-const onBoot = (effect, bootTag) =>
-  addListener(
-    boot,
-    (...args) => {
-      // à revoir => on est vraiment booted que quand tous les listeners ont répondu
-      // if (symbols.booted) {
-      //   return;
-      // }
-      // symbols.booted = true;
-      effect(...args);
-    },
-    bootTag,
-  );
-
 export default rtk;
+
+export {
+  addListener,
+  onBoot,
+  addListenerAction,
+  removeListenerAction,
+  clearAllListenersAction,
+} from "./listeners";
 
 export {
   createStore,
@@ -183,9 +125,6 @@ export {
   createSelector, // faut-il encore le garder ? pourquoi ?
   reducers,
   symbols,
-  addListener,
-  onBoot,
-  /* XXX as listener, no magical listener import */
   payload,
   _, // payload wrapper
   no_, // no args payload wrapper
