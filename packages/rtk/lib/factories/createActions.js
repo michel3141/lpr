@@ -3,36 +3,36 @@ import { symbols } from "./constants";
 import { createAction } from "@reduxjs/toolkit";
 
 const createActionsFactory = (name) => (actionsMap) => {
-  const newActions = Object.entries(actionsMap).reduce((actions, [type, prepareAction]) => {
+  const actions = Object.entries(actionsMap).reduce((acc, [type, prepareAction]) => {
     symbols.actions[name] = symbols.actions[name] || {};
 
+    const actionId = `${name}/${type}`;
+
+    // actions ou liste des actions créer pour type/prepareAction
     const extended = {};
+
     if (typeof prepareAction === "function") {
-      symbols.actions[name][type] = `${name}/${type}`;
-      extended[type] = createAction(`${name}/${type}`, prepareAction);
-      // extended[type].fulfilled = extended[type]
+      symbols.actions[name][type] = actionId;
+      extended[type] = createAction(actionId, prepareAction);
     } else {
-      const main = createAction(`${name}/${type}`, () => {
-        throw new Error(`default action for '${main}' is not defined`);
+      const main = createAction(actionId, () => {
+        throw new Error(`default action for '${actionId}' is not defined`);
       });
       extended[type] = main;
-      for (const key in prepareAction) {
-        const subType = key === "default" ? type : key;
-        symbols.actions[name][subType] = main;
-        extended[subType] = createAction(
-          `${main}` /* main peut être une action */,
-          prepareAction[key],
-        );
-        // extended[subType].fulfilled = extended[subType]
+      for (const [key, actionDef] of Object.entries(prepareAction)) {
+        // 'default' écrase l'erreur ci-dessus
+        const subType = key === "default" ? actionId : `${name}/${key}`;
+        symbols.actions[name][subType] = actionId;
+        extended[subType] = createAction(actionId, actionDef);
       }
     }
     return {
-      ...actions,
+      ...acc,
       ...extended,
     };
   }, {});
-  addDebug(name)("actions", newActions);
-  return newActions;
+  addDebug(name)("actions", actions);
+  return actions;
 };
 
 export { createActionsFactory };
