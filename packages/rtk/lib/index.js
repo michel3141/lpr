@@ -1,11 +1,8 @@
 import { createAction, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { createStore } from "./createStore";
-import {
-  reducers,
-  symbols /* listenerMiddleware as XXX no magical listener import */,
-} from "./constants";
+import { reducers, symbols } from "./constants";
 
-import { createReducerFactory, createSelectorsFactory } from "./factories";
+import { createActionsFactory, createReducerFactory, createSelectorsFactory } from "./factories";
 
 import { addDebug } from "./utils";
 
@@ -15,46 +12,17 @@ const rtk = (name) => {
   symbols.actions[name] = symbols.actions[name] || {};
 
   return {
-    createActions: (actionsMap) => {
-      const newActions = Object.entries(actionsMap).reduce((actions, [type, prepareAction]) => {
-        const extended = {};
-        if (typeof prepareAction === "function") {
-          symbols.actions[name][type] = `${name}/${type}`;
-          extended[type] = createAction(`${name}/${type}`, prepareAction);
-          // extended[type].fulfilled = extended[type]
-        } else {
-          const main = createAction(`${name}/${type}`, () => {
-            throw new Error(`default action for '${main}' is not defined`);
-          });
-          extended[type] = main;
-          for (const key in prepareAction) {
-            const subType = key === "default" ? type : key;
-            symbols.actions[name][subType] = main;
-            extended[subType] = createAction(
-              `${main}` /* main peut être une action */,
-              prepareAction[key],
-            );
-            // extended[subType].fulfilled = extended[subType]
-          }
-        }
-        return {
-          ...actions,
-          ...extended,
-        };
-      }, {});
-      addDebug(name)("actions", newActions);
-      return newActions;
-    },
-
-    createReducer: createReducerFactory(name),
-    createListener: (listenersMap, listenerMatchers) => {
+    createListener: () => {
       throw Error("depuis 1.1.1 createListener est supprimé. Utiliser addListener");
     },
-    addListener: (actionCreator, effect) => {
+    addListener: () => {
       throw Error(
-        "depuis 1.1.1 rtk(name).addListener est supprimé. Use :\nimport {addListener} from 'rtk'",
+        "depuis 1.1.1 rtk(name).addListener est supprimé. Use : import {addListener} from 'rtk'",
       );
     },
+
+    createActions: createActionsFactory(name),
+    createReducer: createReducerFactory(name),
 
     createSelectors: createSelectorsFactory(name),
 
@@ -81,12 +49,13 @@ const rtk = (name) => {
 // actionPrepare
 // alias pour faciliter la création d'un prepare payload
 const _ = (value) => ({ payload: value });
-const no_ = (value) => _();
+const no_ = () => console.warn("no_ est obsolète. Use explicit ()=>_()") || _();
 
 // un prépare courant
 const payload = (key) => (value) => (key ? _({ [key]: value }) : _(value));
 
 // reducers
+// intéressant ??
 const filter = (state, { payload }) =>
   Object.keys(state)
     .filter((key) => key in { ...payload })
@@ -100,9 +69,10 @@ const toggle =
   ) =>
     typeof payload === "boolean" ? { ...state, [key]: payload } : { ...state, [key]: !state[key] };
 
-const update = (key) => (state, action) =>
-  key ? filter(state, _({ [key]: action.payload })) : filter(state, action);
-const set = () => (state, action) => action.payload;
+// supprimé depuis 1.1.1
+// const update = (key) => (state, action) =>
+//  key ? filter(state, _({ [key]: action.payload })) : filter(state, action);
+// const set = () => (state, action) => action.payload;
 
 // selectors
 const select = () => {
@@ -121,16 +91,14 @@ export {
 
 export {
   createStore,
-  createAction,
+  createAction, // faut-il encore le garder ? pourquoi ?
   createSelector, // faut-il encore le garder ? pourquoi ?
   reducers,
-  symbols,
+  symbols, // à laisser ici ? ou à importer depuis constants si besoin ?
   payload,
   _, // payload wrapper
   no_, // no args payload wrapper
   filter,
   toggle,
-  update,
-  set,
   select, // à supprimer
 };
