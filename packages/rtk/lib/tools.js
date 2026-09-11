@@ -8,3 +8,7 @@ export const addDebug = (name) => (type, objects) => {
     window[type][name] = { ...window[type][name], ...objects };
   }
 };
+
+export const sup0 = (message) => {
+  throw Error(`[depuis 1.1.1] ${message}`);
+};

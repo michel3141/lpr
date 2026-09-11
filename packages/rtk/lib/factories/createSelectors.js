@@ -16,6 +16,8 @@ const normalizedSelectors = (selectors) =>
 const createSelectorsFactory =
   (name) =>
   (selectorsMap = {}) => {
+    symbols.selectors[name] = symbols.selectors[name] || new Set();
+
     const selectors = Object.entries(selectorsMap).reduce((acc, [selectorName, selector]) => {
       symbols.selectors[name].add(selectorName);
       const isArray = Array.isArray(selector);

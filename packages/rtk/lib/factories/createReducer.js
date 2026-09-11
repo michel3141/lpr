@@ -3,6 +3,8 @@ import { reducers, symbols } from "./constants";
 
 const createReducerFactory =
   (name) => (initialState, actionsMap, actionMatchers, defaultCaseReducer) => {
+    symbols.reducers[name] = symbols.reducers[name] || new Set();
+
     actionMatchers = actionMatchers || [];
 
     const listeners = [];

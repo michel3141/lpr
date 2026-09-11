@@ -4,6 +4,8 @@ import { createAction } from "@reduxjs/toolkit";
 
 const createActionsFactory = (name) => (actionsMap) => {
   const newActions = Object.entries(actionsMap).reduce((actions, [type, prepareAction]) => {
+    symbols.actions[name] = symbols.actions[name] || {};
+
     const extended = {};
     if (typeof prepareAction === "function") {
       symbols.actions[name][type] = `${name}/${type}`;
