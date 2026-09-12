@@ -5,6 +5,7 @@ import {
   createThunksFactory,
   createReducerFactory,
   createSelectorsFactory,
+  createEntitySelectorsFactory,
 } from "./factories";
 
 import { sup0 } from "./utils";
@@ -20,6 +21,7 @@ const rtk = (name) => {
     createReducer: createReducerFactory(name),
     createSelectors: createSelectorsFactory(name),
     createSliceSelectors: createSelectorsFactory(name, { localState: true }),
+    createEntitySelectors: createEntitySelectorsFactory(name),
   };
 };
 

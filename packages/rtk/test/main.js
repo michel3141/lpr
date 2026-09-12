@@ -1,8 +1,10 @@
 import rtk from "../lib";
-import { createSelectorHooks } from "../react";
-//import { createEntitySelectors } from "../";
+import { createSelectorHooks, createActionsHook } from "../react";
+// import { createEntityActions } from "../";
 console.log("RTK", Object.keys(rtk("slice-name")));
-const { createActions, createSelectors, createSliceSelectors, addListener } = rtk("slice-name");
+const { createActions, createSelectors, createSliceSelectors, addListener, createEntitySelectors } =
+  rtk("slice-name");
+
 try {
   addListener();
 } catch (e) {
@@ -40,10 +42,32 @@ const localSelectors = createSliceSelectors({
   testl: (state) => state.x,
 });
 
-const state = { x: 45, "slice-name": { x: 27 } };
+const entitySelectors2 = createEntitySelectors();
+const entitySelectors = createEntitySelectors("book");
+
+const STATE = {
+  x: 45,
+  "slice-name": {
+    ids: ["5", "2"],
+    entities: {
+      2: { id: "2", name: "name-1" },
+      5: { id: "5", name: "name-2" },
+    },
+    x: 27,
+  },
+};
 console.log("SELECTORS___", selectors);
 console.log("LOCAL__SEL__", localSelectors);
-console.log("SELECT_TEST_", selectors.selectTest(state));
-console.log("SELECT_TEST2", selectors.selectTest2(state));
-console.log("SELECT_TEST3", selectors.selectTest3(state));
-console.log("LOCAL__TESTL", localSelectors.selectTestl(state));
+console.log("SELECT_TEST_", selectors.selectTest(STATE));
+console.log("SELECT_TEST2", selectors.selectTest2(STATE));
+console.log("SELECT_TEST3", selectors.selectTest3(STATE));
+console.log("LOCAL__TESTL", localSelectors.selectTestl(STATE));
+
+console.log("ENTITY", Object.keys(entitySelectors));
+console.log("ENTITY_IDS", createEntitySelectors().selectIds(STATE));
+console.log("ENTITY_ENT", createEntitySelectors().selectEntities(STATE));
+console.log("ENTITY_ALL", createEntitySelectors().selectList(STATE));
+console.log("ENTITY_TOT", createEntitySelectors().selectCount(STATE));
+console.log("ENTITY_5", createEntitySelectors().selectById(STATE, "5"));
+
+export const { selectIds } = createEntitySelectors();
