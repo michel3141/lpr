@@ -1,6 +1,8 @@
 # next 1.1.1
 
 séparation de rtk()
+ajout de createSliceSelectors
+rtk-export gère createEntitySelectors
 
 breaking changes :
 'rtk' n'exporte plus {select}

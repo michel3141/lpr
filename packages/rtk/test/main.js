@@ -1,4 +1,6 @@
 import rtk from "../lib";
+import { createSelectorHooks } from "../react";
+//import { createEntitySelectors } from "../";
 console.log("RTK", Object.keys(rtk("slice-name")));
 const { createActions, createSelectors, createSliceSelectors, addListener } = rtk("slice-name");
 try {
@@ -35,7 +37,7 @@ const selectors = createSelectors({
   test3: [(state) => state.x, (state) => state["slice-name"].x, (a, b) => a + b],
 });
 const localSelectors = createSliceSelectors({
-  test: (state) => state.x,
+  testl: (state) => state.x,
 });
 
 const state = { x: 45, "slice-name": { x: 27 } };
@@ -44,4 +46,4 @@ console.log("LOCAL__SEL__", localSelectors);
 console.log("SELECT_TEST_", selectors.selectTest(state));
 console.log("SELECT_TEST2", selectors.selectTest2(state));
 console.log("SELECT_TEST3", selectors.selectTest3(state));
-console.log("LOCAL__TEST_", localSelectors.selectTest(state));
+console.log("LOCAL__TESTL", localSelectors.selectTestl(state));

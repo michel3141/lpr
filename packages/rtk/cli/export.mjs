@@ -38,6 +38,7 @@ const mkUse = (prop) => "use" + camelize(prop);
 const autoexport = (rtkNode, options) => {
   const { rtk } = rtkNode;
   if (rtk in autoexporters) {
+    print(`// ---- ${rtk} ---------`);
     return autoexporters[rtk](rtkNode, options);
   } else {
     return `// console.log("unknown function '${rtk}'")`;
@@ -46,7 +47,6 @@ const autoexport = (rtkNode, options) => {
 
 const autoexportActions = (rtkNode, { reactImports }) => {
   const { name, identifiers, node } = rtkNode;
-  print("// ---- actions ---------");
   const actionIdentifiers = [];
   for (const actionIdentifier of identifiers) {
     const actionIdentifiersL2 = esquery(
@@ -72,7 +72,6 @@ const autoexportActions = (rtkNode, { reactImports }) => {
 
 const autoexportThunks = (rtkNode, { reactImports }) => {
   const { name, identifiers } = rtkNode;
-  print("// ---- thunks ---------");
   if (identifiers.length) {
     print(`export const { ${identifiers.join(", ")} } = ${name};`);
   } else {
@@ -85,27 +84,37 @@ const autoexportThunks = (rtkNode, { reactImports }) => {
   return dump();
 };
 
-const autoexportSpraypaintThunks = (rtkNode) => {
-  const { name } = rtkNode;
-  print("// ---- spraypaint thunks ---------");
-  print(`export const { create, refresh, update, find } = ${name};`);
-  nl();
-  return dump();
-};
-
 const autoexportSelectors = (rtkNode, { reactImports }) => {
-  const { name, identifiers } = rtkNode;
-  print("// ---- selectors ---------");
-  if (identifiers.length) {
-    print(`export const { ${identifiers.map(mkSelect).join(", ")} } = ${name};`);
+  // identique pour createSelectors et createSliceSelectors
+  const { name, identifiers, rtk } = rtkNode;
+
+  if (rtk === "createSliceSelectors" && reactImports.createEntitySelectors) {
+    const entityIdentifiers = ["ids", "entities", "all", "total", "by_id"];
+    print(
+      `export const { ${entityIdentifiers.map(mkSelect).join(", ")} } = `,
+      "createSliceSelectors(createEntitySelectors());",
+    );
+
     if (reactImports.createSelectorHooks) {
       print(
-        `export const { ${identifiers.map(mkUse).join(", ")} } = createSelectorHooks(${name});`,
+        `export const { ${entityIdentifiers.map(mkUse).join(", ")} } = `,
+        "createSelectorHooks(createSliceSelectors(createEntitySelectors()));",
       );
     }
-  } else {
-    print(`export {${name} as __dont_use_me_${name} } // eslint friendly`);
   }
+
+  if (!identifiers.length) {
+    print(`export { ${name} as __dont_use_me_${name} } // eslint friendly`);
+    nl();
+    return dump();
+  }
+
+  print(`export const { ${identifiers.map(mkSelect).join(", ")} } = ${name};`);
+
+  if (reactImports.createSelectorHooks) {
+    print(`export const { ${identifiers.map(mkUse).join(", ")} } = createSelectorHooks(${name});`);
+  }
+
   nl();
   return dump();
 };
@@ -114,7 +123,7 @@ const autoexporters = {
   createActions: autoexportActions,
   createThunks: autoexportThunks,
   createSelectors: autoexportSelectors,
-  createSpraypaintThunks: autoexportSpraypaintThunks,
+  createSliceSelectors: autoexportSelectors,
 };
 
 const prettierOptions = {
@@ -192,7 +201,7 @@ function run(files, options) {
     if (debug) parseNode(z, source);
     const reactImports = esquery(
       z,
-      "ImportDeclaration > ImportSpecifier[imported.name=/createActionsHook|createSelectorHooks/]",
+      "ImportDeclaration > ImportSpecifier[imported.name=/createActionsHook|createSelectorHooks|createEntitySelectors/]",
     ).reduce((acc, node) => ({ ...acc, [node.imported.name]: true }), {});
 
     const rtkNodes = esquery(z, "Program > VariableDeclaration > VariableDeclarator")
@@ -210,7 +219,13 @@ function run(files, options) {
       }));
     print(...rtkNodes.map((node) => autoexport(node, { reactImports })));
     const addons = dump();
-    if (addons !== "") {
+    if (
+      reactImports.createEntitySelectors &&
+      !rtkNodes.find((node) => node.rtk === "createSliceSelectors")
+    ) {
+      throw Error("createEntitySelectors a besoin de createSliceSelectors");
+    }
+    if (addons !== "" || reactImports.createEntitySelectors) {
       // https://stackoverflow.com/questions/2575791/javascript-multiline-regexp-replace
       if (write) print(source.replace(/\/\/ RTK-AUTOEXPORT[\s\S]*/m, ""));
       if (write) print("// RTK-AUTOEXPORT");
