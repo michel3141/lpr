@@ -1,4 +1,4 @@
-import { addDebug } from "../utils";
+import { addDebug, join_ } from "../utils";
 import { symbols } from "../constants";
 import { camelize } from "inflected";
 import { createSelector } from "@reduxjs/toolkit";
@@ -11,17 +11,16 @@ const entitySelectors = (name) => {
    * selectIds / selectBookIds → selects the array of IDs.
    * selectCount/ selectBookCount → selects the number of books.
    */
-  const mkName = (def) => [name, def].filter(Boolean).join("_");
   return {
-    [mkName("ids")]: (state) => state.ids,
-    [mkName("entities")]: (state) => state.entities,
-    [mkName("list")]: [
+    [join_(name, "ids")]: (state) => state.ids,
+    [join_(name, "entities")]: (state) => state.entities,
+    [join_(name, "list")]: [
       (state) => state.ids,
       (state) => state.entities,
       (ids, entities) => ids.map((id) => entities[id]),
     ],
-    [mkName("count")]: (state) => state.ids.length,
-    [mkName("by_id")]: (state, id) => state.entities[id],
+    [join_(name, "count")]: (state) => state.ids.length,
+    [join_(name, "by_id")]: (state, id) => state.entities[id],
   };
 };
 

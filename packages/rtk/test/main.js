@@ -2,8 +2,14 @@ import rtk from "../lib";
 import { createSelectorHooks, createActionsHook } from "../react";
 // import { createEntityActions } from "../";
 console.log("RTK", Object.keys(rtk("slice-name")));
-const { createActions, createSelectors, createSliceSelectors, addListener, createEntitySelectors } =
-  rtk("slice-name");
+const {
+  createActions,
+  createSelectors,
+  createSliceSelectors,
+  addListener,
+  createEntitySelectors,
+  createEntityActions,
+} = rtk("slice-name");
 
 try {
   addListener();
@@ -70,4 +76,16 @@ console.log("ENTITY_ALL", createEntitySelectors().selectList(STATE));
 console.log("ENTITY_TOT", createEntitySelectors().selectCount(STATE));
 console.log("ENTITY_5", createEntitySelectors().selectById(STATE, "5"));
 
-export const { selectIds } = createEntitySelectors();
+const actions1 = createEntityActions();
+const actions2 = createEntityActions("book");
+const actions3 = createEntityActions("book", ({ id, name }) => ({ id, name }));
+const actions4 = createEntityActions(undefined, ({ id, name }) => ({ id, name }));
+console.log("ACTIONS1", Object.keys(actions1));
+console.log("ACTIONS2", Object.keys(actions2));
+console.log("ACTIONS3", Object.keys(actions3));
+console.log("ACTIONS2", Object.keys(actions4));
+
+console.log("ACTION1", actions1.add({ id: 3, name: "toto", value: 32 }));
+console.log("ACTION2", actions2.addBook({ id: 3, name: "toto", value: 32 }));
+console.log("ACTION3", actions3.addBook({ id: 3, name: "toto", value: 32 }));
+console.log("ACTION2", actions4.add({ id: 3, name: "toto", value: 32 }));

@@ -12,3 +12,5 @@ export const addDebug = (name) => (type, objects) => {
 export const sup0 = (message) => {
   throw Error(`[depuis 1.1.1] ${message}`);
 };
+
+export const join_ = (...def) => def.filter(Boolean).join("_");

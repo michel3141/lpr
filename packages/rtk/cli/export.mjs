@@ -34,6 +34,7 @@ const parseNode = (node, source = "", tab = "") => {
 
 const mkSelect = (prop) => "select" + camelize(prop);
 const mkUse = (prop) => "use" + camelize(prop);
+const mkName = (prop) => camelize(prop, false);
 
 const autoexport = (rtkNode, options) => {
   const { rtk } = rtkNode;
@@ -121,6 +122,27 @@ const autoexportSelectors = (rtkNode, { reactImports }) => {
   return dump();
 };
 
+const autoexportEntityActions = (rtkNode, { reactImports }) => {
+  const { name, node } = rtkNode;
+  const literalArgs = esquery(node, `CallExpression  >  Literal `).map((x) => x.value);
+  const entityName = literalArgs.at(0);
+  const join_ = (def) => def.filter(Boolean).join("_");
+  const names = [
+    ["add", entityName],
+    ["set", entityName, "List"],
+    ["remove", entityName],
+    ["update", entityName],
+  ].map(join_);
+  print(`export const { ${names.map(mkName).join(", ")} } = ${name};`);
+
+  if (reactImports.createActionsHook) {
+    print(`export const ${mkUse(name)} = createActionsHook( ${name} );`);
+  }
+
+  nl();
+  return dump();
+};
+
 const autoexportEntitySelectors = (rtkNode, { reactImports }) => {
   const { name, node } = rtkNode;
   const literalArgs = esquery(node, `CallExpression  >  Literal `).map((x) => x.value);
@@ -142,6 +164,7 @@ const autoexporters = {
   createThunks: autoexportThunks,
   createSelectors: autoexportSelectors,
   createSliceSelectors: autoexportSelectors,
+  createEntityActions: autoexportEntityActions,
   createEntitySelectors: autoexportEntitySelectors,
 };
 
