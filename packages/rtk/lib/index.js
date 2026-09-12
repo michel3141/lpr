@@ -19,6 +19,7 @@ const rtk = (name) => {
     createThunks: createThunksFactory(name),
     createReducer: createReducerFactory(name),
     createSelectors: createSelectorsFactory(name),
+    createSliceSelectors: createSelectorsFactory(name, { localState: true }),
   };
 };
 
