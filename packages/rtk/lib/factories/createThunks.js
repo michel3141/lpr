@@ -1,5 +1,5 @@
-import { addDebug } from "./utils";
-import { symbols } from "./constants";
+import { addDebug } from "../utils";
+import { symbols } from "../constants";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const mkThunkId = (name) => (thunkName) => `api-${name}/${thunkName}`;

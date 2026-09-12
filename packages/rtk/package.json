@@ -23,10 +23,11 @@
   },
   "scripts": {
     "UNUSED:build": "vite build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vite test",
+    "test:org": "echo \"Error: no test specified\" && exit 1",
     "p": "oxfmt",
     "e": "oxlint",
-    "ef": "echo 'oxlint --fix ??'"
+    "ef": "oxlint --fix"
   },
   "dependencies": {
     "@lpr/is-dev-mode": "^0.1.1",

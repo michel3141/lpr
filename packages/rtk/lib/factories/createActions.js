@@ -1,36 +1,33 @@
-import { addDebug } from "./utils";
-import { symbols } from "./constants";
+import { addDebug } from "../utils";
+import { symbols } from "../constants";
 import { createAction } from "@reduxjs/toolkit";
 
+const error = (actionId) => () => {
+  throw new Error(`default action for '${actionId}' is not defined`);
+};
+
 const createActionsFactory = (name) => (actionsMap) => {
-  const actions = Object.entries(actionsMap).reduce((acc, [type, prepareAction]) => {
-    symbols.actions[name] = symbols.actions[name] || {};
+  symbols.actions[name] = symbols.actions[name] || {};
 
-    const actionId = `${name}/${type}`;
+  const actions = {};
 
-    // actions ou liste des actions créer pour type/prepareAction
-    const extended = {};
+  const walk = (actionsMap, parentId = undefined) => {
+    for (const [actionName, actionDef] of Object.entries(actionsMap)) {
+      const actionId = parentId ?? `${name}/${actionName}`;
 
-    if (typeof prepareAction === "function") {
-      symbols.actions[name][type] = actionId;
-      extended[type] = createAction(actionId, prepareAction);
-    } else {
-      const main = createAction(actionId, () => {
-        throw new Error(`default action for '${actionId}' is not defined`);
-      });
-      extended[type] = main;
-      for (const [key, actionDef] of Object.entries(prepareAction)) {
-        // 'default' écrase l'erreur ci-dessus
-        const subType = key === "default" ? actionId : `${name}/${key}`;
-        symbols.actions[name][subType] = actionId;
-        extended[subType] = createAction(actionId, actionDef);
+      if (typeof actionDef === "function") {
+        actions[actionName] = createAction(actionId, actionDef);
+        symbols.actions[name][actionName] = actionId;
+        continue;
       }
+
+      const { default: defaultPrepare, ...nestedActions } = actionDef;
+      walk({ ...nestedActions, [actionName]: defaultPrepare ?? error(actionId) }, actionId);
     }
-    return {
-      ...acc,
-      ...extended,
-    };
-  }, {});
+  };
+
+  walk(actionsMap);
+
   addDebug(name)("actions", actions);
   return actions;
 };

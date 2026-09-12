@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { reducers, symbols } from "./constants";
+import { reducers, symbols } from "../constants";
 
 const createReducerFactory =
   (name) => (initialState, actionsMap, actionMatchers, defaultCaseReducer) => {
