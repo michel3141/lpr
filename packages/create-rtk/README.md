@@ -41,11 +41,11 @@ pnpm create @lpr/rtk user-profile --react
 
 Initializes the project after generation:
 
-* `pnpm install`
-* `git init`
-* `git add .`
-* `git commit -m "initial commit"`
-* optional `git flow init -d`
+- `pnpm install`
+- `git init`
+- `git add .`
+- `git commit -m "initial commit"`
+- optional `git flow init -d`
 
 ```bash
 pnpm create @lpr/rtk user-profile --init
@@ -61,7 +61,6 @@ pnpm create @lpr/rtk user-profile -v
 
 ## Notes
 
-* The slice name is used as-is (no transformations).
-* If the target directory already exists, the command fails.
-* The project is generated using Vite + JavaScript (no TypeScript).
-
+- The slice name is used as-is (no transformations).
+- If the target directory already exists, the command fails.
+- The project is generated using Vite + JavaScript (no TypeScript).
