@@ -14,10 +14,10 @@ export function buildPackageJson(sliceName, options) {
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,html,md}'",
-    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
-    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'",
-    "rtk": "pnpm rtk-export -w './**/*.js'"
+    "p": "oxfmt",
+    "e": "oxlint"
+    "ef": "oxlint --fix",
+    "rtk": "pn rtk-export -w './**/*.js'"
   },
   "keywords": [],
   "license": "ISC",
@@ -28,7 +28,8 @@ export function buildPackageJson(sliceName, options) {
     "react": "^19"
   },
   "devDependencies": {
-    "prettier": "^3",
+    "oxfmt": "^0",
+    "oxlint": "^1",
     "vite": "^8"
   }
 }`;
