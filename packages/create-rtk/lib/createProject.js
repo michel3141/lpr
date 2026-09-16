@@ -5,11 +5,15 @@ import { initializeProject } from './initializeProject.js';
 
 export function createProject(sliceName, options) {
   const { react, verbose, init } = options;
+  // .cwd() est correct à partir de pnpm 12
+  // curl -fsSL https://get.pnpm.io/install.sh | sh -
   const targetDir = path.resolve(process.cwd(), sliceName);
 
   if (fs.existsSync(targetDir)) {
-    console.error(`Error: directory "${sliceName}" already exists`);
+    console.error(`Error: directory "${targetDir}" already exists`);
     process.exit(1);
+  } else {
+    console.log(`Writing to directory "${targetDir}";`);
   }
 
   fs.mkdirSync(targetDir, { recursive: true });
