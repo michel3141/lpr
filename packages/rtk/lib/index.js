@@ -2,11 +2,9 @@ import { reducers, symbols } from "./constants";
 
 import {
   createActionsFactory,
-  createEntityActionsFactory,
   createThunksFactory,
   createReducerFactory,
   createSelectorsFactory,
-  createEntitySelectorsFactory,
 } from "./factories";
 
 import { sup0 } from "./utils";
@@ -18,12 +16,10 @@ const rtk = (name) => {
       sup0("rtk(name).addListener est supprimé. Use : import {addListener} from 'rtk'"),
 
     createActions: createActionsFactory(name),
-    createEntityActions: createEntityActionsFactory(name),
     createThunks: createThunksFactory(name),
     createReducer: createReducerFactory(name),
     createSelectors: createSelectorsFactory(name),
     createSliceSelectors: createSelectorsFactory(name, { localState: true }),
-    createEntitySelectors: createEntitySelectorsFactory(name),
   };
 };
 

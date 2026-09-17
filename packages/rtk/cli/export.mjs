@@ -68,8 +68,6 @@ const autoexportActions = (rtkNode, { reactImports }) => {
   if (reactImports.createActionsHook) {
     print(`export const ${mkUse(name)} = createActionsHook( ${name} );`);
   }
-  if (reactImports.createEntityActions) {
-  }
   return dump();
 };
 
@@ -91,21 +89,6 @@ const autoexportSelectors = (rtkNode, { reactImports }) => {
   // identique pour createSelectors et createSliceSelectors
   const { name, identifiers, rtk } = rtkNode;
 
-  if (rtk === "createSliceSelectors" && reactImports.createEntitySelectors) {
-    const entityIdentifiers = ["ids", "entities", "all", "total", "by_id"];
-    print(
-      `export const { ${entityIdentifiers.map(mkSelect).join(", ")} } = `,
-      "createSliceSelectors(createEntitySelectors());",
-    );
-
-    if (reactImports.createSelectorHooks) {
-      print(
-        `export const { ${entityIdentifiers.map(mkUse).join(", ")} } = `,
-        "createSelectorHooks(createSliceSelectors(createEntitySelectors()));",
-      );
-    }
-  }
-
   if (!identifiers.length) {
     print(`export { ${name} as __dont_use_me_${name} } // eslint friendly`);
     nl();
@@ -123,6 +106,7 @@ const autoexportSelectors = (rtkNode, { reactImports }) => {
 };
 
 const autoexportEntityActions = (rtkNode, { reactImports }) => {
+  // gardé pour exemple
   const { name, node } = rtkNode;
   const literalArgs = esquery(node, `CallExpression  >  Literal `).map((x) => x.value);
   const entityName = literalArgs.at(0);
@@ -143,29 +127,12 @@ const autoexportEntityActions = (rtkNode, { reactImports }) => {
   return dump();
 };
 
-const autoexportEntitySelectors = (rtkNode, { reactImports }) => {
-  const { name, node } = rtkNode;
-  const literalArgs = esquery(node, `CallExpression  >  Literal `).map((x) => x.value);
-  const entityName = literalArgs.at(0);
-  const mkName = (def) => [entityName, def].filter(Boolean).join("_");
-  const names = ["ids", "entities", "list", "count", "by_id"].map(mkName);
-  print(`export const { ${names.map(mkSelect).join(", ")} } = ${name};`);
-
-  if (reactImports.createSelectorHooks) {
-    print(`export const { ${names.map(mkUse).join(", ")} } = createSelectorHooks(${name});`);
-  }
-
-  nl();
-  return dump();
-};
-
 const autoexporters = {
   createActions: autoexportActions,
   createThunks: autoexportThunks,
   createSelectors: autoexportSelectors,
   createSliceSelectors: autoexportSelectors,
-  createEntityActions: autoexportEntityActions,
-  createEntitySelectors: autoexportEntitySelectors,
+  createEntityActions: autoexportEntityActions, // gardé pour l'exemple
 };
 
 const prettierOptions = {
@@ -243,7 +210,7 @@ function run(files, options) {
     if (debug) parseNode(z, source);
     const reactImports = esquery(
       z,
-      "ImportDeclaration > ImportSpecifier[imported.name=/createActionsHook|createSelectorHooks|createEntityActions/]",
+      "ImportDeclaration > ImportSpecifier[imported.name=/createActionsHook|createSelectorHooks/]",
     ).reduce((acc, node) => ({ ...acc, [node.imported.name]: true }), {});
 
     const rtkNodes = esquery(z, "Program > VariableDeclaration > VariableDeclarator")

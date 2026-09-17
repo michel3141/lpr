@@ -5,7 +5,8 @@ const createReducerFactory =
   (name) => (initialState, actionsMap, actionMatchers, defaultCaseReducer) => {
     symbols.reducers[name] = symbols.reducers[name] || new Set();
 
-    actionMatchers = actionMatchers || [];
+    actionMap ??= {};
+    actionMatchers ??= [];
 
     const listeners = [];
     Object.entries(initialState)
