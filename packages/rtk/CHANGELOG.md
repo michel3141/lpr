@@ -1,8 +1,8 @@
-# next 1.1.1
+# next 1.2.0
 
 séparation de rtk()
 ajout de createSliceSelectors
-rtk-export gère createEntitySelectors
+ajout des thunkActions
 
 breaking changes :
 'rtk' n'exporte plus {select}
