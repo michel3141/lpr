@@ -1,91 +1,150 @@
-import rtk from "../lib";
-import { createSelectorHooks, createActionsHook } from "../react";
-// import { createEntityActions } from "../";
-console.log("RTK", Object.keys(rtk("slice-name")));
-const {
-  createActions,
-  createSelectors,
-  createSliceSelectors,
-  addListener,
-  createEntitySelectors,
-  createEntityActions,
-} = rtk("slice-name");
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-try {
-  addListener();
-} catch (e) {
-  console.warn(e.message);
-}
-const actions = createActions({
-  test: () => ({ payload: "coucou" }),
-  multiple: {
-    //    default: (payload) => ({ payload }),
-    a: () => ({ payload: "a" }),
-    b: () => ({ payload: "b" }),
-    x: () => ({ payload: "WTF" }),
-  },
-});
-console.log("ACTIONS", Object.keys(actions));
-console.log(
-  "ACTIONS",
-  Object.values(actions).map((a) => a.toString()),
-);
+//function XXXcreateThunk(type, def) {
+//  const thunkCreator = (arg) => (dispatch, getState) => {
+//    const thunk = def(arg);
+//    const thunkApi = { dispatch, getState };
+//    let response = undefined;
+//    const action = (abandonned = false) => {
+//      response = true;
+//      if (!abandonned) {
+//        dispatch({ type, payload });
+//      }
+//    };
+//    thunk(action, thunkApi);
+//    return response || dispatch({ type: `${type}/aborted` });
+//  };
+//  thunkCreator.type = type;
+//  thunkCreator.match = (action) => action?.type === type;
+//  thunkCreator.toString = () => type;
+//  return thunkCreator;
+//}
 
-Object.entries(actions).forEach(([name, action]) => {
-  try {
-    console.log(name, action("test-payload"));
-  } catch (e) {
-    console.warn(name, e.message);
-  }
-});
-
-const selectors = createSelectors({
-  test: (state) => state.x,
-  test2: (state) => state.x + state["slice-name"].x,
-  test3: [(state) => state.x, (state) => state["slice-name"].x, (a, b) => a + b],
-});
-const localSelectors = createSliceSelectors({
-  testl: (state) => state.x,
-});
-
-const entitySelectors2 = createEntitySelectors();
-const entitySelectors = createEntitySelectors("book");
-
-const STATE = {
-  x: 45,
-  "slice-name": {
-    ids: ["5", "2"],
-    entities: {
-      2: { id: "2", name: "name-1" },
-      5: { id: "5", name: "name-2" },
-    },
-    x: 27,
-  },
+const $ = (def) => {
+  const payloadCreator = (payload) => ({ payload: def(payload) });
+  payloadCreator.isPayloadCreator = true;
+  return payloadCreator;
 };
-console.log("SELECTORS___", selectors);
-console.log("LOCAL__SEL__", localSelectors);
-console.log("SELECT_TEST_", selectors.selectTest(STATE));
-console.log("SELECT_TEST2", selectors.selectTest2(STATE));
-console.log("SELECT_TEST3", selectors.selectTest3(STATE));
-console.log("LOCAL__TESTL", localSelectors.selectTestl(STATE));
 
-console.log("ENTITY", Object.keys(entitySelectors));
-console.log("ENTITY_IDS", createEntitySelectors().selectIds(STATE));
-console.log("ENTITY_ENT", createEntitySelectors().selectEntities(STATE));
-console.log("ENTITY_ALL", createEntitySelectors().selectList(STATE));
-console.log("ENTITY_TOT", createEntitySelectors().selectCount(STATE));
-console.log("ENTITY_5", createEntitySelectors().selectById(STATE, "5"));
+function createThunk(type, def) {
+  const thunkCreator = (arg) => (dispatch, getState) => {
+    const thunk = def(arg);
+    const thunkApi = { dispatch, getState };
+    return thunk(action, thunkApi);
+  };
+  // thunkCreator.type = undefined;
+  // thunkCreator.match = undefined;
+  thunkCreator.toString = () => `dispatcher: ${type}`;
+  return thunkCreator;
+}
 
-const actions1 = createEntityActions();
-const actions2 = createEntityActions("book");
-const actions3 = createEntityActions("book", ({ id, name }) => ({ id, name }));
-const actions4 = createEntityActions(undefined, ({ id, name }) => ({ id, name }));
-console.log("ACTIONS1", Object.keys(actions1));
-console.log("ACTIONS2", Object.keys(actions2));
-console.log("ACTIONS3", Object.keys(actions3));
-console.log("ACTIONS2", Object.keys(actions4));
+function typeOfAction(def) {
+  if (def?.isPayloadCreator) {
+    return "payloadCreator";
+  }
+  if (def?.constructor?.name === "AsyncFunction") {
+    return "asyncThunk";
+  }
 
-console.log("ACTION1", actions1.add({ id: 3, name: "toto", value: 32 }));
-console.log("ACTION2", actions2.addBook({ id: 3, name: "toto", value: 32 }));
-console.log("ACTION3", actions3.addBook({ id: 3, name: "toto", value: 32 }));
-console.log("ACTION2", actions4.add({ id: 3, name: "toto", value: 32 }));
+  if ("function" === typeof def) {
+    return "thunk"; // hopefully
+  }
+
+  console.warn(def);
+  throw "type of action is unkwown";
+}
+
+const TEST = {
+  thunk: async ({ x, y }, $) => {
+    console.log("async 1", $.dispatch, $.getState);
+  },
+  dispatcher:
+    (dispatch, getState) =>
+    async ({ x, y }) => {
+      console.log("do something with", getState());
+    },
+};
+
+const events = {
+  event: ({ x: { a, b }, y }) => ({ a, b, y }),
+};
+
+const actions = {};
+
+Object.entries(TEST).forEach(([name, def]) => {
+  console.log(name, typeOfAction(def));
+  let action;
+  const actionType = typeOfAction(def);
+  switch (actionType) {
+    case "asyncThunk":
+      action = createAsyncThunk(name, def);
+      break;
+    case "thunk":
+      action = createThunk(name, def);
+      break;
+    case "payloadCreator":
+      action = createAction(name, (payload) => ({ payload: def(payload, () => "x") }));
+      break;
+    default:
+      throw Error(`action type unknown : '${actionType}'`);
+  }
+  actions[name] = action;
+});
+
+console.log("****** RESULTS ********");
+Object.entries(actions).forEach(([name, action]) => {
+  console.log(name, action, action({ x: { a: "a", b: "b" }, y: "y" }));
+});
+window.actions = actions;
+
+//async ({x,y}, $)=>{  $.dispatch, $.getState,return}               => T
+//({x,y})=>($$, $)=>{...;$$({x,y})/$$.canceled()/$$(action({})); }            => A
+//(x,y)=>({x, y})                                            => E
+//
+//export function createAction(type: string, prepareAction?: Function): any {
+//  function actionCreator(...args: any[]) {
+//    if (prepareAction) {
+//      let prepared = prepareAction(...args)
+//      if (!prepared) {
+//        throw new Error('prepareAction did not return an object')
+//      }
+//
+//      return { // pour un event sinon ()=>
+//        type,
+//        payload: prepared.payload,
+//        ...('meta' in prepared && { meta: prepared.meta }),
+//        ...('error' in prepared && { error: prepared.error }),
+//      }
+//    }
+//    return { type, payload: args[0] }
+//  }
+//
+//  actionCreator.toString = () => `${type}`
+//
+//  actionCreator.type = type
+//
+//  actionCreator.match = (action: unknown): action is PayloadAction =>
+//    isAction(action) && action.type === type
+//
+//  return actionCreator
+//}
+//
+//T on peut ajouter toString=fulfilled pour les thunkAsync (reducer ? avait été décidé mauvaise idée)
+//E => createAction avec prepareAction limitée
+//A => comme createAction mais return un thunk
+//      + throw si $$ n'est pas appelé
+//
+//plus d'actions imbriquées comme avant. à la rigueur comme : https://redux-actions.js.org/api/createaction#createactionsactionmap
+//emmerdant pour les useActionsHook
+//
+//
+
+import rtk from "../lib";
+const { createEvents } = rtk("test-slice");
+
+window.E = createEvents({
+  ab: (x) => x,
+  az: "toto",
+  ty: null,
+  wx: ({ x: { a, b }, y }) => ({ y, a, b }),
+});
