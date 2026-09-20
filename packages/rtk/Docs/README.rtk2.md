@@ -43,9 +43,9 @@ Un composant générique est donc généralement **event-only**.
 Une intention exprime une opération métier :
 
 ```js
-updatePost({ id, changes })
-deletePost({ id })
-publishPost({ id })
+updatePost({ id, changes });
+deletePost({ id });
+publishPost({ id });
 ```
 
 Une intention reçoit **toujours un seul argument**, généralement un objet.
@@ -55,44 +55,38 @@ Toutes les intentions métier utilisent `createAsyncThunk`, même lorsqu'elles s
 Elles exposent donc toujours :
 
 ```js
-updatePost.pending
-updatePost.fulfilled
-updatePost.rejected
+updatePost.pending;
+updatePost.fulfilled;
+updatePost.rejected;
 ```
 
 Exemple synchrone :
 
 ```js
-const updatePost = createAsyncThunk(
-  'posts/update',
-  ({ id, changes }, { getState }) => {
-    const post = selectPost(getState(), id)
+const updatePost = createAsyncThunk("posts/update", ({ id, changes }, { getState }) => {
+  const post = selectPost(getState(), id);
 
-    return {
-      ...post,
-      ...changes
-    }
-  }
-)
+  return {
+    ...post,
+    ...changes,
+  };
+});
 ```
 
 Puis :
 
 ```js
 builder.addCase(updatePost.fulfilled, (state, action) => {
-  state.posts[action.payload.id] = action.payload
-})
+  state.posts[action.payload.id] = action.payload;
+});
 ```
 
 L'intention peut ensuite devenir asynchrone sans changer son interface :
 
 ```js
-const updatePost = createAsyncThunk(
-  'posts/update',
-  async ({ id, changes }) => {
-    return await api.updatePost(id, changes)
-  }
-)
+const updatePost = createAsyncThunk("posts/update", async ({ id, changes }) => {
+  return await api.updatePost(id, changes);
+});
 ```
 
 Le contrat important est celui de `fulfilled.payload`.
@@ -109,18 +103,20 @@ payload   → ce qui a été obtenu
 Un thunk classique est utilisé pour **orchestrer plusieurs opérations**.
 
 ```js
-const saveAndRefresh = ({ id }) => async dispatch => {
-  await dispatch(updatePost({ id }))
-  await dispatch(refreshPosts({}))
-}
+const saveAndRefresh =
+  ({ id }) =>
+  async (dispatch) => {
+    await dispatch(updatePost({ id }));
+    await dispatch(refreshPosts({}));
+  };
 ```
 
 Il peut :
 
-* déclencher plusieurs intentions ;
-* attendre leurs résultats ;
-* conditionner des opérations ;
-* combiner plusieurs opérations.
+- déclencher plusieurs intentions ;
+- attendre leurs résultats ;
+- conditionner des opérations ;
+- combiner plusieurs opérations.
 
 Il ne représente pas nécessairement une intention métier et n'a donc pas besoin de `.pending`, `.fulfilled`, `.rejected`.
 
@@ -182,4 +178,3 @@ Dans les deux cas, le composant ne connaît pas Redux en tant que mécanisme de 
 Principe directeur :
 
 > **Les events décrivent ce qui s'est passé. Les intentions disent ce qui doit être réalisé. Les thunks d'orchestration coordonnent les opérations.**
-
