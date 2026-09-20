@@ -14,7 +14,6 @@ const createReducerFactory =
       .forEach(([key, { _persisted: createPersistence }]) => {
         const { value, actionMatcher, listenerOptions } = createPersistence(name, key);
         initialState[key] = value;
-        /* XXX.startListening(listenerOptions); no magical listeners import */
         listeners.push(listenerOptions);
         // for reducers
         actionMatchers.push(actionMatcher);

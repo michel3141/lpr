@@ -42,17 +42,6 @@ const createSelectorsFactory =
         selectors[normalizedName] = createComposedSelector(mapToLocalState, selector);
         continue;
       }
-
-      throw new Error(
-        "Depuis 1.1.1, les constantes selectors sont abandonnées",
-        // if (selector === "default") {
-        //   selector = (state) => state[name][camelize(selectorName, false)];
-        // } else if (selector === "all") {
-        //   selector = (state) => state[name];
-        // } else {
-        //   selector = (state) => state[name][selector];
-        // }
-      );
     }
 
     addDebug(name)("selectors", selectors);
