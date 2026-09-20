@@ -1,23 +1,8 @@
 import rtk from "../lib";
+import { createActionsHook } from "../react";
 const { createEvents, createActions } = rtk("test-slice");
 
-const TEST = {
-  action_a: async ({ x, y }, $) => {
-    console.log("async 1", $.dispatch, $.getState);
-  },
-  action_b:
-    (dispatch, getState) =>
-    async ({ x, y }) => {
-      console.log("do something with", getState());
-    },
-};
-
-const events = {
-  event: ({ x: { a, b }, y }) => ({ a, b, y }),
-};
-
 const E = createEvents({
-  ...events,
   ab: (x) => x,
   az: "toto",
   ty: null,
@@ -29,7 +14,16 @@ console.log(
   Object.values(E).map((x) => "" + x),
 );
 
-const A = createActions(TEST);
+const A = createActions({
+  action_a: async ({ x, y }, $) => {
+    console.log("async 1", $.dispatch, $.getState);
+  },
+  action_b:
+    (dispatch, getState) =>
+    async ({ x, y }) => {
+      console.log("do something with", getState());
+    },
+});
 console.log(
   Object.keys(A),
   Object.values(A)
@@ -38,3 +32,12 @@ console.log(
     .filter(Boolean)
     .map((x) => "" + x),
 );
+
+// ---- createEvents ---------
+export const { abEvent, azEvent, tyEvent, wxEvent } = E;
+
+export const useE = createActionsHook(E);
+// ---- createActions ---------
+export const { actionA, actionB } = A;
+
+export const useA = createActionsHook(A);
