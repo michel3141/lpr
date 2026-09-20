@@ -46,21 +46,11 @@ const autoexport = (rtkNode, options) => {
   }
 };
 
+const mkAction = (actionName) => camelize(`${actionName}`, false);
 const autoexportActions = (rtkNode, { reactImports }) => {
-  const { name, identifiers, node } = rtkNode;
-  const actionIdentifiers = [];
-  for (const actionIdentifier of identifiers) {
-    const actionIdentifiersL2 = esquery(
-      node,
-      `CallExpression  > * >Property[key.name=${actionIdentifier}]  > * > Property`,
-    ).map((x) => x.key.name);
-    if (actionIdentifiersL2.length === 0) actionIdentifiersL2.push("default");
-    actionIdentifiers.push(
-      ...actionIdentifiersL2.map((x) => (x === "default" ? actionIdentifier : x)),
-    );
-  }
-  if (actionIdentifiers.length) {
-    print(`export const { ${actionIdentifiers.join(", ")} } = ${name};`);
+  const { name, identifiers } = rtkNode;
+  if (identifiers.length) {
+    print(`export const { ${identifiers.map(mkAction).join(", ")} } = ${name};`);
   } else {
     print(`export {${name} as __dont_use_me_${name} } // eslint friendly`);
   }
@@ -71,10 +61,11 @@ const autoexportActions = (rtkNode, { reactImports }) => {
   return dump();
 };
 
-const autoexportThunks = (rtkNode, { reactImports }) => {
+const mkEvent = (eventName) => camelize(`${eventName}Event`, false);
+const autoexportEvents = (rtkNode, { reactImports }) => {
   const { name, identifiers } = rtkNode;
   if (identifiers.length) {
-    print(`export const { ${identifiers.join(", ")} } = ${name};`);
+    print(`export const { ${identifiers.map(mkEvent).join(", ")} } = ${name};`);
   } else {
     print(`export {${name} as __dont_use_me_${name} } // eslint friendly`);
   }
@@ -87,7 +78,7 @@ const autoexportThunks = (rtkNode, { reactImports }) => {
 
 const autoexportSelectors = (rtkNode, { reactImports }) => {
   // identique pour createSelectors et createSliceSelectors
-  const { name, identifiers, rtk } = rtkNode;
+  const { name, identifiers } = rtkNode;
 
   if (!identifiers.length) {
     print(`export { ${name} as __dont_use_me_${name} } // eslint friendly`);
@@ -129,7 +120,7 @@ const autoexportEntityActions = (rtkNode, { reactImports }) => {
 
 const autoexporters = {
   createActions: autoexportActions,
-  createThunks: autoexportThunks,
+  createEvents: autoexportEvents,
   createSelectors: autoexportSelectors,
   createSliceSelectors: autoexportSelectors,
   createEntityActions: autoexportEntityActions, // gardé pour l'exemple
