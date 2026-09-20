@@ -53,7 +53,7 @@ importers:
         version: 6.0.2(vite@8.0.16)
       madge:
         specifier: ^6.1.0
-        version: 6.1.0(typescript@3.9.10)
+        version: 6.1.0(supports-color@7.2.0)(typescript@3.9.10)
       oxfmt:
         specifier: ^0.67.0
         version: 0.67.0
@@ -875,8 +875,8 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
-  immer@11.1.8:
-    resolution: {integrity: sha512-/tbkHMW7y10Lx6i1crLjD4/OhNkRG+Fo7byZHtah0547nIeXYcpIXaUh0IAQY6gO5459qpGGYapcEOHtFXkIuA==}
+  immer@11.1.18:
+    resolution: {integrity: sha512-EQyQtLiYW029lyoczMl/Hh4Xu7cDecSc58JRYpHyL4tIAu3eqd1yJzQX04d2BZHDkzFFvm6qJEJWOtfDSWAXbQ==}
 
   indexes-of@1.0.1:
     resolution: {integrity: sha512-bup+4tap3Hympa+JBJUG7XuOsdNQ6fxt0MHyXMKuLBKn0OqsTfvUxkUrroEX1+B2VsSHvCjiIcZVxRtYa4nllA==}
@@ -1245,8 +1245,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  reselect@5.2.0:
-    resolution: {integrity: sha512-AgZ3UOZm3YndfrJ4OYjgrT7bmCm/1iqkjvEfH/oYjzh6PD2qw4QuT3jjnXIrpdt4MTpMXclMT3lXbmRY+XRakw==}
+  reselect@5.3.0:
+    resolution: {integrity: sha512-XGoLeRAVzUTcJ1qkxPQhDJyIZ5d6zzZD9nT7AEZOaaU9UbWclhycElmhO+VD5bFeLuzhPBaOV2oXC8uG35ZSpg==}
 
   resolve-dependency-path@2.0.0:
     resolution: {integrity: sha512-DIgu+0Dv+6v2XwRaNWnumKu7GPufBBOr5I1gRPJHkvghrfCGOooJODFvgFimX/KRxk9j0whD2MnKHzM1jYvk9w==}
@@ -1646,10 +1646,10 @@ snapshots:
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@standard-schema/utils': 0.3.0
-      immer: 11.1.8
+      immer: 11.1.18
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
-      reselect: 5.2.0
+      reselect: 5.3.0
     optionalDependencies:
       react: 19.2.7
 
@@ -1719,11 +1719,11 @@ snapshots:
 
   '@typescript-eslint/types@5.62.0': {}
 
-  '@typescript-eslint/typescript-estree@4.33.0(typescript@3.9.10)':
+  '@typescript-eslint/typescript-estree@4.33.0(supports-color@7.2.0)(typescript@3.9.10)':
     dependencies:
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/visitor-keys': 4.33.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.8.4
@@ -1733,11 +1733,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/typescript-estree@5.62.0(typescript@4.9.5)':
+  '@typescript-eslint/typescript-estree@5.62.0(supports-color@7.2.0)(typescript@4.9.5)':
     dependencies:
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/visitor-keys': 5.62.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.8.4
@@ -1853,9 +1853,11 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug@4.4.3:
+  debug@4.4.3(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
 
   deep-extend@0.6.0: {}
 
@@ -1863,12 +1865,12 @@ snapshots:
     dependencies:
       clone: 1.0.4
 
-  dependency-tree@9.0.0:
+  dependency-tree@9.0.0(supports-color@7.2.0):
     dependencies:
       commander: 2.20.3
-      debug: 4.4.3
-      filing-cabinet: 3.3.1
-      precinct: 9.2.1
+      debug: 4.4.3(supports-color@7.2.0)
+      filing-cabinet: 3.3.1(supports-color@7.2.0)
+      precinct: 9.2.1(supports-color@7.2.0)
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -1907,17 +1909,17 @@ snapshots:
     dependencies:
       node-source-walk: 5.0.2
 
-  detective-less@1.0.2:
+  detective-less@1.0.2(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       gonzales-pe: 4.3.0
       node-source-walk: 4.3.0
     transitivePeerDependencies:
       - supports-color
 
-  detective-postcss@4.0.0:
+  detective-postcss@4.0.0(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       is-url: 1.2.4
       postcss: 8.5.15
       postcss-values-parser: 2.0.1
@@ -1956,18 +1958,18 @@ snapshots:
 
   detective-stylus@3.0.0: {}
 
-  detective-typescript@7.0.2:
+  detective-typescript@7.0.2(supports-color@7.2.0):
     dependencies:
-      '@typescript-eslint/typescript-estree': 4.33.0(typescript@3.9.10)
+      '@typescript-eslint/typescript-estree': 4.33.0(supports-color@7.2.0)(typescript@3.9.10)
       ast-module-types: 2.7.1
       node-source-walk: 4.3.0
       typescript: 3.9.10
     transitivePeerDependencies:
       - supports-color
 
-  detective-typescript@9.1.1:
+  detective-typescript@9.1.1(supports-color@7.2.0):
     dependencies:
-      '@typescript-eslint/typescript-estree': 5.62.0(typescript@4.9.5)
+      '@typescript-eslint/typescript-estree': 5.62.0(supports-color@7.2.0)(typescript@4.9.5)
       ast-module-types: 4.0.0
       node-source-walk: 5.0.2
       typescript: 4.9.5
@@ -2023,19 +2025,19 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.4
 
-  filing-cabinet@3.3.1:
+  filing-cabinet@3.3.1(supports-color@7.2.0):
     dependencies:
       app-module-path: 2.2.0
       commander: 2.20.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       enhanced-resolve: 5.23.0
       is-relative-path: 1.0.2
       module-definition: 3.4.0
-      module-lookup-amd: 7.0.1
+      module-lookup-amd: 7.0.1(supports-color@7.2.0)
       resolve: 1.22.12
       resolve-dependency-path: 2.0.0
       sass-lookup: 3.0.0
-      stylus-lookup: 3.0.2
+      stylus-lookup: 3.0.2(supports-color@7.2.0)
       tsconfig-paths: 3.15.0
       typescript: 3.9.10
     transitivePeerDependencies:
@@ -2120,7 +2122,7 @@ snapshots:
 
   ignore@5.3.2: {}
 
-  immer@11.1.8: {}
+  immer@11.1.18: {}
 
   indexes-of@1.0.1: {}
 
@@ -2227,25 +2229,25 @@ snapshots:
 
   lru-cache@11.5.1: {}
 
-  madge@6.1.0(typescript@3.9.10):
+  madge@6.1.0(supports-color@7.2.0)(typescript@3.9.10):
     dependencies:
       chalk: 4.1.2
       commander: 7.2.0
       commondir: 1.0.1
-      debug: 4.4.3
-      dependency-tree: 9.0.0
+      debug: 4.4.3(supports-color@7.2.0)
+      dependency-tree: 9.0.0(supports-color@7.2.0)
       detective-amd: 4.2.0
       detective-cjs: 4.1.0
       detective-es6: 3.0.1
-      detective-less: 1.0.2
+      detective-less: 1.0.2(supports-color@7.2.0)
       detective-postcss: 6.1.3
       detective-sass: 4.1.3
       detective-scss: 3.1.1
       detective-stylus: 2.0.1
-      detective-typescript: 9.1.1
+      detective-typescript: 9.1.1(supports-color@7.2.0)
       ora: 5.4.1
       pluralize: 8.0.0
-      precinct: 8.3.1
+      precinct: 8.3.1(supports-color@7.2.0)
       pretty-ms: 7.0.1
       rc: 1.2.8
       stream-to-array: 2.3.0
@@ -2289,10 +2291,10 @@ snapshots:
       ast-module-types: 4.0.0
       node-source-walk: 5.0.2
 
-  module-lookup-amd@7.0.1:
+  module-lookup-amd@7.0.1(supports-color@7.2.0):
     dependencies:
       commander: 2.20.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       glob: 7.2.3
       requirejs: 2.3.8
       requirejs-config-file: 4.0.0
@@ -2421,25 +2423,25 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  precinct@8.3.1:
+  precinct@8.3.1(supports-color@7.2.0):
     dependencies:
       commander: 2.20.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       detective-amd: 3.1.2
       detective-cjs: 3.1.3
       detective-es6: 2.2.2
-      detective-less: 1.0.2
-      detective-postcss: 4.0.0
+      detective-less: 1.0.2(supports-color@7.2.0)
+      detective-postcss: 4.0.0(supports-color@7.2.0)
       detective-sass: 3.0.2
       detective-scss: 2.0.2
       detective-stylus: 1.0.3
-      detective-typescript: 7.0.2
+      detective-typescript: 7.0.2(supports-color@7.2.0)
       module-definition: 3.4.0
       node-source-walk: 4.3.0
     transitivePeerDependencies:
       - supports-color
 
-  precinct@9.2.1:
+  precinct@9.2.1(supports-color@7.2.0):
     dependencies:
       '@dependents/detective-less': 3.0.2
       commander: 9.5.0
@@ -2450,7 +2452,7 @@ snapshots:
       detective-sass: 4.1.3
       detective-scss: 3.1.1
       detective-stylus: 3.0.0
-      detective-typescript: 9.1.1
+      detective-typescript: 9.1.1(supports-color@7.2.0)
       module-definition: 4.1.0
       node-source-walk: 5.0.2
     transitivePeerDependencies:
@@ -2475,7 +2477,8 @@ snapshots:
 
   react-native-logs@5.6.0: {}
 
-  react@19.2.7: {}
+  react@19.2.7:
+    optional: true
 
   readable-stream@3.6.2:
     dependencies:
@@ -2496,7 +2499,7 @@ snapshots:
 
   requirejs@2.3.8: {}
 
-  reselect@5.2.0: {}
+  reselect@5.3.0: {}
 
   resolve-dependency-path@2.0.0: {}
 
@@ -2586,10 +2589,10 @@ snapshots:
 
   strip-json-comments@2.0.1: {}
 
-  stylus-lookup@3.0.2:
+  stylus-lookup@3.0.2(supports-color@7.2.0):
     dependencies:
       commander: 2.20.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
