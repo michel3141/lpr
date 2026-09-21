@@ -32,7 +32,7 @@ const defaultConsoleLogger = (level, event, action) => {
   if (type) {
     const parts = type.split(/(\/)/);
     let lastColor = "grey";
-    let output = null;
+    let output = payload;
     if (parts.length >= 5) {
       if (parts[4] === "pending") {
         lastColor = "orange";
@@ -58,37 +58,6 @@ const defaultConsoleLogger = (level, event, action) => {
   }
 };
 
-const alerts = {};
-export const useSlice = ({ actions, thunks, selectors }) => {
-  const keys = Object.keys({ ...actions, ...thunks, ...selectors }).join(", ");
-  if (!alerts[keys]) {
-    console.warn("'rtk/react/useSlice' est déprécié: ", keys);
-    alerts[keys] = true;
-  }
-  /*
-   * à part l'alert, le reste de cette méthode n'a pas été modifié.
-   * Après après batailler, j'ai abandonné l'idée d'utiliser les nouvelles
-   * fonctions de creation des hooks
-   */
-
-  const selections = {};
-  for (const [name, selector] of Object.entries({ ...selectors })) {
-    if (name.startsWith("select")) {
-      const hookName = name.replace("select", "use");
-      /* eslint-disable react-hooks/rules-of-hooks */
-      selections[hookName] = (...params) => useSelector((state) => selector(state, ...params));
-      /* eslint-enable react-hooks/rules-of-hooks */
-    }
-  }
-  const dispatch = useDispatch();
-  const dispatchs = useMemo(
-    () => bindActionCreators({ ...actions, ...thunks }, dispatch),
-    [dispatch, actions, thunks],
-  );
-
-  return { ...selections, ...dispatchs };
-};
-
 export const createSelectorHooks = (selectors) => {
   const selections = {};
   for (const [name, selector] of Object.entries({ ...selectors })) {
@@ -107,7 +76,8 @@ export const createActionsHook =
   () => {
     const dispatch = useDispatch();
     return useMemo(
-      () => bindActionCreators(Object.assign({}, ...actions_or_thunks), dispatch),
+      () =>
+        bindActionCreators(Object.assign({}, ...actions_or_thunks), (x) => dispatch(x).unwrap()),
       [dispatch],
     );
   };
