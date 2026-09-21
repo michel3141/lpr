@@ -4,9 +4,11 @@ import esquery from "esquery";
 import { Parser } from "acorn";
 import acornJsx from "acorn-jsx";
 import prettier from "@prettier/sync";
-import { camelize } from "inflected";
+import { underscore, camelize } from "inflected";
 import fs from "fs";
 import { globSync } from "glob";
+
+import { mkAction, mkEvent } from "../lib/factories/formaters.js";
 
 const parseNodes = (nodes, source, tab) => {
   nodes.forEach((node) => parseNode(node, source, tab));
@@ -46,7 +48,6 @@ const autoexport = (rtkNode, options) => {
   }
 };
 
-const mkAction = (actionName) => camelize(`${actionName}`, false);
 const autoexportActions = (rtkNode, { reactImports }) => {
   const { name, identifiers } = rtkNode;
   if (identifiers.length) {
@@ -61,7 +62,6 @@ const autoexportActions = (rtkNode, { reactImports }) => {
   return dump();
 };
 
-const mkEvent = (eventName) => camelize(`${eventName}Event`, false);
 const autoexportEvents = (rtkNode, { reactImports }) => {
   const { name, identifiers } = rtkNode;
   if (identifiers.length) {

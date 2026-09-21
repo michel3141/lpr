@@ -1,9 +1,7 @@
 import { addDebug } from "../utils";
-import { constantify, camelize } from "inflected";
 import { symbols } from "../constants";
 import { createAction } from "@reduxjs/toolkit";
-
-const mkEvent = (eventName) => camelize(`${eventName}Event`, false);
+import { mkEvent } from "./formaters";
 
 const prepareDynamic =
   (def) =>
@@ -22,7 +20,7 @@ const createEventsFactory = (name) => (eventsMap) => {
 
   Object.entries(eventsMap).forEach(([eventName, def]) => {
     const eventId = mkEvent(eventName);
-    const eventType = `${name}/${constantify(eventId)}`;
+    const eventType = `${name}/${eventId}`;
     events[eventId] = createAction(eventType, createPayloadCreator(def));
 
     symbols.actions[name][eventId] = eventType;

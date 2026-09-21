@@ -1,11 +1,34 @@
 import { addDebug } from "../utils";
-import { camelize } from "inflected";
 import { symbols } from "../constants";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { mkAction } from "./formaters";
 
-const mkAction = (actionName) => camelize(`${actionName}`, false);
+/*
+ * thunk signature
+ * (...args) => (dispatch, getState, extra) => {
+ *   // ...
+ * };
+ * extra est cette valeur :
+ * configureStore({
+ *  reducer,
+ *  middleware: (getDefaultMiddleware) =>
+ *    getDefaultMiddleware({
+ *      thunk: {
+ *        extraArgument: extra,
+ *      },
+ *    }),
+ * });
+ */
 
 const isAsyncFunc = (def) => def?.constructor?.name === "AsyncFunction";
+
+const createThunk = (type, def) => {
+  const thunkCreator = (arg) => (dispatch, getState, extra) => {
+    const response = def(arg)(dispatch, getState, extra);
+    return { unwrap: () => Promise.resolve(response) };
+  };
+  return thunkCreator;
+};
 
 const createActionsFactory = (name) => (actionsMap) => {
   symbols.actions[name] = symbols.actions[name] || {};
@@ -16,7 +39,7 @@ const createActionsFactory = (name) => (actionsMap) => {
     const isAsync = isAsyncFunc(def);
     const actionId = mkAction(actionName);
     const actionType = `${name}/${actionId}`;
-    actions[actionId] = isAsync ? createAsyncThunk(actionType, def) : def;
+    actions[actionId] = isAsync ? createAsyncThunk(actionType, def) : createThunk(actionType, def);
 
     symbols.actions[name][actionId] = actionType;
   });
