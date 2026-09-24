@@ -12,7 +12,6 @@
     "!**/.*.swp"
   ],
   "type": "module",
-  "main": "index.js",
   "exports": {
     ".": {
       "react": "./react/index.js",
