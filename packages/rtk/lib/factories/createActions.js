@@ -1,6 +1,6 @@
 import { addDebug } from "../utils";
 import { symbols } from "../constants";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { mkAction } from "./formaters";
 
 /*
@@ -22,11 +22,43 @@ import { mkAction } from "./formaters";
 
 const isAsyncFunc = (def) => def?.constructor?.name === "AsyncFunction";
 
+const safePayload = (obj) => {
+  if (obj === undefined) return undefined;
+
+  const ancestors = new WeakSet();
+
+  return JSON.parse(
+    JSON.stringify(obj, function (_, value) {
+      if (typeof value === "bigint") return null;
+      if (typeof value === "function") return null;
+      if (typeof value === "symbol") return null;
+
+      if (value !== null && typeof value === "object") {
+        if (ancestors.has(value)) {
+          return null; // référence cyclique
+        }
+
+        ancestors.add(value);
+      }
+
+      return value;
+    }),
+  );
+};
 const createThunk = (type, def) => {
-  const thunkCreator = (arg) => (dispatch, getState, extra) => {
-    const response = def(arg)(dispatch, getState, extra);
-    return { unwrap: () => Promise.resolve(response) };
+  const begin = createAction(`${type}/begin`, (arg) => ({ payload: safePayload(arg) }));
+  const end = createAction(`${type}/end`, (response) => ({ payload: safePayload(response) }));
+  const thunkCreator = (arg) => async (dispatch, getState, extra) => {
+    dispatch(begin(arg));
+    const response = await def(arg)(dispatch, getState, extra);
+    dispatch(end(response));
+    return { unwrap: () => response };
   };
+  // should not be listened nor reduced
+  // only to debug redux flow
+  // thunkCreator.begin=begin
+  // thunkCreator.end=end
+  // for life cycle : use async
   return thunkCreator;
 };
 
