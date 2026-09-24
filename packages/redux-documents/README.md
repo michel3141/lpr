@@ -126,3 +126,10 @@ synced → dirty → updating → synced
 ```
 
 La librairie utilise un adaptateur pour isoler Redux et le `documentStore` de la technologie utilisée pour manipuler les données. L'adaptateur fourni utilise Graphiti/Spraypaint.
+
+# React
+
+Cette lib propose :
+
+- un hook [`useApi`](./docs/react.md)
+- un créateur de Provider [`createApiProvider`](./docs/README.react.createApiProvider.md)
