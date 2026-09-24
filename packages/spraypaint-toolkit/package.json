@@ -11,7 +11,7 @@
   },
   "license": "ISC",
   "peerDependencies": {
-    "spraypaint": "^0.10.*"
+    "spraypaint": "^0.11.*"
   },
   "devDependencies": {
     "eslint": "^8.41.0",
