@@ -9,7 +9,7 @@ feat: add .begin et .end actions au thunkActions
 feat: CONST_NAME for events + createThunk can unwrap
 docs: prettier .md
 docs: ajout de docs sur rtk2
-refactor: cleanup
+refactor: suppression de inflected
 refactor: cleanup
 
 # 1.1.0
