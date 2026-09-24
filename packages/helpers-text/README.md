@@ -13,13 +13,14 @@ pnpm add @lpr/helpers-text
 | Function                      | Description                                               |
 | ----------------------------- | --------------------------------------------------------- |
 | `camelize(text)`              | Converts text to camelCase                                |
+| `pascalize(text)`             | Converts text to PascalCase                               |
 | `decamelize(str, separator)`  | Converts camelCase/PascalCase to lowercase separated text |
 | `constantize(str, separator)` | Converts camelCase/PascalCase to uppercase separated text |
 
 ## Usage
 
 ```js
-import { camelize, decamelize, constantize } from "@lpr/helpers-text";
+import { camelize, pascalize, decamelize, constantize } from "@lpr/helpers-text";
 ```
 
 ### `camelize(text)`
@@ -33,6 +34,19 @@ camelize("Hello world");
 
 camelize("hello-world");
 // "helloWorld"
+```
+
+### `pascalize(text)`
+
+```js
+pascalize("hello world");
+// "HelloWorld"
+
+pascalize("hello-world");
+// "HelloWorld"
+
+pascalize("helloWorld");
+// "HelloWorld"
 ```
 
 ### `decamelize(str, separator = "_")`
