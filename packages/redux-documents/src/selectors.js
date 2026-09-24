@@ -1,4 +1,4 @@
-import rtk from "@lpr/rtk";
+import rtk from "../rtk";
 import { createSelectorHooks } from "@lpr/rtk/react";
 import { name } from "./constants";
 const { createSelectors } = rtk(name);

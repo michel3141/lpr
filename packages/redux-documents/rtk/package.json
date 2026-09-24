@@ -1,0 +1,56 @@
+{
+  "name": "@lpr/rtk",
+  "version": "2.0.0",
+  "description": "easy use redux-toolkit",
+  "license": "MIT",
+  "author": "MicheL <michel@itneo.fr>",
+  "bin": {
+    "rtk-deps": "./cli/deps.mjs",
+    "rtk-export": "./cli/export.mjs",
+    "rtk-listeners": "./cli/listeners.mjs",
+    "rtk-slice": "./cli/index.mjs"
+  },
+  "files": [
+    "lib",
+    "react",
+    "actions",
+    "cli"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./react": "./react/index.js"
+  },
+  "scripts": {
+    "UNUSED:build": "vite build",
+    "test": "vite test",
+    "test:org": "echo \"Error: no test specified\" && exit 1",
+    "p": "oxfmt",
+    "e": "oxlint",
+    "ef": "oxlint --fix"
+  },
+  "dependencies": {
+    "@lpr/is-dev-mode": "^0.1.1",
+    "@lpr/logger": "^0.0.2",
+    "@prettier/sync": "^0.5.1",
+    "@reduxjs/toolkit": "^2.12.0",
+    "acorn": "^8.11.2",
+    "acorn-jsx": "^5.3.2",
+    "commander": "^11.0.0",
+    "esquery": "^1.5.0",
+    "fs": "0.0.1-security",
+    "glob": "^11.0.0",
+    "inflected": "^2.1.0",
+    "redux": "^5.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.2",
+    "madge": "^6.1.0",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
+    "vite": "^8.0.14"
+  },
+  "peerDependencies": {
+    "react": "^19"
+  }
+}

@@ -1,4 +1,4 @@
-import { onBoot, addListener } from "@lpr/rtk";
+import { onBoot, addListener } from "../rtk";
 import {
   update,
   destroy,

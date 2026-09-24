@@ -9,6 +9,7 @@
     "src",
     "react",
     "docs",
+    "rtk",
     "!**/.*.swp"
   ],
   "type": "module",
