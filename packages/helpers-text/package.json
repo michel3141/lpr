@@ -1,0 +1,23 @@
+{
+  "name": "@lpr/helpers-text",
+  "version": "0.0.0",
+  "description": "Tiny JavaScript helpers for camelCase, decamelized and constant-style text transformations.",
+  "keywords": [],
+  "license": "ISC",
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.6.0",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.6.0"
+}
