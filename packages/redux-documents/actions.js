@@ -1,0 +1,129 @@
+import rtk from "@lpr/rtk";
+import { createActionsHook } from "@lpr/rtk/react";
+import { name } from "./constants";
+import { selectLinks, selectSaveOptions } from "./selectors";
+
+const { createActions, createEvents } = rtk(name);
+
+import { setDocument, getDocument, updateResourceInDocument } from "./documentStore";
+import { getModel, getObjectFor } from "./adapter";
+
+const documentEvents = createEvents({
+  OPEN: (subscriberId, { saveOptions, updateOptions } = {}) => ({
+    subscriberId,
+    saveOptions,
+    updateOptions,
+  }),
+  RESOURCES: (subscriberId, resources) => ({
+    subscriberId,
+    resources: [resources].flat(),
+  }),
+  CLOSE: (subscriberId) => ({ subscriberId }),
+
+  UPDATE: (subscriberId) => ({ subscriberId }),
+
+  SAVE_OPTIONS: (x) => x,
+  UPDATE_OPTIONS: (x) => x,
+});
+
+const documentApi = createActions({
+  create:
+    ({ subscriberId, model, params } = {}) =>
+    (dispatch) => {
+      const request = () => getModel(model).create(params);
+      dispatch(fetch({ subscriberId, request }));
+    },
+
+  open:
+    ({ subscriberId, data, raw } = {}) =>
+    (dispatch) => {
+      const request = () => getObjectFor({ data, raw });
+      dispatch(fetch({ subscriberId, request }));
+    },
+
+  find:
+    ({ subscriberId, model, id, fetcher }) =>
+    (dispatch) => {
+      const request = () => getModel(model).find(id, fetcher);
+      dispatch(fetch({ subscriberId, request }));
+    },
+  findSingle:
+    ({ subscriberId, model, fetcher }) =>
+    (dispatch) => {
+      const request = () => getModel(model).findSigle(fetcher);
+      dispatch(fetch({ subscriberId, request }));
+    },
+  first:
+    ({ subscriberId, model, fetcher }) =>
+    (dispatch) => {
+      const request = () => getModel(model).first(fetcher);
+      dispatch(fetch({ subscriberId, request }));
+    },
+  all:
+    ({ subscriberId, model, fetcher }) =>
+    (dispatch) => {
+      const request = () => getModel(model).all(fetcher);
+      dispatch(fetch({ subscriberId, request }));
+    },
+
+  /* Async */
+
+  fetch: async ({ subscriberId, request }, { dispatch }) => {
+    const doc = await request();
+    setDocument(subscriberId, doc, request);
+    return { subscriberId };
+  },
+
+  /////////////
+
+  update: async ({ subscriberId, changes = {} }, { dispatch, getState }) => {
+    const { resourceIds } = getDocument(subscriberId);
+    const links = resourceIds.flatMap((resourceId) => selectLinks(getState(), { resourceId }));
+    links.forEach((link) => {
+      updateResourceInDocument(link, changes);
+    });
+    return { subscriberId, changes };
+  },
+
+  save: async ({ subscriberId }, { getState, dispatch }) => {
+    const doc = getDocument(subscriberId);
+    const saveOptions = selectSaveOptions(getState(), subscriberId);
+
+    const savedDoc = await doc.save(saveOptions);
+
+    if (savedDoc) {
+      setDocument(subscriberId, savedDoc, () => {
+        console.warn("comment refresh ?");
+        return savedDoc;
+        // si old = create => find
+        // si open renvoyer savedDoc
+        // sinon, ne rien faire
+      });
+    }
+    return { subscriberId, success: Boolean(savedDoc) };
+  },
+
+  destroy: async ({ subscriberId }, { getState, dispatch }) => {
+    const doc = getDocument(subscriberId);
+    await doc.destroy();
+    return { subscriberId };
+  },
+});
+
+// RTK-AUTOEXPORT
+// ---- createEvents ---------
+export const {
+  OPEN_EVENT,
+  RESOURCES_EVENT,
+  CLOSE_EVENT,
+  UPDATE_EVENT,
+  SAVE_OPTIONS_EVENT,
+  UPDATE_OPTIONS_EVENT,
+} = documentEvents;
+
+export const useDocumentEvents = createActionsHook(documentEvents);
+// ---- createActions ---------
+export const { create, open, find, findSingle, first, all, fetch, update, save, destroy } =
+  documentApi;
+
+export const useDocumentApi = createActionsHook(documentApi);
