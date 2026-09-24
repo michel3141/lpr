@@ -1,5 +1,6 @@
-import { underscore, constantify, camelize } from "inflected";
+import { camelize, constantize } from "@lpr/helpers-text";
 
-export const mkEvent = (eventName) => constantify(`${eventName}_EVENT`);
 
-export const mkAction = (actionName) => camelize(`${actionName}`, false);
+export const mkEvent = (eventName) => constantize(`${eventName}_EVENT`);
+
+export const mkAction = (actionName) => camelize(`${actionName}`);

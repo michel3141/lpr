@@ -1,9 +1,9 @@
 import { addDebug } from "../utils";
 import { symbols } from "../constants";
-import { camelize } from "inflected";
+import { pascalize } from "@lpr/helpers-text";
 import { createSelector } from "@reduxjs/toolkit";
 
-const mkSelect = (prop) => `select${camelize(prop)}`;
+const mkSelect = (prop) => `select${pascalize(prop)}`;
 
 const mapSlice =
   (name, selector) =>

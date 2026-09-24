@@ -4,7 +4,7 @@ import esquery from "esquery";
 import { Parser } from "acorn";
 import acornJsx from "acorn-jsx";
 import prettier from "@prettier/sync";
-import { underscore, camelize } from "inflected";
+import { pascalize, camelize } from "@lpr/helpers-text";
 import fs from "fs";
 import { globSync } from "glob";
 
@@ -34,9 +34,9 @@ const parseNode = (node, source = "", tab = "") => {
   }
 };
 
-const mkSelect = (prop) => "select" + camelize(prop);
-const mkUse = (prop) => "use" + camelize(prop);
-const mkName = (prop) => camelize(prop, false);
+const mkSelect = (prop) => "select" + pascalize(prop);
+const mkUse = (prop) => "use" + pascalize(prop);
+const mkName = (prop) => camelize(prop);
 
 const autoexport = (rtkNode, options) => {
   const { rtk } = rtkNode;
