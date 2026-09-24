@@ -1,12 +1,14 @@
-# next 1.2.0
+# 2.0.0
 
-séparation de rtk()
-ajout de createSliceSelectors
-ajout des thunkActions
-
-breaking changes :
-'rtk' n'exporte plus {select}
-plus de selector constants
+feat!: remove useSlice, useDispatch is auto unwrap()
+feat!: cli/export adapté à rtk2
+feat!: change l'api de createActons / remove createThunks
+feat!: passage à rtk2
+feat: CONST_NAME for events + createThunk can unwrap
+docs: prettier .md
+docs: ajout de docs sur rtk2
+refactor: cleanup
+refactor: cleanup
 
 # 1.1.0
 
