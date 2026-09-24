@@ -1,6 +1,6 @@
 {
   "name": "@lpr/vite-local-libs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Use local library sources in a Vite application.",
   "keywords": [],
   "license": "ISC",
