@@ -5,6 +5,10 @@ export function camelize(text) {
   });
 }
 
+export function pascalize(text) {
+  return camelize(text).replace(/^./, (char) => char.toUpperCase());
+}
+
 export function decamelize(str, separator = "_") {
   return str
     .replace(/([a-z\d])([A-Z])/g, "$1" + separator + "$2")
