@@ -30,6 +30,7 @@ const documentApi = createActions({
   create:
     ({ subscriberId, model, params } = {}) =>
     (dispatch) => {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const request = () => getModel(model).create(params);
       dispatch(fetch({ subscriberId, request }));
     },
@@ -37,6 +38,7 @@ const documentApi = createActions({
   open:
     ({ subscriberId, data, raw } = {}) =>
     (dispatch) => {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const request = () => getObjectFor({ data, raw });
       dispatch(fetch({ subscriberId, request }));
     },
@@ -44,24 +46,28 @@ const documentApi = createActions({
   find:
     ({ subscriberId, model, id, fetcher }) =>
     (dispatch) => {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const request = () => getModel(model).find(id, fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
   findSingle:
     ({ subscriberId, model, fetcher }) =>
     (dispatch) => {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const request = () => getModel(model).findSigle(fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
   first:
     ({ subscriberId, model, fetcher }) =>
     (dispatch) => {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const request = () => getModel(model).first(fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
   all:
     ({ subscriberId, model, fetcher }) =>
     (dispatch) => {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const request = () => getModel(model).all(fetcher);
       dispatch(fetch({ subscriberId, request }));
     },

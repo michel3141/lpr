@@ -2,12 +2,15 @@ import { onBoot, addListener } from "@lpr/rtk";
 import {
   update,
   destroy,
+  // eslint-disable-next-line no-unused-vars  ## TODO en attendant de géré save
   save,
   fetch,
   RESOURCES_EVENT,
   UPDATE_EVENT,
   CLOSE_EVENT,
 } from "./actions";
+
+// eslint-disable-next-line no-unused-vars  ## TODO en attendant de géré save
 import { selectUpdateOptions, selectLinks, selectSaveOptions } from "./selectors";
 import { onDocument, getDocument, getRequest, deleteLink } from "./documentStore";
 
