@@ -1,3 +1,7 @@
+# 0.0.3
+
+fix: import rtk
+
 # 0.0.2
 
 fix: importe directement rtk
