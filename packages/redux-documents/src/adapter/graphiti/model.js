@@ -12,11 +12,11 @@ export default class ModelAdapter {
   }
 
   get jsonapiType() {
-    return this.#Model.klass.jsonapiType;
+    return this.#Model.Resource.jsonapiType;
   }
 
   getScope(fetcher = (x) => x) {
-    return fetcher(this.Model);
+    return fetcher(this.Model.primary);
   }
 
   create(params) {

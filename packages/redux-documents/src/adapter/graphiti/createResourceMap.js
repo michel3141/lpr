@@ -1,4 +1,4 @@
-import { camelize } from "../../helpers";
+import { camelize } from "@lpr/helpers-text";
 import { attr, belongsTo, hasOne, hasMany } from "spraypaint";
 import { createBaseApi, createResource, createEndpoint } from "@lpr/spraypaint-toolkit";
 
@@ -71,11 +71,11 @@ function createResourceAttributes(resource, schema) {
     ...resource.attributes,
     ...resource.extra_attributes,
   })) {
-    attributes[camelize(name, false)] = createAttributeDefinition(definition);
+    attributes[camelize(name)] = createAttributeDefinition(definition);
   }
 
   for (const [name, definition] of Object.entries(resource.relationships)) {
-    attributes[camelize(name, false)] = createRelationshipDefinition(definition, schema);
+    attributes[camelize(name)] = createRelationshipDefinition(definition, schema);
   }
 
   return attributes;
