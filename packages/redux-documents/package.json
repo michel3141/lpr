@@ -9,7 +9,6 @@
     "src",
     "react",
     "docs",
-    "rtk",
     "!**/.*.swp"
   ],
   "type": "module",
@@ -18,8 +17,7 @@
     "./adapter": "./src/adapter/index.js",
     "./actions": "./src/actions.js",
     "./selectors": "./src/selectors.js",
-    "./react": "./react/index.js",
-    "./rtk/react": "./rtk/react/index.js"
+    "./react": "./react/index.js"
   },
   "scripts": {
     "p": "oxfmt",
@@ -27,6 +25,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@lpr/rtk": "^1.1.0",
     "@lpr/spraypaint-toolkit": "^0.0.1",
     "inflected": "^2.1.0",
     "spraypaint": "^0.11.1"

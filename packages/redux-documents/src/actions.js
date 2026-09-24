@@ -1,5 +1,5 @@
-import rtk from "../rtk/lib";
-import { createActionsHook } from "../rtk/react";
+import rtk from "@lpr/rtk";
+import { createActionsHook } from "@lpr/rtk/react";
 import { name } from "./constants";
 import { selectLinks, selectSaveOptions } from "./selectors";
 

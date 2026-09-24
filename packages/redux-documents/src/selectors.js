@@ -1,5 +1,5 @@
-import rtk from "../rtk/lib";
-import { createSelectorHooks } from "../rtk/react";
+import rtk from "@lpr/rtk";
+import { createSelectorHooks } from "@lpr/rtk/react";
 import { name } from "./constants";
 const { createSelectors } = rtk(name);
 import { getDocument } from "./documentStore";
