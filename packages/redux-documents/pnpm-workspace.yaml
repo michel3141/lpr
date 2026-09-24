@@ -1,0 +1,3 @@
+minimumReleaseAgeExclude:
+  - '@lpr/helpers-text@0.1.0'
+  - '@lpr/rtk@2.0.0'
