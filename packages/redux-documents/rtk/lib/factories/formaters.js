@@ -1,4 +1,4 @@
-import { underscore, constantify, camelize } from "inflected";
+import { constantify, camelize } from "inflected";
 
 export const mkEvent = (eventName) => constantify(`${eventName}_EVENT`);
 

@@ -4,7 +4,7 @@ import esquery from "esquery";
 import { Parser } from "acorn";
 import acornJsx from "acorn-jsx";
 import prettier from "@prettier/sync";
-import { underscore, camelize } from "inflected";
+import { camelize } from "inflected";
 import fs from "fs";
 import { globSync } from "glob";
 

@@ -1,6 +1,15 @@
 import ModelAdapter from "./model";
+import createResourceMapCreator from "./createResourceMap";
 
-export default function createJsonApiAdapter(resourceMap) {
+export default function createJsonApiAdapter({ schema, clientApplication, ...params }) {
+  if (!schema) {
+    throw Error("{schema} is mandatory");
+  }
+  if (!clientApplication) {
+    throw Error("{clientApplication} is mandatory");
+  }
+  const resourceMap = createResourceMapCreator(schema)(clientApplication, params);
+
   Object.entries(resourceMap).forEach(([key, value]) => {
     window[key] = value;
   });

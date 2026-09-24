@@ -26,6 +26,10 @@
     "e": "oxlint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@lpr/spraypaint-toolkit": "^0.0.1",
+    "spraypaint": "^0.11.1"
+  },
   "devDependencies": {
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0"

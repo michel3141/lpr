@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@lpr/spraypaint-toolkit':
+        specifier: ^0.0.1
+        version: 0.0.1(spraypaint@0.11.1)
+      spraypaint:
+        specifier: ^0.11.1
+        version: 0.11.1
     devDependencies:
       oxfmt:
         specifier: ^0.70.0
@@ -16,6 +23,11 @@ importers:
         version: 1.85.0
 
 packages:
+
+  '@lpr/spraypaint-toolkit@0.0.1':
+    resolution: {integrity: sha512-xvWXO1/Ni5ag2kr/hUl0NN7gAvy9nu/kRoVpOWXaQdAHb4umHopOuLJgeu7FV65EhBN0D7HeLNO1IdPksU7Q5w==, tarball: https://npm.lespyjamasrouges.fr/@lpr/spraypaint-toolkit/-/spraypaint-toolkit-0.0.1.tgz}
+    peerDependencies:
+      spraypaint: ^0.10.*
 
   '@oxfmt/binding-android-arm-eabi@0.70.0':
     resolution: {integrity: sha512-Xd7YO4/T2axEj6FTLcj4Why3mTBqFMg+x24xtorT4Lb2+1g82090GH0a/4U1m0pABGYiix2bq1pqkYrmV3f0Sw==}
@@ -261,6 +273,18 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  eventbusjs@0.2.0:
+    resolution: {integrity: sha512-sWVRmz1cC+ImUH4PYl67SBVogPqYeIVlufi1bTBuxVcnQTwjHXviZbx38XhY2iPCm+UO7akwpnOY5h6WGxO6pg==}
+
+  inflected@2.1.0:
+    resolution: {integrity: sha512-hAEKNxvHf2Iq3H60oMBHkB4wl5jn3TPF3+fXek/sRwAB5gP9xWs4r7aweSF95f99HFoz69pnZTcu8f0SIHV18w==}
+
+  lodash-es@4.18.1:
+    resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
+
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
+
   oxfmt@0.70.0:
     resolution: {integrity: sha512-IsHxZ4y0wQLLMhnrJblBJgZsLDzfULrJnAw5j/QqsTlMa/m3AqsbToi+W71uhBGaqlqq/PbbjvHc09TJwdv3Tw==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -287,11 +311,21 @@ packages:
       vite-plus:
         optional: true
 
+  spraypaint@0.11.1:
+    resolution: {integrity: sha512-BRLDc/BpPEps1Sg5UyIygpVLu1tJ+5p3y8U39NQL/YKjTM7yOnFutnL5ookGPzZiOtBAQQ1UkTjGb3J6nZSHjw==}
+
   tinypool@2.1.2:
     resolution: {integrity: sha512-9YodfrxS9g9IbFr/KOjE5bAeJ0p61n3bW6mqvy0jtoeKd1kTW1Cxm0oulm6KX2lyM9Gl6WIe8nEbY7LWv5ZJww==}
     engines: {node: ^20.0.0 || >=22.0.0}
 
+  tslib@1.14.1:
+    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+
 snapshots:
+
+  '@lpr/spraypaint-toolkit@0.0.1(spraypaint@0.11.1)':
+    dependencies:
+      spraypaint: 0.11.1
 
   '@oxfmt/binding-android-arm-eabi@0.70.0':
     optional: true
@@ -407,6 +441,14 @@ snapshots:
   '@oxlint/binding-win32-x64-msvc@1.85.0':
     optional: true
 
+  eventbusjs@0.2.0: {}
+
+  inflected@2.1.0: {}
+
+  lodash-es@4.18.1: {}
+
+  lodash@4.18.1: {}
+
   oxfmt@0.70.0:
     dependencies:
       tinypool: 2.1.2
@@ -453,4 +495,14 @@ snapshots:
       '@oxlint/binding-win32-ia32-msvc': 1.85.0
       '@oxlint/binding-win32-x64-msvc': 1.85.0
 
+  spraypaint@0.11.1:
+    dependencies:
+      eventbusjs: 0.2.0
+      inflected: 2.1.0
+      lodash: 4.18.1
+      lodash-es: 4.18.1
+      tslib: 1.14.1
+
   tinypool@2.1.2: {}
+
+  tslib@1.14.1: {}
