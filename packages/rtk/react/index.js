@@ -20,6 +20,8 @@ const useSelector = (selector) => {
   return useSyncExternalStore(subscribe, () => selector(getState()));
 };
 
+let tabs = [];
+
 const defaultConsoleLogger = (level, event, action) => {
   const { type, payload, error, meta } = action;
   if (event !== "ACTION") {
@@ -29,11 +31,20 @@ const defaultConsoleLogger = (level, event, action) => {
     return;
   }
 
+  let addTab = false;
   if (type) {
     const parts = type.split(/(\/)/);
     let lastColor = "grey";
     let output = payload;
     if (parts.length >= 5) {
+      if (parts[4] === "begin") {
+        lastColor = "";
+        addTab = parts[2];
+      }
+      if (parts[4] === "end") {
+        lastColor = "";
+        tabs = tabs.slice(0, -1);
+      }
       if (parts[4] === "pending") {
         lastColor = "orange";
         output = meta.arg;
@@ -48,13 +59,22 @@ const defaultConsoleLogger = (level, event, action) => {
       }
     }
     const colors = [
+      "",
       "background-color: grey; color:black",
       "",
       "background-color: #98FB98; color:black",
       "",
       "color: white; background-color:" + lastColor,
-    ].slice(0, parts.length);
-    console.info(parts.map((part) => `%c${part}`).join(""), ...colors, output);
+    ].slice(0, parts.length + 1);
+    parts.unshift(tabs.map((tab) => `[${tab}]`).join(""));
+    if (output !== undefined) {
+      console.info(parts.map((part) => `%c${part}`).join(""), ...colors, output);
+    } else {
+      console.info(parts.map((part) => `%c${part}`).join(""), ...colors);
+    }
+    if (addTab) {
+      tabs.push(addTab);
+    }
   }
 };
 
@@ -76,8 +96,7 @@ export const createActionsHook =
   () => {
     const dispatch = useDispatch();
     return useMemo(
-      () =>
-        bindActionCreators(Object.assign({}, ...actions_or_thunks), (x) => dispatch(x).unwrap()),
+      () => bindActionCreators(Object.assign({}, ...actions_or_thunks), dispatch),
       [dispatch],
     );
   };
