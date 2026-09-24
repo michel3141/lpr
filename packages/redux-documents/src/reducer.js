@@ -1,4 +1,4 @@
-import rtk from "../rtk";
+import rtk from "../rtk/lib";
 import { name } from "./constants";
 import { OPEN_EVENT, UPDATE_EVENT, CLOSE_EVENT, RESOURCES_EVENT } from "./actions";
 import { fetch, save, destroy } from "./actions";

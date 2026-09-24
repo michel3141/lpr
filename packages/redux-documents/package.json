@@ -18,7 +18,8 @@
     "./adapter": "./src/adapter/index.js",
     "./actions": "./src/actions.js",
     "./selectors": "./src/selectors.js",
-    "./react": "./react/index.js"
+    "./react": "./react/index.js",
+    "./rtk/react": "./rtk/react/index.js"
   },
   "scripts": {
     "p": "oxfmt",
