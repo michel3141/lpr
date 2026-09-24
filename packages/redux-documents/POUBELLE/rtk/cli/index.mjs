@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from "commander";
-import { camelize } from "inflected";
+import { pascalize, camelize } from "@lpr/helpers-text";
 import prettier from "@prettier/sync";
 import fs from "fs";
 
@@ -67,7 +67,7 @@ function build_index(name, options) {
   print("export {constants, selectors, actions, reducer};");
   // if (!options.react) write('// ');
   // print(
-  //   `export const use${camelize(name)} = () => useSlice({actions, selectors});`
+  //   `export const use${pascalize(name)} = () => useSlice({actions, selectors});`
   // );
   return dump();
 }
@@ -103,9 +103,9 @@ function build_actions(name, options) {
   print("import { name } from './constants';");
   print("const { createActions, createThunks } = rtk(name);");
   nl();
-  print(`const ${camelize(name, false)}Actions = createActions({});`);
+  print(`const ${camelize(name)}Actions = createActions({});`);
   nl();
-  print(`const ${camelize(name, false)}Api = createThunks({});`);
+  print(`const ${pascalize(name)}Api = createThunks({});`);
 
   return dump();
 }

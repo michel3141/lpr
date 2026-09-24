@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "globals": {
+    "window": "readonly"
+  },
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "eslint/no-undef": "error",
+    "eslint/no-unused-vars": [
+      "error",
+      {
+        "args": "none"
+      }
+    ]
+  },
+  "env": {
+    "builtin": true,
+    "node": true
+  }
+}

@@ -11,6 +11,9 @@ importers:
       '@lpr/spraypaint-toolkit':
         specifier: ^0.0.1
         version: 0.0.1(spraypaint@0.11.1)
+      inflected:
+        specifier: ^2.1.0
+        version: 2.1.0
       spraypaint:
         specifier: ^0.11.1
         version: 0.11.1

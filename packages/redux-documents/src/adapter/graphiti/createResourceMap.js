@@ -1,4 +1,4 @@
-import { camelize } from "./helpers";
+import { camelize } from "../../helpers";
 import { attr, belongsTo, hasOne, hasMany } from "spraypaint";
 import { createBaseApi, createResource, createEndpoint } from "@lpr/spraypaint-toolkit";
 
@@ -110,10 +110,11 @@ function indexEndpointsByResource(schema) {
   const endpointsByResource = {};
 
   for (const [path, { actions }] of Object.entries(schema.endpoints)) {
+    // eslint-disable-next-line no-unreachable-loop
     for (const { resource: resourceName } of Object.values(actions)) {
       endpointsByResource[resourceName] ??= [];
       endpointsByResource[resourceName].push(path);
-      break;
+      break; // que la première action
     }
   }
 
@@ -176,7 +177,7 @@ function createResourceMapCreator(schema) {
            * par index : 0 (pour primary), 1, ...
            */
           const endpoint =
-            this.endpoints.find((endpoint) => endpoint.endpoint === index) ?? this.endpoints[index];
+            this.endpoints.find((Endpoint) => Endpoint.endpoint === index) ?? this.endpoints[index];
 
           if (!endpoint) {
             throw new Error(`Unknown endpoint index ${index} for ${this.name}`);
@@ -192,3 +193,4 @@ function createResourceMapCreator(schema) {
 }
 
 export default createResourceMapCreator;
+export { fetchSchema };

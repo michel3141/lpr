@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@lpr/spraypaint-toolkit": "^0.0.1",
+    "inflected": "^2.1.0",
     "spraypaint": "^0.11.1"
   },
   "devDependencies": {
