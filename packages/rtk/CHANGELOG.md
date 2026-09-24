@@ -4,6 +4,8 @@ feat!: remove useSlice, useDispatch is auto unwrap()
 feat!: cli/export adapté à rtk2
 feat!: change l'api de createActons / remove createThunks
 feat!: passage à rtk2
+feat: default consoleLogger parse .begin et .end actions
+feat: add .begin et .end actions au thunkActions
 feat: CONST_NAME for events + createThunk can unwrap
 docs: prettier .md
 docs: ajout de docs sur rtk2
