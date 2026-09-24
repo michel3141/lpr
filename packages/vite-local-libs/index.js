@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { globSync } from "glob";
 
 const convert = ({ exports, from, to }) =>
