@@ -13,10 +13,11 @@
   ],
   "type": "module",
   "exports": {
-    ".": {
-      "react": "./react/index.js",
-      "default": "./src/index.js"
-    }
+    ".": "./src/index.js",
+    "./adapter": "./src/adapter/index.js",
+    "./actions": "./src/actions.js",
+    "./selectors": "./src/selectors.js",
+    "./react": "./react/index.js"
   },
   "scripts": {
     "p": "oxfmt",
