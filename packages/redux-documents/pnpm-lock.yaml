@@ -13,7 +13,7 @@ importers:
         version: 0.1.0
       '@lpr/rtk':
         specifier: ^2.0.0
-        version: 2.0.0(prettier@3.9.9)(react@19.3.0)
+        version: 2.0.1(prettier@3.9.9)(react@19.3.0)
       '@lpr/spraypaint-toolkit':
         specifier: ^0.1.0
         version: 0.1.0(spraypaint@0.11.1)
@@ -46,8 +46,8 @@ packages:
   '@lpr/logger@0.0.2':
     resolution: {integrity: sha512-/2rVxFL0vcrZOTW7YkWuCENzWRuzvhmXOHHgaA5IC1r1ohd2kYGkJpm/1ugpeT9y+wfV0GyiIo1Qgy7FRDO82Q==, tarball: https://npm.lespyjamasrouges.fr/@lpr/logger/-/logger-0.0.2.tgz}
 
-  '@lpr/rtk@2.0.0':
-    resolution: {integrity: sha512-8N5cIj3GiSYTloELkrU2alf6BaNdvFKfLOn7qtQsU3mKJyB4XYExzRVFxTF5Ubiz4KnIaBUByBaWi8b+NnmdSQ==, tarball: https://npm.lespyjamasrouges.fr/@lpr/rtk/-/rtk-2.0.0.tgz}
+  '@lpr/rtk@2.0.1':
+    resolution: {integrity: sha512-DToLXzpkK+iT3UVEAGfM9YTUedAGLrjpCcDxfnH9uQ9w1itfF3c0JUgkn0kzqRvVMSGbhbBrPf3JcNsypD12qQ==, tarball: https://npm.lespyjamasrouges.fr/@lpr/rtk/-/rtk-2.0.1.tgz}
     hasBin: true
     peerDependencies:
       react: ^19
@@ -507,8 +507,9 @@ snapshots:
       '@lpr/is-dev-mode': 0.1.1
       react-native-logs: 5.6.0
 
-  '@lpr/rtk@2.0.0(prettier@3.9.9)(react@19.3.0)':
+  '@lpr/rtk@2.0.1(prettier@3.9.9)(react@19.3.0)':
     dependencies:
+      '@lpr/helpers-text': 0.1.0
       '@lpr/is-dev-mode': 0.1.1
       '@lpr/logger': 0.0.2
       '@prettier/sync': 0.5.5(prettier@3.9.9)
