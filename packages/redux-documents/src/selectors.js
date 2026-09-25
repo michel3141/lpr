@@ -11,6 +11,7 @@ const selectors = createSelectors({
     (state, subscriberId, initialData) => initialData,
     (doc, subscriberId, initialData) => {
       const status = doc ? doc.status : null;
+      const data = getDocument(subscriberId, false)?.data ?? initialData;
       /*
        * destroying
        * dirty
@@ -22,10 +23,10 @@ const selectors = createSelectors({
       return {
         ...doc,
         isLoading: ["pending", "updating", "destroying"].includes(status),
-        isDirty: status === "dirty",
+        isDirty: Array.isArray(data) ? false : data?.isDirty?.(), // status === "dirty",
         isError: status === "error",
         isSync: status === "synced",
-        data: getDocument(subscriberId, false)?.data ?? initialData,
+        data,
         raw: getDocument(subscriberId, false)?.raw,
       };
     },
