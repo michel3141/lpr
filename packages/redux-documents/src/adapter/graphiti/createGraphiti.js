@@ -93,48 +93,46 @@ function createResourceDefinition(resource, schema) {
  * Endpoint index
  * ---------------------------------------------------------------------------
  *
- * Endpoints are intentionally kept as a complete list.
- *
  * {
- *   CommentResource: [
- *     "/api/v1/comments"
- *   ],
- *   PostResource: [
- *     "/api/v1/posts",
- *     "/api/v1/top_posts"
- *   ]
+ *   "/api/v1/comments": {
+ *     "actions": {
+ *       "index": {
+ *         "resource": "CommentResource"
+ *       },
+ *       "show": {
+ *         "resource": "CommentResource"
+ *       },
+ *     }
+ *   },
+ *   "/api/v1/posts": {
+ *     "actions": {
+ *       "update": {
+ *         "resource": "PostResource"
+ *       },
+ *       "destroy": {
+ *         "resource": "PostResource"
+ *       }
+ *     }
+ *   },
+ *   "/api/v1/top_posts": {
+ *     "actions": {
+ *       "index": {
+ *         "resource": "PostResource"
+ *       }
+ *     }
+ *   }
  * }
+ *
  */
 
-function indexEndpointsByResource(schema) {
-  const endpointsByResource = {};
-
-  for (const [path, { actions }] of Object.entries(schema.endpoints)) {
-    // eslint-disable-next-line no-unreachable-loop
-    for (const { resource: resourceName } of Object.values(actions)) {
-      endpointsByResource[resourceName] ??= [];
-      endpointsByResource[resourceName].push(path);
-      break; // que la première action
-    }
+function mapLeaves(value, callback, path = []) {
+  if (value === null || typeof value !== "object") {
+    return callback(path, value);
   }
 
-  return endpointsByResource;
-}
-
-/**
- * ---------------------------------------------------------------------------
- * Parsed schema
- * ---------------------------------------------------------------------------
- */
-
-function parseResources(schema) {
-  const endpointsByResource = indexEndpointsByResource(schema);
-
-  return schema.resources.map((resource) => ({
-    ...resource,
-    model: createResourceDefinition(resource, schema),
-    endpoints: endpointsByResource[resource.name] ?? [],
-  }));
+  return Object.fromEntries(
+    Object.entries(value).map(([key, child]) => [key, mapLeaves(child, callback, [...path, key])]),
+  );
 }
 
 /**
@@ -143,54 +141,51 @@ function parseResources(schema) {
  * ---------------------------------------------------------------------------
  */
 
-function createResourceMapCreator(schema) {
-  const resources = parseResources(schema);
+const defaultUrl = "http://localhost:3000";
+function createGraphitiCreator(schema) {
   return (clientApplication, params = {}) => {
+    if (!params.url) {
+      console.warn("'createGraphiti' appelé sans {url}");
+    }
+
     const apiConfig = {
-      url: "http://localhost:3000",
+      url: defaultUrl,
       apiPath: "/api/v1",
       ...params,
       clientApplication,
     };
 
     const api = createBaseApi(apiConfig);
-    const resourceMap = {};
+    const { apiPath } = apiConfig;
 
-    for (const definition of resources) {
-      const { name, model, endpoints } = definition;
+    const { resources: resourceDefs } = schema;
+    const endpointDefs = Object.fromEntries(
+      Object.entries(schema.endpoints).map(([url, { actions }]) => {
+        if (!url.startsWith(apiPath)) {
+          throw Error(`Url '${url}' does not starts with apiPath '${apiPath}'`);
+        }
+        return [url.slice(apiPath.length), { actions }];
+      }),
+    );
 
-      const Resource = createResource(api, model);
-
-      const endpointObjects = endpoints.map((path) => createEndpoint(Resource, path));
-
-      resourceMap[Resource.jsonapiType] = {
+    const resources = Object.fromEntries(
+      resourceDefs.map(({ name, ...definition }) => [
         name,
-        Resource,
-        primary: endpointObjects.at(0),
-        endpoints: endpointObjects,
+        createResource(api, createResourceDefinition(definition, schema)),
+      ]),
+    );
 
-        endpoint: endpointObjects.at(0),
+    const endpoints = mapLeaves(endpointDefs, ([url], resourceName) =>
+      createEndpoint(resources[resourceName], url),
+    );
 
-        setDefaultEndpoint(index) {
-          /*
-           * par nom : '/posts' '/top_posts'
-           * par index : 0 (pour primary), 1, ...
-           */
-          const endpoint =
-            this.endpoints.find((Endpoint) => Endpoint.endpoint === index) ?? this.endpoints[index];
+    window.api = api;
+    window.resources = resources;
+    window.endpoints = endpoints;
 
-          if (!endpoint) {
-            throw new Error(`Unknown endpoint index ${index} for ${this.name}`);
-          }
-
-          this.endpoint = endpoint;
-        },
-      };
-    }
-
-    return resourceMap;
+    return { ...schema, resources, endpoints };
   };
 }
 
-export default createResourceMapCreator;
+export default createGraphitiCreator;
 export { fetchSchema };

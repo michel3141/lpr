@@ -19,12 +19,12 @@ function getAdapter() {
   return adapter;
 }
 
-function getModel(model) {
-  return getAdapter().getModel(model);
+function getEndpoint(endpoint) {
+  return getAdapter().getEndpoint(endpoint);
 }
 
 function getObjectFor({ data, raw }) {
   return getAdapter().getObjectFor({ data, raw });
 }
 
-export { setAdapter, getAdapter, getModel, getObjectFor };
+export { setAdapter, getAdapter, getEndpoint, getObjectFor };

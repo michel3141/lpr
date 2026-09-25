@@ -1,4 +1,4 @@
-const createId = (data) => `${data.klass.jsonapiType}:${data.id}`;
+const createId = ({ resourceIdentifier: { type, id } }) => `${type}:${id}`;
 
 const updateData = (data, changes) => {
   for (const [key, value] of Object.entries(changes)) {

@@ -19,14 +19,14 @@ const useDocumentSubscription = (subscriberId, { updateOptions, saveOptions }) =
   }, [OPEN_EVENT, CLOSE_EVENT, subscriberId, updateOptions, saveOptions]);
 };
 
-const useDocumentMethods = (model, subscriberId) => {
+const useDocumentMethods = (endpoint, subscriberId) => {
   const { create, open, find, findSingle, first, all, update, save, destroy } = useDocumentApi();
 
   const openDocument = useCallback((data) => open({ subscriberId, data }), [open, subscriberId]);
 
   const createDocument = useCallback(
-    (params) => create({ subscriberId, model, params }),
-    [create, subscriberId, model],
+    (params) => create({ subscriberId, endpoint, params }),
+    [create, subscriberId, endpoint],
   );
 
   const updateDocument = useCallback(
@@ -39,23 +39,23 @@ const useDocumentMethods = (model, subscriberId) => {
   const destroyDocument = useCallback(() => destroy({ subscriberId }), [destroy, subscriberId]);
 
   const findDocument = useCallback(
-    (id, fetcher) => find({ subscriberId, model, id, fetcher }),
-    [find, subscriberId, model],
+    (id, fetcher) => find({ subscriberId, endpoint, id, fetcher }),
+    [find, subscriberId, endpoint],
   );
 
   const findSingleDocument = useCallback(
-    (fetcher) => findSingle({ subscriberId, model, fetcher }),
-    [findSingle, subscriberId, model],
+    (fetcher) => findSingle({ subscriberId, endpoint, fetcher }),
+    [findSingle, subscriberId, endpoint],
   );
 
   const firstDocument = useCallback(
-    (fetcher) => first({ subscriberId, model, fetcher }),
-    [first, subscriberId, model],
+    (fetcher) => first({ subscriberId, endpoint, fetcher }),
+    [first, subscriberId, endpoint],
   );
 
   const allDocuments = useCallback(
-    (fetcher) => all({ subscriberId, model, fetcher }),
-    [all, subscriberId, model],
+    (fetcher) => all({ subscriberId, endpoint, fetcher }),
+    [all, subscriberId, endpoint],
   );
 
   return useMemo(
@@ -64,14 +64,14 @@ const useDocumentMethods = (model, subscriberId) => {
       update: updateDocument,
       save: saveDocument,
       destroy: destroyDocument,
-      create: model && createDocument,
-      find: model && findDocument,
-      findSingle: model && findSingleDocument,
-      first: model && firstDocument,
-      all: model && allDocuments,
+      create: endpoint && createDocument,
+      find: endpoint && findDocument,
+      findSingle: endpoint && findSingleDocument,
+      first: endpoint && firstDocument,
+      all: endpoint && allDocuments,
     }),
     [
-      model,
+      endpoint,
       openDocument,
       createDocument,
       updateDocument,
@@ -86,12 +86,12 @@ const useDocumentMethods = (model, subscriberId) => {
 };
 
 export const useApi = (param, options = {}, proposedSubscriberId) => {
-  let model, data;
+  let endpoint, data;
   if (typeof param === "string") {
-    model = param;
+    endpoint = param;
   } else {
     data = param;
-    model = data.klass.jsonapiType;
+    endpoint = data.klass.jsonapiType;
   }
   const [defaultData] = useState(() => options.data);
   const initialData = useMemo(() => data || defaultData, [data, defaultData]);
@@ -100,7 +100,7 @@ export const useApi = (param, options = {}, proposedSubscriberId) => {
   useDocumentSubscription(subscriberId, options);
 
   const document = useDocument(subscriberId, initialData);
-  const methods = useDocumentMethods(model, subscriberId);
+  const methods = useDocumentMethods(endpoint, subscriberId);
 
   const { open } = methods;
   useEffect(() => {

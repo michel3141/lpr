@@ -6,7 +6,7 @@ import { selectLinks, selectSaveOptions } from "./selectors";
 const { createActions, createEvents } = rtk(name);
 
 import { setDocument, getDocument, updateResourceInDocument } from "./documentStore";
-import { getModel, getObjectFor } from "./adapter";
+import { getEndpoint, getObjectFor } from "./adapter";
 
 const documentEvents = createEvents({
   OPEN: (subscriberId, { saveOptions, updateOptions } = {}) => ({
@@ -28,10 +28,10 @@ const documentEvents = createEvents({
 
 const documentApi = createActions({
   create:
-    ({ subscriberId, model, params } = {}) =>
+    ({ subscriberId, endpoint, params } = {}) =>
     (dispatch) => {
       // eslint-disable-next-line unicorn/consistent-function-scoping
-      const request = () => getModel(model).create(params);
+      const request = () => getEndpoint(endpoint).create(params);
       dispatch(fetch({ subscriberId, request }));
     },
 
@@ -44,31 +44,31 @@ const documentApi = createActions({
     },
 
   find:
-    ({ subscriberId, model, id, fetcher }) =>
+    ({ subscriberId, endpoint, id, fetcher }) =>
     (dispatch) => {
       // eslint-disable-next-line unicorn/consistent-function-scoping
-      const request = () => getModel(model).find(id, fetcher);
+      const request = () => getEndpoint(endpoint).find(id, fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
   findSingle:
-    ({ subscriberId, model, fetcher }) =>
+    ({ subscriberId, endpoint, fetcher }) =>
     (dispatch) => {
       // eslint-disable-next-line unicorn/consistent-function-scoping
-      const request = () => getModel(model).findSigle(fetcher);
+      const request = () => getEndpoint(endpoint).findSigle(fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
   first:
-    ({ subscriberId, model, fetcher }) =>
+    ({ subscriberId, endpoint, fetcher }) =>
     (dispatch) => {
       // eslint-disable-next-line unicorn/consistent-function-scoping
-      const request = () => getModel(model).first(fetcher);
+      const request = () => getEndpoint(endpoint).first(fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
   all:
-    ({ subscriberId, model, fetcher }) =>
+    ({ subscriberId, endpoint, fetcher }) =>
     (dispatch) => {
       // eslint-disable-next-line unicorn/consistent-function-scoping
-      const request = () => getModel(model).all(fetcher);
+      const request = () => getEndpoint(endpoint).all(fetcher);
       dispatch(fetch({ subscriberId, request }));
     },
 

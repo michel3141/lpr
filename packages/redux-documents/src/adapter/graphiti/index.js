@@ -1,5 +1,6 @@
-import ModelAdapter from "./model";
-import createResourceMapCreator from "./createResourceMap";
+import EndpointAdapter from "./endpoint";
+import { CollectionAdapter } from "./document";
+import createGraphitiCreator from "./createGraphiti";
 
 export default function createJsonApiAdapter({ schema, clientApplication, ...params }) {
   if (!schema) {
@@ -8,35 +9,56 @@ export default function createJsonApiAdapter({ schema, clientApplication, ...par
   if (!clientApplication) {
     throw Error("{clientApplication} is mandatory");
   }
-  const resourceMap = createResourceMapCreator(schema)(clientApplication, params);
+  const Graphiti = createGraphitiCreator(schema)(clientApplication, params);
 
-  Object.entries(resourceMap).forEach(([key, value]) => {
+  Object.entries(Graphiti).forEach(([key, value]) => {
     window[key] = value;
   });
 
-  return new GraphitiAdapter(resourceMap);
+  return new GraphitiAdapter(Graphiti);
 }
 
 class GraphitiAdapter {
-  #resourceMap;
+  #endpoints;
+  // eslint-disable-next-line no-unused-private-class-members
+  #resources;
+  // eslint-disable-next-line no-unused-private-class-members
+  #types;
 
-  constructor(resourceMap) {
-    this.#resourceMap = resourceMap;
+  constructor({ endpoints, resources, types }) {
+    this.#endpoints = Object.fromEntries(
+      Object.entries(endpoints).map(([url, { actions }]) => [
+        url,
+        new EndpointAdapter({ actions }),
+      ]),
+    );
+    this.#resources = Object.fromEntries(
+      Object.entries(resources).map(([resourceName, Resource]) => [Resource.jsonapiType, Resource]),
+    );
+    this.#types = types;
   }
 
-  getModel(model) {
-    const Model = this.#resourceMap[model];
+  getEndpoint(url) {
+    const endpoint = this.#endpoints[url];
 
-    if (!Model) {
-      throw new Error(`Model "${model}" not found`);
+    if (!endpoint) {
+      throw new Error(`Endpoint '${url}' not found`);
     }
 
-    return new ModelAdapter(Model);
+    return endpoint;
   }
 
   getObjectFor({ data, raw }) {
-    const type = data.klass.jsonapiType;
+    if (Array.isArray(data)) {
+      // ici on ne peut préciser le Endpoint associé
+      // car la liste peut être vide
+      return new CollectionAdapter({ raw, data });
+    }
 
-    return this.getModel(type).getObjectFor({ data, raw });
+    const { endpoint: url } = data.klass;
+    if (!url) {
+      throw Error("spraypaint object sans endpoint url par défaut");
+    }
+    return this.getEndpoint(url).getObjectFor({ data, raw });
   }
 }
