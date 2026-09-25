@@ -5,7 +5,6 @@ const { createSelectors } = rtk(name);
 import { getDocument } from "./documentStore";
 
 const selectors = createSelectors({
-  all: (state) => state[name],
   document: [
     (state, subscriberId, initialData) => state[name].documents[subscriberId], //memoize
     (state, subscriberId, initialData) => subscriberId,
@@ -56,7 +55,6 @@ const selectors = createSelectors({
 
 // RTK-AUTOEXPORT
 // ---- createSelectors ---------
-export const { selectAll, selectDocument, selectLinks, selectSaveOptions, selectUpdateOptions } =
-  selectors;
-export const { useAll, useDocument, useLinks, useSaveOptions, useUpdateOptions } =
+export const { selectDocument, selectLinks, selectSaveOptions, selectUpdateOptions } = selectors;
+export const { useDocument, useLinks, useSaveOptions, useUpdateOptions } =
   createSelectorHooks(selectors);
