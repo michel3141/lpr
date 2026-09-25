@@ -1,3 +1,7 @@
+# 0.1.1
+
+fix: utilise la dernière version de spraypaint-toolkit
+
 # 0.1.0
 
 feat: change le point de vue : resource centred => endpoint centred
