@@ -66,7 +66,7 @@ L'adaptateur traduit entre l'API de la librairie et une technologie de données 
 
 Il encapsule notamment :
 
-- la création et la récupération des modèles ;
+- la création et la récupération des endpoints ;
 - la représentation d'une resource ou d'une collection ;
 - la modification ;
 - la sauvegarde ;

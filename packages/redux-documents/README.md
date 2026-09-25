@@ -17,13 +17,13 @@ dispatch(
 );
 ```
 
-Ou depuis un modèle :
+Ou depuis un endpoint :
 
 ```js
 dispatch(
   find({
     subscriberId: "user",
-    model: "users",
+    endpoint: "/users",
     id: 42,
   }),
 );

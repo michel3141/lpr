@@ -1,6 +1,6 @@
 # `createApiProvider`
 
-`createApiProvider` crée un Provider React spécialisé pour un modèle, ainsi que le hook permettant d'accéder à son API.
+`createApiProvider` crée un Provider React spécialisé pour un endpoint, ainsi que le hook permettant d'accéder à son API.
 
 ```js
 const { Provider: PostProvider, use: usePostApi } = createApiProvider("posts");

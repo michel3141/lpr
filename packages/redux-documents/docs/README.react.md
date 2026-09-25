@@ -3,7 +3,7 @@
 La librairie fournit `useApi` pour connecter un composant React à un document.
 
 ```js
-const { document, update, save, destroy } = useApi("posts", undefined, "post:42");
+const { document, update, save, destroy } = useApi("/posts", undefined, "post:42");
 ```
 
 Le hook gère automatiquement l'ouverture et la fermeture de la souscription.
@@ -11,7 +11,7 @@ Le hook gère automatiquement l'ouverture et la fermeture de la souscription.
 ## Charger une collection
 
 ```js
-const { document, all } = useApi("posts");
+const { document, all } = useApi("/posts");
 
 useEffect(() => {
   all((scope) => scope.includes("comments"));
@@ -69,7 +69,7 @@ La destruction est propagée aux autres documents qui contiennent cette resource
 Les options peuvent être passées au deuxième argument :
 
 ```js
-const api = useApi("posts", {
+const api = useApi("/posts", {
   updateOptions: {
     // comportement des mises à jour
   },
@@ -113,7 +113,7 @@ Il est utile de fournir un identifiant explicite lorsqu'un même document doit �
 }
 ```
 
-Les méthodes liées à un modèle (`create`, `find`, `findSingle`, `first`, `all`) sont disponibles lorsque `useApi` est utilisé avec un nom de modèle.
+Les méthodes liées à un endpoint (`create`, `find`, `findSingle`, `first`, `all`) sont disponibles lorsque `useApi` est utilisé avec une url de endpoint.
 
 Avec une resource ou un document existant, les opérations `open`, `update`, `save` et `destroy` sont les principales opérations utilisées.
 
