@@ -44,9 +44,11 @@ const cache = {};
 
 export const createEndpoint = (resource, endpoint, extra = {}) => {
   if (!endpoint) {
+    // same endpoint. extra paramèters/config
     return resource.extend(extra);
   }
   if (endpoint.startsWith(resource.apiNamespace)) {
+    console.warn(`spraypaint-toolkit: broken endpoint '${endpoint}'. Fixing`)
     endpoint = endpoint.slice(resource.apiNamespace.length);
   }
   return resource.extend({
@@ -57,6 +59,8 @@ export const createEndpoint = (resource, endpoint, extra = {}) => {
 
 export const createResource = (baseApi, { attrs, jsonapiType }, extra = {}) => {
   if (!(jsonapiType in baseApi._resources)) {
+    // défini en dur le endpoint par défaut
+    const endpoint=`/${jsonapiType}`
     baseApi._resources[jsonapiType] = baseApi.extend({
       attrs,
 
@@ -65,6 +69,7 @@ export const createResource = (baseApi, { attrs, jsonapiType }, extra = {}) => {
         ...extra.static,
         data,
         jsonapiType,
+        endpoint,
         inflate: function (raw, first) {
           // attention, les raw_data provenant de .first()
           // sont des tableaux
