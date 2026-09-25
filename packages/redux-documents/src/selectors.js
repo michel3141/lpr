@@ -21,7 +21,7 @@ const selectors = createSelectors({
        * updating
        */
       return {
-        status,
+        ...doc,
         isLoading: ["pending", "updating", "destroying"].includes(status),
         isDirty: status === "dirty",
         isError: status === "error",

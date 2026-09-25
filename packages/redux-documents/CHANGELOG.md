@@ -1,3 +1,15 @@
+# 0.2.0
+
+feat: ajout de la action refetch
+feat: add refetch action
+fix: setAdapter return un adapter
+fix: add refetch aexport
+fix: DocumentAdapter.removeResource return Adapter
+fix: resource.save()
+docs: update docs (refetch)
+refactor: oxfmt
+refactor: change la création de la reourceId
+
 # 0.1.1
 
 fix: utilise la dernière version de spraypaint-toolkit

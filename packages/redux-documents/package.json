@@ -1,6 +1,6 @@
 {
   "name": "@lpr/redux-documents",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Gestion du cycle de vie des documents avec Redux",
   "keywords": [],
   "license": "ISC",
