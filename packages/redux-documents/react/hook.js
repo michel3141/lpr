@@ -20,7 +20,8 @@ const useDocumentSubscription = (subscriberId, { updateOptions, saveOptions }) =
 };
 
 const useDocumentMethods = (endpoint, subscriberId) => {
-  const { create, open, find, findSingle, first, all, update, save, destroy } = useDocumentApi();
+  const { create, open, find, findSingle, first, all, update, save, refetch, destroy } =
+    useDocumentApi();
 
   const openDocument = useCallback((data) => open({ subscriberId, data }), [open, subscriberId]);
 
@@ -35,6 +36,8 @@ const useDocumentMethods = (endpoint, subscriberId) => {
   );
 
   const saveDocument = useCallback(() => save({ subscriberId }), [save, subscriberId]);
+
+  const refetchDocument = useCallback(() => refetch({ subscriberId }), [refetch, subscriberId]);
 
   const destroyDocument = useCallback(() => destroy({ subscriberId }), [destroy, subscriberId]);
 
@@ -63,6 +66,7 @@ const useDocumentMethods = (endpoint, subscriberId) => {
       open: openDocument,
       update: updateDocument,
       save: saveDocument,
+      refetch: refetchDocument,
       destroy: destroyDocument,
       create: endpoint && createDocument,
       find: endpoint && findDocument,
@@ -76,6 +80,7 @@ const useDocumentMethods = (endpoint, subscriberId) => {
       createDocument,
       updateDocument,
       saveDocument,
+      refetchDocument,
       destroyDocument,
       findDocument,
       findSingleDocument,

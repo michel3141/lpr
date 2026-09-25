@@ -6,7 +6,7 @@ import { selectLinks, selectSaveOptions } from "./selectors";
 const { createActions, createEvents } = rtk(name);
 
 import { setDocument, getDocument, getRequest, updateResourceInDocument } from "./documentStore";
-import { getEndpoint, getObjectFor } from "./adapter";
+import { setAdapter as newAdapter, getEndpoint, getObjectFor } from "./adapter";
 
 const documentEvents = createEvents({
   OPEN: (subscriberId, { saveOptions, updateOptions } = {}) => ({
@@ -24,9 +24,17 @@ const documentEvents = createEvents({
 
   SAVE_OPTIONS: (x) => x,
   UPDATE_OPTIONS: (x) => x,
+
+  ADAPTER: ({ name }) => ({ name }),
 });
 
 const documentApi = createActions({
+  setAdapter:
+    (adapter = {}) =>
+    (dispatch, getState) => {
+      newAdapter(adapter);
+      dispatch(ADAPTER_EVENT(adapter));
+    },
   create:
     ({ subscriberId, endpoint, params } = {}) =>
     (dispatch) => {
@@ -132,11 +140,24 @@ export const {
   UPDATE_EVENT,
   SAVE_OPTIONS_EVENT,
   UPDATE_OPTIONS_EVENT,
+  ADAPTER_EVENT,
 } = documentEvents;
 
 export const useDocumentEvents = createActionsHook(documentEvents);
 // ---- createActions ---------
-export const { create, open, find, findSingle, first, all, fetch, refetch, update, save, destroy } =
-  documentApi;
+export const {
+  setAdapter,
+  create,
+  open,
+  find,
+  findSingle,
+  first,
+  all,
+  fetch,
+  refetch,
+  update,
+  save,
+  destroy,
+} = documentApi;
 
 export const useDocumentApi = createActionsHook(documentApi);
