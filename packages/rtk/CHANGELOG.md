@@ -1,3 +1,7 @@
+# 2.0.1
+
+fix: + @lpr/helpers-text 0.1.0
+
 # 2.0.0
 
 feat!: remove useSlice, useDispatch is auto unwrap()
