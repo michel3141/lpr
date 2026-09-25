@@ -1,7 +1,7 @@
 {
   "name": "@lpr/spraypaint-toolkit",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Aide à la connexion et à la création de resources",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
