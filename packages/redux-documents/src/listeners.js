@@ -4,7 +4,7 @@ import {
   destroy,
   // eslint-disable-next-line no-unused-vars  ## TODO en attendant de géré save
   save,
-  fetch,
+  refetch,
   RESOURCES_EVENT,
   UPDATE_EVENT,
   CLOSE_EVENT,
@@ -12,14 +12,13 @@ import {
 
 // eslint-disable-next-line no-unused-vars  ## TODO en attendant de géré save
 import { selectUpdateOptions, selectLinks, selectSaveOptions } from "./selectors";
-import { onDocument, getDocument, getRequest, deleteLink } from "./documentStore";
+import { onDocument, getDocument, deleteLink } from "./documentStore";
 
 export default [
   onBoot((_, { getState, dispatch }) => {
     onDocument({
       onNeedFetch: (subscriberId) => {
-        const request = getRequest(subscriberId);
-        dispatch(fetch({ subscriberId, request }));
+        dispatch(refetch({ subscriberId }));
       },
       onUpdate: (subscriberId, resourceId, changes, prev) =>
         dispatch(UPDATE_EVENT(subscriberId, changes)),

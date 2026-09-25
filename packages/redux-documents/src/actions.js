@@ -5,7 +5,7 @@ import { selectLinks, selectSaveOptions } from "./selectors";
 
 const { createActions, createEvents } = rtk(name);
 
-import { setDocument, getDocument, updateResourceInDocument } from "./documentStore";
+import { setDocument, getDocument, getRequest, updateResourceInDocument } from "./documentStore";
 import { getEndpoint, getObjectFor } from "./adapter";
 
 const documentEvents = createEvents({
@@ -81,6 +81,13 @@ const documentApi = createActions({
   },
 
   /////////////
+
+  refetch:
+    ({ subscriberId }) =>
+    (dispatch) => {
+      const request = getRequest(subscriberId);
+      dispatch(fetch({ subscriberId, request }));
+    },
 
   update: async ({ subscriberId, changes = {} }, { dispatch, getState }) => {
     const { resourceIds } = getDocument(subscriberId);
