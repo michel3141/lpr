@@ -6,12 +6,11 @@ const adapters = {
 
 let adapter = null;
 
-function setAdapter(name) {
+function setAdapter({ name, ...options }) {
   const create = adapters[name];
   if (!create) throw Error(`Invalid adapter '${name}'`);
-  return (initializer) => {
-    adapter = create(initializer);
-  };
+  adapter = create(options);
+  return adapter
 }
 
 function getAdapter() {
