@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@lpr/helpers-text':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@lpr/is-dev-mode':
         specifier: ^0.1.1
         version: 0.1.1
@@ -99,6 +102,9 @@ packages:
   '@isaacs/cliui@9.0.0':
     resolution: {integrity: sha512-AokJm4tuBHillT+FpMtxQ60n8ObyXBatq7jD2/JA9dxbDDokKQm8KMht5ibGzLVU9IJDIKK4TPKgMHEYMn3lMg==}
     engines: {node: '>=18'}
+
+  '@lpr/helpers-text@0.1.0':
+    resolution: {integrity: sha512-gNd2YWxCex3C1r3l67Pj3VzhYanCL30x6dbZqbToKgH9SEZRPN4OtrdKDVjMAptetVUERarOrGm8f//p30yw4g==, tarball: https://npm.lespyjamasrouges.fr/@lpr/helpers-text/-/helpers-text-0.1.0.tgz}
 
   '@lpr/is-dev-mode@0.1.1':
     resolution: {integrity: sha512-/ythwbdmDouwxeeojWFnjIaH2Iz+p9gAk0pVHCmWR/0bPGKD+Zlif/EV2XAlgLJKe0ngAphx+NfxTNr2tDy2fw==}
@@ -1494,6 +1500,8 @@ snapshots:
     optional: true
 
   '@isaacs/cliui@9.0.0': {}
+
+  '@lpr/helpers-text@0.1.0': {}
 
   '@lpr/is-dev-mode@0.1.1': {}
 
