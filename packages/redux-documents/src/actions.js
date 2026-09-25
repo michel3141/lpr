@@ -136,7 +136,7 @@ export const {
 
 export const useDocumentEvents = createActionsHook(documentEvents);
 // ---- createActions ---------
-export const { create, open, find, findSingle, first, all, fetch, update, save, destroy } =
+export const { create, open, find, findSingle, first, all, fetch, refetch, update, save, destroy } =
   documentApi;
 
 export const useDocumentApi = createActionsHook(documentApi);
