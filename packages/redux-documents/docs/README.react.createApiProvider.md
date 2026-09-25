@@ -123,6 +123,7 @@ Chaque Provider expose la même API que `useApi` :
   all,
   update,
   save,
+  refetch,
   destroy,
 }
 ```

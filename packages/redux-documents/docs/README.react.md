@@ -109,6 +109,7 @@ Il est utile de fournir un identifiant explicite lorsqu'un mÃªme document doit Ã
 
   update,
   save,
+  refetch,
   destroy,
 }
 ```
