@@ -1,4 +1,0 @@
-minimumReleaseAgeExclude:
-  - "@lpr/rtk@2.0.0"
-  - "@lpr/helpers-text@0.1.0"
-  - '@lpr/spraypaint-toolkit@0.1.0'

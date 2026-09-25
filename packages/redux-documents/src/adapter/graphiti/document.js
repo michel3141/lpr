@@ -1,4 +1,4 @@
-const createId = ({ resourceIdentifier: { type, id } }) => `${type}:${id}`;
+const createId = ({ resourceIdentifier }) => JSON.stringify(resourceIdentifier)
 
 const updateData = (data, changes) => {
   for (const [key, value] of Object.entries(changes)) {
