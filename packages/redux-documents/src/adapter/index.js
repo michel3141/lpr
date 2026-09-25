@@ -10,7 +10,7 @@ function setAdapter({ name, ...options }) {
   const create = adapters[name];
   if (!create) throw Error(`Invalid adapter '${name}'`);
   adapter = create(options);
-  return adapter
+  return adapter;
 }
 
 function getAdapter() {
