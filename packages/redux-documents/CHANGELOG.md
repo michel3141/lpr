@@ -1,5 +1,6 @@
 # 0.2.0
 
+feat: selectDocument returns full document
 feat: ajout de la action refetch
 feat: add refetch action
 fix: setAdapter return un adapter
@@ -7,6 +8,7 @@ fix: add refetch aexport
 fix: DocumentAdapter.removeResource return Adapter
 fix: resource.save()
 docs: update docs (refetch)
+refactor: remove selectAll
 refactor: oxfmt
 refactor: change la création de la reourceId
 
