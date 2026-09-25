@@ -1,4 +1,4 @@
-const createId = ({ resourceIdentifier }) => JSON.stringify(resourceIdentifier)
+const createId = ({ resourceIdentifier }) => JSON.stringify(resourceIdentifier);
 
 const updateData = (data, changes) => {
   for (const [key, value] of Object.entries(changes)) {
@@ -74,7 +74,7 @@ class ObjectAdapter {
     const data = this.data;
     const success = await data.save({ with: With }); // with: undefined ??
 
-    return success ? data : false;
+    return success ? new ObjectAdapter({ data }) : false;
   }
 
   async destroy() {
