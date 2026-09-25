@@ -115,9 +115,12 @@ class CollectionAdapter {
   }
 
   removeResource(resourceId) {
-    const data = this.data;
+    const data = this.data.filter((datum) => createId(datum) !== resourceId);
 
-    this.#data = data.filter((datum) => createId(datum) !== resourceId);
+    this.#data = data;
+    return new CollectionAdapter({
+      data: this.data, // copie
+    });
   }
 
   updateResource(resourceId, changes) {
