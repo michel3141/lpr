@@ -1,8 +1,8 @@
-import rtk from "@lpr/rtk";
-import { createSelectorHooks } from "@lpr/rtk/react";
-import { name } from "./constants";
+import rtk from '@lpr/rtk';
+import { createSelectorHooks } from '@lpr/rtk/react';
+import { name } from './constants';
 const { createSelectors } = rtk(name);
-import { getDocument } from "./documentStore";
+import { getDocument } from './documentStore';
 
 const selectors = createSelectors({
   document: [
@@ -22,10 +22,10 @@ const selectors = createSelectors({
        */
       return {
         ...doc,
-        isLoading: ["pending", "updating", "destroying"].includes(status),
+        isLoading: ['pending', 'updating', 'destroying'].includes(status),
         isDirty: Array.isArray(data) ? false : data?.isDirty?.(), // status === "dirty",
-        isError: status === "error",
-        isSync: status === "synced",
+        isError: status === 'error',
+        isSync: status === 'synced',
         data,
         raw: getDocument(subscriberId, false)?.raw,
       };
@@ -39,7 +39,7 @@ const selectors = createSelectors({
       links.filter(
         (link) =>
           (!subscriberId || link.subscriberId === subscriberId) &&
-          (!resourceId || link.resourceId === resourceId),
+          (!resourceId || link.resourceId === resourceId)
       ),
   ],
   save_options: [

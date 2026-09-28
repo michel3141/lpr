@@ -1,12 +1,12 @@
-import rtk from "@lpr/rtk";
-import { createActionsHook } from "@lpr/rtk/react";
-import { name } from "./constants";
-import { selectLinks, selectSaveOptions } from "./selectors";
+import rtk from '@lpr/rtk';
+import { createActionsHook } from '@lpr/rtk/react';
+import { name } from './constants';
+import { selectLinks, selectSaveOptions } from './selectors';
 
 const { createActions, createEvents } = rtk(name);
 
-import { setDocument, getDocument, getRequest, updateResourceInDocument } from "./documentStore";
-import { setAdapter as newAdapter, getEndpoint, getObjectFor } from "./adapter";
+import { setDocument, getDocument, getRequest, updateResourceInDocument } from './documentStore';
+import { setAdapter as newAdapter, getEndpoint, getObjectFor } from './adapter';
 
 const documentEvents = createEvents({
   OPEN: (subscriberId, { saveOptions, updateOptions } = {}) => ({
@@ -114,7 +114,7 @@ const documentApi = createActions({
 
     if (savedDoc) {
       setDocument(subscriberId, savedDoc, () => {
-        console.warn("comment refresh ?");
+        console.warn('comment refresh ?');
         return savedDoc;
         // si old = create => find
         // si open renvoyer savedDoc

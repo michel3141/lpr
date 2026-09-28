@@ -3,7 +3,7 @@
 La librairie fournit `useApi` pour connecter un composant React à un document.
 
 ```js
-const { document, update, save, destroy } = useApi("/posts", undefined, "post:42");
+const { document, update, save, destroy } = useApi('/posts', undefined, 'post:42');
 ```
 
 Le hook gère automatiquement l'ouverture et la fermeture de la souscription.
@@ -11,10 +11,10 @@ Le hook gère automatiquement l'ouverture et la fermeture de la souscription.
 ## Charger une collection
 
 ```js
-const { document, all } = useApi("/posts");
+const { document, all } = useApi('/posts');
 
 useEffect(() => {
-  all((scope) => scope.includes("comments"));
+  all((scope) => scope.includes('comments'));
 }, [all]);
 
 const { data: posts } = document;
@@ -43,7 +43,10 @@ const { title } = document.data;
 
 return (
   <>
-    <input value={title} onChange={(event) => update({ title: event.target.value })} />
+    <input
+      value={title}
+      onChange={(event) => update({ title: event.target.value })}
+    />
 
     <button onClick={save}>Enregistrer</button>
   </>
@@ -69,7 +72,7 @@ La destruction est propagée aux autres documents qui contiennent cette resource
 Les options peuvent être passées au deuxième argument :
 
 ```js
-const api = useApi("/posts", {
+const api = useApi('/posts', {
   updateOptions: {
     // comportement des mises à jour
   },

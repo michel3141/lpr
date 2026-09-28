@@ -1,15 +1,15 @@
-import EndpointAdapter from "./endpoint";
-import { CollectionAdapter } from "./document";
-import createGraphitiCreator from "./createGraphiti";
+import EndpointAdapter from './endpoint';
+import { CollectionAdapter } from './document';
+import createSpraypaintClient from '@lpr/spraypaint-toolkit';
 
 export default function createJsonApiAdapter({ schema, clientApplication, ...params }) {
   if (!schema) {
-    throw Error("{schema} is mandatory");
+    throw Error('{schema} is mandatory');
   }
   if (!clientApplication) {
-    throw Error("{clientApplication} is mandatory");
+    throw Error('{clientApplication} is mandatory');
   }
-  const Graphiti = createGraphitiCreator(schema)(clientApplication, params);
+  const Graphiti = createSpraypaintClient(clientApplication, schema, params);
 
   Object.entries(Graphiti).forEach(([key, value]) => {
     window[key] = value;
@@ -27,13 +27,10 @@ class GraphitiAdapter {
 
   constructor({ endpoints, resources, types }) {
     this.#endpoints = Object.fromEntries(
-      Object.entries(endpoints).map(([url, { actions }]) => [
-        url,
-        new EndpointAdapter({ actions }),
-      ]),
+      Object.entries(endpoints).map(([url, { actions }]) => [url, new EndpointAdapter({ actions })])
     );
     this.#resources = Object.fromEntries(
-      Object.entries(resources).map(([resourceName, Resource]) => [Resource.jsonapiType, Resource]),
+      Object.entries(resources).map(([resourceName, Resource]) => [Resource.jsonapiType, Resource])
     );
     this.#types = types;
   }
@@ -57,7 +54,7 @@ class GraphitiAdapter {
 
     const { endpoint: url } = data.klass;
     if (!url) {
-      throw Error("spraypaint object sans endpoint url par défaut");
+      throw Error('spraypaint object sans endpoint url par défaut');
     }
     return this.getEndpoint(url).getObjectFor({ data, raw });
   }

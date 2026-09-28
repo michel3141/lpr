@@ -3,7 +3,7 @@ const createId = ({ resourceIdentifier }) => JSON.stringify(resourceIdentifier);
 const updateData = (data, changes) => {
   for (const [key, value] of Object.entries(changes)) {
     // XXX eslint-disable-next-line no-underscore-dangle
-    if (key !== "id" && key in data.attributes) {
+    if (key !== 'id' && key in data.attributes) {
       // ._attributes à l'origine ??
       // relationships ?
       data[key] = value;
@@ -32,7 +32,7 @@ class ObjectAdapter {
     const data = this.#data;
 
     if (!data) {
-      console.warn("DATA is NULL");
+      console.warn('DATA is NULL');
       return null;
     }
 
@@ -66,7 +66,7 @@ class ObjectAdapter {
   }
 
   flat() {
-    throw new Error("Not implemented");
+    throw new Error('Not implemented');
     // should go with .raw !!
   }
 
@@ -103,7 +103,7 @@ class CollectionAdapter {
     const data = this.#data;
 
     if (!data) {
-      console.warn("DATA is NULL");
+      console.warn('DATA is NULL');
       return [];
     }
 
@@ -146,7 +146,7 @@ class CollectionAdapter {
   }
 
   flat() {
-    throw new Error("Not implemented");
+    throw new Error('Not implemented');
     // should go with .raw !!
   }
 }

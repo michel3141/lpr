@@ -1,19 +1,19 @@
 const store = new Map();
 
 const defaultNeedFetch = (subscriberId) => {
-  console.warn("onNeedFetch");
+  console.warn('onNeedFetch');
 };
 
 const defaultUpdate = (subscriberId, resourceId, changes, prev) => {
-  console.warn("onUpdate");
+  console.warn('onUpdate');
 };
 
 const defaultSet = (subscriberId) => {
-  console.warn("onSet");
+  console.warn('onSet');
 };
 
 const defaultDelete = (subscriberId, prev) => {
-  console.warn("onDelete");
+  console.warn('onDelete');
 };
 
 const listeners = {

@@ -1,10 +1,10 @@
-import { defineConfig } from "oxlint";
+import { defineConfig } from 'oxlint';
 
 export default defineConfig({
   categories: {
-    correctness: "error",
-    suspicious: "warn",
-    nursery: "error",
+    correctness: 'error',
+    suspicious: 'warn',
+    nursery: 'error',
   },
   globals: {},
   env: {
@@ -13,11 +13,11 @@ export default defineConfig({
     browser: true,
   },
   rules: {
-    "no-unused-vars": [
-      "error",
+    'no-unused-vars': [
+      'error',
       {
-        args: "none",
-        varsIgnorePattern: "^(_|logger)$",
+        args: 'none',
+        varsIgnorePattern: '^(_|logger)$',
       },
     ],
   },

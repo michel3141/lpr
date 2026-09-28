@@ -1,7 +1,7 @@
-import rtk from "@lpr/rtk";
-import { name } from "./constants";
-import { OPEN_EVENT, UPDATE_EVENT, CLOSE_EVENT, RESOURCES_EVENT } from "./actions";
-import { fetch, save, destroy } from "./actions";
+import rtk from '@lpr/rtk';
+import { name } from './constants';
+import { OPEN_EVENT, UPDATE_EVENT, CLOSE_EVENT, RESOURCES_EVENT } from './actions';
+import { fetch, save, destroy } from './actions';
 
 const { createReducer } = rtk(name);
 
@@ -54,7 +54,7 @@ const initialState = {
  * - save.rejected correspond à une erreur technique / exception.
  */
 
-const assumeDoc = (state, subscriberId, from = "reducer") => {
+const assumeDoc = (state, subscriberId, from = 'reducer') => {
   const doc = state.documents[subscriberId];
   if (!doc) throw Error(`[reducer:${from}] document '${subscriberId}' n'existe pas`);
   return doc;
@@ -67,7 +67,7 @@ const setLinks = (state, subscriberId, resources) => {
     ...resources.map((resourceId) => ({
       subscriberId,
       resourceId,
-    })),
+    }))
   );
 };
 
@@ -78,16 +78,16 @@ const setFetchPending = (
     meta: {
       arg: { subscriberId },
     },
-  },
+  }
 ) => {
   const doc = assumeDoc(state, subscriberId, type);
-  doc.status = "pending";
+  doc.status = 'pending';
   doc.error = null;
 };
 
 const setFetchFulfilled = (state, { type, payload: { subscriberId } }) => {
   const doc = assumeDoc(state, subscriberId, type);
-  doc.status = "synced";
+  doc.status = 'synced';
   doc.error = null;
 };
 
@@ -99,20 +99,20 @@ const setRejected = (
     meta: {
       arg: { subscriberId },
     },
-  },
+  }
 ) => {
   console.warn(
     stack
-      .split("\n")
-      .map((line) => line.replace(/\/.*\//, "").replace(/\?[^:]*:/, " => "))
+      .split('\n')
+      .map((line) => line.replace(/\/.*\//, '').replace(/\?[^:]*:/, ' => '))
       .map((line) => `[${type}] ${line}`)
       .slice(0, 10)
-      .join("\n"),
+      .join('\n')
   );
 
   const doc = assumeDoc(state, subscriberId, type);
 
-  doc.status = "error";
+  doc.status = 'error';
   doc.error = {
     name: errorName,
     message,
@@ -133,7 +133,7 @@ export const reducer = createReducer(initialState, {
 
     state.documents[subscriberId] = {
       error: null,
-      status: "opened",
+      status: 'opened',
       saveOptions: saveOptions ?? {},
       updateOptions: updateOptions ?? {},
       version: 0,
@@ -143,7 +143,7 @@ export const reducer = createReducer(initialState, {
   [UPDATE_EVENT]: (state, { type, payload: { subscriberId } }) => {
     const doc = assumeDoc(state, subscriberId, type);
 
-    doc.status = "dirty";
+    doc.status = 'dirty';
     doc.error = null;
     doc.version += 1;
   },
@@ -165,11 +165,11 @@ export const reducer = createReducer(initialState, {
       meta: {
         arg: { subscriberId },
       },
-    },
+    }
   ) => {
     const doc = assumeDoc(state, subscriberId, type);
 
-    doc.status = "updating";
+    doc.status = 'updating';
     doc.error = null;
   },
 
@@ -177,12 +177,12 @@ export const reducer = createReducer(initialState, {
     const doc = assumeDoc(state, subscriberId, type);
 
     if (success) {
-      doc.status = "synced";
+      doc.status = 'synced';
       doc.error = null;
     } else {
       // Erreur métier : la requête a abouti mais le serveur
       // n'a pas accepté la sauvegarde.
-      doc.status = "error";
+      doc.status = 'error';
     }
   },
 
@@ -195,11 +195,11 @@ export const reducer = createReducer(initialState, {
       meta: {
         arg: { subscriberId },
       },
-    },
+    }
   ) => {
     const doc = assumeDoc(state, subscriberId, type);
 
-    doc.status = "destroying";
+    doc.status = 'destroying';
     doc.error = null;
   },
 

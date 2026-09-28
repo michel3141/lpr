@@ -1,6 +1,6 @@
 {
   "name": "@lpr/redux-documents",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Gestion du cycle de vie des documents avec Redux",
   "keywords": [],
   "license": "ISC",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@lpr/helpers-text": "^0.1.0",
     "@lpr/rtk": "^2.0.0",
-    "@lpr/spraypaint-toolkit": "^0.1.0",
+    "@lpr/spraypaint-toolkit": "^1.0.0",
     "inflected": "^2.1.0",
     "spraypaint": "^0.11.1"
   },

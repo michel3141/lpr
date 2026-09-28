@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDocumentApi, useDocumentEvents } from "../src/actions";
-import { useDocument } from "../src/selectors";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDocumentApi, useDocumentEvents } from '../src/actions';
+import { useDocument } from '../src/selectors';
 
 const genId = () => crypto.randomUUID();
 
@@ -27,12 +27,12 @@ const useDocumentMethods = (endpoint, subscriberId) => {
 
   const createDocument = useCallback(
     (params) => create({ subscriberId, endpoint, params }),
-    [create, subscriberId, endpoint],
+    [create, subscriberId, endpoint]
   );
 
   const updateDocument = useCallback(
     (changes) => update({ subscriberId, changes }),
-    [update, subscriberId],
+    [update, subscriberId]
   );
 
   const saveDocument = useCallback(() => save({ subscriberId }), [save, subscriberId]);
@@ -43,22 +43,22 @@ const useDocumentMethods = (endpoint, subscriberId) => {
 
   const findDocument = useCallback(
     (id, fetcher) => find({ subscriberId, endpoint, id, fetcher }),
-    [find, subscriberId, endpoint],
+    [find, subscriberId, endpoint]
   );
 
   const findSingleDocument = useCallback(
     (fetcher) => findSingle({ subscriberId, endpoint, fetcher }),
-    [findSingle, subscriberId, endpoint],
+    [findSingle, subscriberId, endpoint]
   );
 
   const firstDocument = useCallback(
     (fetcher) => first({ subscriberId, endpoint, fetcher }),
-    [first, subscriberId, endpoint],
+    [first, subscriberId, endpoint]
   );
 
   const allDocuments = useCallback(
     (fetcher) => all({ subscriberId, endpoint, fetcher }),
-    [all, subscriberId, endpoint],
+    [all, subscriberId, endpoint]
   );
 
   return useMemo(
@@ -86,13 +86,13 @@ const useDocumentMethods = (endpoint, subscriberId) => {
       findSingleDocument,
       firstDocument,
       allDocuments,
-    ],
+    ]
   );
 };
 
 export const useApi = (param, options = {}, proposedSubscriberId) => {
   let endpoint, data;
-  if (typeof param === "string") {
+  if (typeof param === 'string') {
     endpoint = param;
   } else {
     data = param;
@@ -119,6 +119,6 @@ export const useApi = (param, options = {}, proposedSubscriberId) => {
       document,
       ...methods,
     }),
-    [subscriberId, document, methods],
+    [subscriberId, document, methods]
   );
 };

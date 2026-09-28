@@ -23,6 +23,7 @@
 // - Vérifier le comportement lors du changement de `data`, `id`,
 //   `fetcher` ou `method`.
 // + Éventuellement compléter l'API du Provider selon les besoins réels.
+le Provider n'a pas de valeur par défaut pour le fetcher
 
 // TODO
 // Ne pas enrichir prématurément le modèle de synchronisation.

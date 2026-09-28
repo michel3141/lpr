@@ -1,1 +1,1 @@
-export const name = "jsonapi-documents";
+export const name = 'jsonapi-documents';

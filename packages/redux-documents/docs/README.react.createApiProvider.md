@@ -3,7 +3,7 @@
 `createApiProvider` crée un Provider React spécialisé pour un endpoint, ainsi que le hook permettant d'accéder à son API.
 
 ```js
-const { Provider: PostProvider, use: usePostApi } = createApiProvider("posts");
+const { Provider: PostProvider, use: usePostApi } = createApiProvider('posts');
 ```
 
 Le paramètre correspond au même paramètre que le premier argument de `useApi`.
@@ -31,7 +31,9 @@ const PostView = () => {
 Le `subscriberId` peut être fourni explicitement :
 
 ```jsx
-<PostProvider data={post} subscriberId={`post:${post.id}`}>
+<PostProvider
+  data={post}
+  subscriberId={`post:${post.id}`}>
   <PostView />
 </PostProvider>
 ```
@@ -45,7 +47,9 @@ Le Provider peut également déclencher une opération de lecture au montage.
 Pour une collection :
 
 ```jsx
-<PostProvider method="all" fetcher={fetcher}>
+<PostProvider
+  method="all"
+  fetcher={fetcher}>
   <PostList />
 </PostProvider>
 ```
@@ -53,7 +57,9 @@ Pour une collection :
 Pour une resource :
 
 ```jsx
-<PostProvider method="find" id={42}>
+<PostProvider
+  method="find"
+  id={42}>
   <PostView />
 </PostProvider>
 ```
@@ -86,7 +92,7 @@ findSingle(fetcher);
 ## Exemple
 
 ```js
-const { Provider: PostProvider, use: usePostApi } = createApiProvider("posts");
+const { Provider: PostProvider, use: usePostApi } = createApiProvider('posts');
 ```
 
 ```jsx
@@ -102,7 +108,10 @@ const PostListView = () => {
   } = usePostApi();
 
   return posts?.map((post) => (
-    <PostProvider key={post.id} data={post} subscriberId={`post:${post.id}`}>
+    <PostProvider
+      key={post.id}
+      data={post}
+      subscriberId={`post:${post.id}`}>
       <PostView />
     </PostProvider>
   ));

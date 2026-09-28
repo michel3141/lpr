@@ -15,8 +15,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.1(prettier@3.9.9)(react@19.3.0)
       '@lpr/spraypaint-toolkit':
-        specifier: ^0.1.0
-        version: 0.1.0(spraypaint@0.11.1)
+        specifier: ^1.0.0
+        version: 1.0.0(spraypaint@0.11.1)
       inflected:
         specifier: ^2.1.0
         version: 2.1.0
@@ -52,8 +52,8 @@ packages:
     peerDependencies:
       react: ^19
 
-  '@lpr/spraypaint-toolkit@0.1.0':
-    resolution: {integrity: sha512-fkzzz5svu8KT36Ht89smfMwU51X0JWBfT/ezgDZqbWiG7yPft2gGh42ijRf1zfNswBM1E/Lq0p1JFbSH00pqLA==, tarball: https://npm.lespyjamasrouges.fr/@lpr/spraypaint-toolkit/-/spraypaint-toolkit-0.1.0.tgz}
+  '@lpr/spraypaint-toolkit@1.0.0':
+    resolution: {integrity: sha512-DgMnYeMYKmEIFqSYft6uL+JtfTyh04sw8sMsrjQ+cbhkZkGaZPxsBcyo47ub8ZfRXeVhvRFTvuB8RYjbpM4qcA==, tarball: https://npm.lespyjamasrouges.fr/@lpr/spraypaint-toolkit/-/spraypaint-toolkit-1.0.0.tgz}
     peerDependencies:
       spraypaint: ^0.11.*
 
@@ -527,8 +527,9 @@ snapshots:
       - prettier
       - react-redux
 
-  '@lpr/spraypaint-toolkit@0.1.0(spraypaint@0.11.1)':
+  '@lpr/spraypaint-toolkit@1.0.0(spraypaint@0.11.1)':
     dependencies:
+      '@lpr/helpers-text': 0.1.0
       spraypaint: 0.11.1
 
   '@oxfmt/binding-android-arm-eabi@0.70.0':

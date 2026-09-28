@@ -1,5 +1,5 @@
-import { useCallback, useEffect, createContext, useContext } from "react";
-import { useApi } from "./hook";
+import { useCallback, useEffect, createContext, useContext } from 'react';
+import { useApi } from './hook';
 
 export default function createApiProvider(param) {
   const Context = createContext(null);
@@ -12,11 +12,11 @@ export default function createApiProvider(param) {
       if (!method) return;
 
       switch (methodName) {
-        case "find":
+        case 'find':
           return method(id, fetcher);
-        case "findSingle":
-        case "first":
-        case "all":
+        case 'findSingle':
+        case 'first':
+        case 'all':
           return method(fetcher);
         default:
           throw new Error(`Invalid provider method "${methodName}"`);
@@ -34,7 +34,7 @@ export default function createApiProvider(param) {
     const api = useContext(Context);
 
     if (!api) {
-      throw new Error("useApi must be used inside ApiProvider");
+      throw new Error('useApi must be used inside ApiProvider');
     }
 
     return api;

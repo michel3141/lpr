@@ -1,4 +1,4 @@
-import { onBoot, addListener } from "@lpr/rtk";
+import { onBoot, addListener } from '@lpr/rtk';
 import {
   update,
   destroy,
@@ -8,11 +8,11 @@ import {
   RESOURCES_EVENT,
   UPDATE_EVENT,
   CLOSE_EVENT,
-} from "./actions";
+} from './actions';
 
 // eslint-disable-next-line no-unused-vars  ## TODO en attendant de géré save
-import { selectUpdateOptions, selectLinks, selectSaveOptions } from "./selectors";
-import { onDocument, getDocument, deleteLink } from "./documentStore";
+import { selectUpdateOptions, selectLinks, selectSaveOptions } from './selectors';
+import { onDocument, getDocument, deleteLink } from './documentStore';
 
 export default [
   onBoot((_, { getState, dispatch }) => {
@@ -33,7 +33,7 @@ export default [
     update.fulfilled,
     (
       { payload: { subscriberId, changes = {} } },
-      { dispatch, getState, cancelActiveListeners, delay },
+      { dispatch, getState, cancelActiveListeners, delay }
     ) => {
       /*
        * TODO
@@ -44,7 +44,7 @@ export default [
        * Et si le coeur m'en dit, mettre d'autres options ou d'atres actions
        * pour que update soit optimiste, pessimiste, ou local
        */
-    },
+    }
   ),
 
   addListener(destroy.fulfilled, ({ payload: { subscriberId } }, { dispatch, getState }) => {

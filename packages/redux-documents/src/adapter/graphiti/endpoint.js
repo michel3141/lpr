@@ -1,4 +1,4 @@
-import { ObjectAdapter, CollectionAdapter } from "./document";
+import { ObjectAdapter, CollectionAdapter } from './document';
 
 export default class EndpointAdapter {
   /*
@@ -37,26 +37,26 @@ export default class EndpointAdapter {
   }
 
   create(params) {
-    const Resource = this.getResource("create");
+    const Resource = this.getResource('create');
     const data = new Resource(params);
 
     return this.getObjectFor({ data });
   }
 
   async find(id, fetcher) {
-    const Resource = this.getResource("show");
+    const Resource = this.getResource('show');
     return this.getObjectFor(await fetcher(Resource).find(id));
   }
   async findSingle(fetcher) {
-    const Resource = this.getResource("show");
+    const Resource = this.getResource('show');
     return this.getObjectFor(await fetcher(Resource).findSingle());
   }
   async first(fetcher) {
-    const Resource = this.getResource("index");
+    const Resource = this.getResource('index');
     return this.getObjectFor(await fetcher(Resource).first());
   }
   async all(fetcher) {
-    const Resource = this.getResource("index");
+    const Resource = this.getResource('index');
     return this.getObjectFor(await fetcher(Resource).all());
   }
 }

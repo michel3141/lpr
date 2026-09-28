@@ -11,9 +11,9 @@ Un document est identifié dans l'application par un `subscriberId`. Il peut rep
 ```js
 dispatch(
   open({
-    subscriberId: "user",
+    subscriberId: 'user',
     data: user,
-  }),
+  })
 );
 ```
 
@@ -22,10 +22,10 @@ Ou depuis un endpoint :
 ```js
 dispatch(
   find({
-    subscriberId: "user",
-    endpoint: "/users",
+    subscriberId: 'user',
+    endpoint: '/users',
     id: 42,
-  }),
+  })
 );
 ```
 
@@ -36,11 +36,11 @@ Les autres opérations disponibles sont `create`, `findSingle`, `first` et `all`
 ```js
 dispatch(
   update({
-    subscriberId: "user",
+    subscriberId: 'user',
     changes: {
-      name: "Jane",
+      name: 'Jane',
     },
-  }),
+  })
 );
 ```
 
@@ -51,8 +51,8 @@ La modification est d'abord locale. Les autres documents contenant la même reso
 ```js
 dispatch(
   save({
-    subscriberId: "user",
-  }),
+    subscriberId: 'user',
+  })
 );
 ```
 
@@ -71,8 +71,8 @@ Une erreur technique provoque le rejet de l'action.
 ```js
 dispatch(
   destroy({
-    subscriberId: "user",
-  }),
+    subscriberId: 'user',
+  })
 );
 ```
 
@@ -81,7 +81,7 @@ Détruit la resource côté serveur et met à jour les documents qui la référe
 Pour simplement retirer un document de l'application :
 
 ```js
-dispatch(CLOSE_EVENT("user"));
+dispatch(CLOSE_EVENT('user'));
 ```
 
 `CLOSE_EVENT` n'effectue aucune opération serveur.

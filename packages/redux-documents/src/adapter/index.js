@@ -1,4 +1,4 @@
-import graphiti from "./graphiti";
+import graphiti from './graphiti';
 
 const adapters = {
   graphiti,
@@ -14,7 +14,7 @@ function setAdapter({ name, ...options }) {
 }
 
 function getAdapter() {
-  if (!adapter) throw Error("No adapter");
+  if (!adapter) throw Error('No adapter');
   return adapter;
 }
 
