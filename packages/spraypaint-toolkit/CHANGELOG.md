@@ -1,5 +1,5 @@
-# 0.1.0
+# 1.0.0
 
-feat: add default endpoint to resource
-
-# 0.0.2
+feat!: simplifie les modèles
+feat: add createSpraypaintClient.js
+feat: add createSpraypaintClient

@@ -1,7 +1,7 @@
 {
   "name": "@lpr/spraypaint-toolkit",
-  "version": "0.1.0",
-  "description": "Aide à la connexion et à la création de resources",
+  "version": "1.0.0",
+  "description": "Création de clients Spraypaint, resources et endpoints à partir d'un schéma JSON:API",
   "license": "ISC",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "scripts": {
