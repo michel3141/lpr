@@ -4,6 +4,13 @@
   "description": "Création de clients Spraypaint, resources et endpoints à partir d'un schéma JSON:API",
   "license": "ISC",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "files": [
+    "index.js",
+    "src"
+  ],
+  "exports": {
+    ".": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "p": "oxfmt",
