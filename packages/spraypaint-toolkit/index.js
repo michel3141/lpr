@@ -1,4 +1,4 @@
-import { SpraypaintBase, Scope } from 'spraypaint';
+import { SpraypaintBase, Scope } from "spraypaint";
 // import { createConsumer } from '@rails/actioncable';
 
 // export { createConsumer };
@@ -12,7 +12,7 @@ function data() {
 }
 
 async function getAllPages(options = {}) {
-  const { meta } = await this.per(0).stats({ total: 'count' }).all();
+  const { meta } = await this.per(0).stats({ total: "count" }).all();
   const { count } = meta.stats.total;
   return this.per(count).all();
   /*
@@ -48,7 +48,7 @@ export const createEndpoint = (resource, endpoint, extra = {}) => {
     return resource.extend(extra);
   }
   if (endpoint.startsWith(resource.apiNamespace)) {
-    console.warn(`spraypaint-toolkit: broken endpoint '${endpoint}'. Fixing`)
+    console.warn(`spraypaint-toolkit: broken endpoint '${endpoint}'. Fixing`);
     endpoint = endpoint.slice(resource.apiNamespace.length);
   }
   return resource.extend({
@@ -60,7 +60,7 @@ export const createEndpoint = (resource, endpoint, extra = {}) => {
 export const createResource = (baseApi, { attrs, jsonapiType }, extra = {}) => {
   if (!(jsonapiType in baseApi._resources)) {
     // défini en dur le endpoint par défaut
-    const endpoint=`/${jsonapiType}`
+    const endpoint = `/${jsonapiType}`;
     baseApi._resources[jsonapiType] = baseApi.extend({
       attrs,
 
@@ -98,7 +98,7 @@ export const createResource = (baseApi, { attrs, jsonapiType }, extra = {}) => {
             throw new Error(
               Object.values(this.errors)
                 .map(({ message }) => message)
-                .join('|')
+                .join("|")
             );
           }
         },
@@ -106,11 +106,11 @@ export const createResource = (baseApi, { attrs, jsonapiType }, extra = {}) => {
           const { isPersisted } = updateOpts;
           Object.entries(attributes).forEach(
             ([key, value]) =>
-              key !== 'id' && key in this._attributes && (this[key] = value)
+              key !== "id" && key in this._attributes && (this[key] = value)
           );
           if (isPersisted === true) {
             if (!attributes.id) {
-              throw new Error('No id, no persistence');
+              throw new Error("No id, no persistence");
             }
             this.isPersisted = true;
           }
@@ -143,7 +143,7 @@ export const createResource = (baseApi, { attrs, jsonapiType }, extra = {}) => {
 };
 
 export const createBaseApi = (
-  { url, apiPath, clientApplication = 'web-app' },
+  { url, apiPath, clientApplication = "web-app" },
   extra = {}
 ) => {
   if (!(url in cache)) cache[url] = {};
@@ -178,8 +178,8 @@ export const createBaseApi = (
           return store.data[storeKey]
             ? Promise.resolve(store.data[storeKey])
             : tryFetch
-              ? this.find(id).then((x) => x.data.attributes)
-              : undefined;
+            ? this.find(id).then((x) => x.data.attributes)
+            : undefined;
         },
       },
       methods: { ...extra.methods },

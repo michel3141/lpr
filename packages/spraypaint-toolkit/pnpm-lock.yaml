@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       spraypaint:
-        specifier: ^0.10.*
-        version: 0.10.25
+        specifier: ^0.11.*
+        version: 0.11.1
     devDependencies:
       eslint:
         specifier: ^8.41.0
@@ -925,8 +925,8 @@ packages:
     resolution: {integrity: sha512-6x6dK6zJdpTzF4sQeNYxwtvBzf6Eg4GtlesS94HOvTudUeyK2WXAaIfmDgsyslYrRBeFIlsi54AYsFGUuhmvrQ==}
     engines: {node: '>= 0.4'}
 
-  spraypaint@0.10.25:
-    resolution: {integrity: sha512-5hQi/wOw7SeZIsNfCU/V/rou/j9UwaHuUKZ9a2PwNcAc8kDW8jy1ZoStqcIO5ewsk8dZgbc1lTmrTo1AdzDVDg==}
+  spraypaint@0.11.1:
+    resolution: {integrity: sha512-BRLDc/BpPEps1Sg5UyIygpVLu1tJ+5p3y8U39NQL/YKjTM7yOnFutnL5ookGPzZiOtBAQQ1UkTjGb3J6nZSHjw==}
 
   stop-iteration-iterator@1.1.0:
     resolution: {integrity: sha512-eLoXW/DHyl62zxY4SCaIgnRhuMr6ri4juEYARS8E6sCEqzKpOiE521Ucofdx+KnDZl5xmvGYaaKCk5FEOxJCoQ==}
@@ -2166,7 +2166,7 @@ snapshots:
       side-channel-map: 1.0.1
       side-channel-weakmap: 1.0.2
 
-  spraypaint@0.10.25:
+  spraypaint@0.11.1:
     dependencies:
       eventbusjs: 0.2.0
       inflected: 2.1.0
