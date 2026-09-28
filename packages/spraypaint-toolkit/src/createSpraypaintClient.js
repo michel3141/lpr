@@ -194,10 +194,6 @@ function createSpraypaintClient(clientApplication, schema, params = {}) {
     createEndpoint(resources[resourceName], url)
   );
 
-  window.api = api;
-  window.resources = resources;
-  window.endpoints = endpoints;
-
   return { ...schema, resources, endpoints };
 }
 
