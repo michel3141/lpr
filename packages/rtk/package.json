@@ -1,6 +1,6 @@
 {
   "name": "@lpr/rtk",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "easy use redux-toolkit",
   "license": "MIT",
   "author": "MicheL <michel@itneo.fr>",

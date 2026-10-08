@@ -1,7 +1,7 @@
-import { addDebug } from "../utils";
-import { symbols } from "../constants";
-import { createAction } from "@reduxjs/toolkit";
-import { mkEvent } from "./formaters";
+import { addDebug } from '../utils';
+import { symbols } from '../constants';
+import { createAction } from '@reduxjs/toolkit';
+import { mkEvent } from './formaters';
 
 const prepareDynamic =
   (def) =>
@@ -10,7 +10,7 @@ const prepareDynamic =
 const prepareStatic = (def) => () => ({ payload: def });
 
 const createPayloadCreator = (def) => {
-  return typeof def === "function" ? prepareDynamic(def) : prepareStatic(def);
+  return typeof def === 'function' ? prepareDynamic(def) : prepareStatic(def);
 };
 
 const createEventsFactory = (name) => (eventsMap) => {
@@ -26,7 +26,7 @@ const createEventsFactory = (name) => (eventsMap) => {
     symbols.actions[name][eventId] = eventType;
   });
 
-  addDebug(name)("events", events);
+  addDebug(name)('events', events);
   return events;
 };
 

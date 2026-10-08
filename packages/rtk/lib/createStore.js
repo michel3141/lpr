@@ -1,14 +1,14 @@
-import { configureStore, addListener, createListenerMiddleware } from "@reduxjs/toolkit";
+import { configureStore, addListener, createListenerMiddleware } from '@reduxjs/toolkit';
 // getDefaultMiddleware inclus redux-thunk
 import {
   /* reducers as rtkReducers, no magical reducer import */
   /* listenerMiddleware as XXX,no magical listener import */
   symbols,
-} from "./constants";
-import createLogger from "@lpr/logger";
-import isDevMode from "@lpr/is-dev-mode";
+} from './constants';
+import createLogger from '@lpr/logger';
+import isDevMode from '@lpr/is-dev-mode';
 
-const logger = createLogger("rtk-createStore");
+const logger = createLogger('rtk-createStore');
 
 // import * as actions from '../z_actions';
 // const thunks = Object.keys(actions)
@@ -39,23 +39,23 @@ export function createStore({
   const sliceListener = createListenerMiddleware();
   for (const { name, reducer, listeners } of [slices].flat(Infinity)) {
     if (!name) {
-      throw new Error("unamed slice");
+      throw new Error('unamed slice');
     }
     if (allSlices[name]) {
-      logger("WARNING", `duplicate slice key: '${name}'`);
+      logger('WARNING', `duplicate slice key: '${name}'`);
       continue;
     }
     allSlices[name] = true;
-    logger("INFO", `adding slice '${name}'`);
+    logger('INFO', `adding slice '${name}'`);
     if (reducer) {
       allReducers[name] = reducer;
       if (reducer.persistenceListeners && reducer.persistenceListeners.length > 0) {
-        logger("INFO", `adding persistence for reducer '${name}'`);
+        logger('INFO', `adding persistence for reducer '${name}'`);
         reducer.persistenceListeners.forEach(sliceListener.startListening);
       }
     }
     if (listeners) {
-      logger("INFO", `adding listeners for '${name}'`);
+      logger('INFO', `adding listeners for '${name}'`);
       [listeners].flat(Infinity).filter(Boolean).forEach(sliceListener.startListening);
     }
   }
@@ -64,14 +64,14 @@ export function createStore({
       if (rtkLogger?.type && rtkLogger.type !== action.type) {
         store.dispatch(rtkLogger(...args));
       }
-      if (typeof consoleLogger === "function") {
+      if (typeof consoleLogger === 'function') {
         consoleLogger(...args);
       }
     };
 
-    log("DEBUG", "ACTION", action);
+    log('DEBUG', 'ACTION', action);
     const result = next(action);
-    log("DEBUG", "END", action);
+    log('DEBUG', 'END', action);
 
     return result;
   };
@@ -103,15 +103,15 @@ export function createStore({
   });
 
   if (isDevMode && ignoredPaths.length) {
-    logger(["Ignore serializable state: ", ...ignoredPaths].join("\n  * "));
+    logger(['Ignore serializable state: ', ...ignoredPaths].join('\n  * '));
   }
 
   if (isDevMode && ignoredActions.length) {
-    logger(["Ignore serializable actions: ", ...ignoredActions].join("\n  * "));
+    logger(['Ignore serializable actions: ', ...ignoredActions].join('\n  * '));
   }
   if (isDevMode) {
-    logger("reducers", Object.keys({ /* ...rtkReducers */ ...reducers }));
-    logger("preloadedState", Object.keys(preloadedState));
+    logger('reducers', Object.keys({ /* ...rtkReducers */ ...reducers }));
+    logger('preloadedState', Object.keys(preloadedState));
     //     for (const rtkKey in rtkReducers) {
     //       for (const key in reducers) {
     //         if (key === rtkKey) {
@@ -122,8 +122,8 @@ export function createStore({
   }
   if (isDevMode) {
     [...symbols.listeners]
-      .map((x) => (typeof x === "string" ? x : x.toString()))
-      .forEach((x) => console.log("Listening to:", x.replaceAll("|", " | ")));
+      .map((x) => (typeof x === 'string' ? x : x.toString()))
+      .forEach((x) => console.log('Listening to:', x.replaceAll('|', ' | ')));
   }
   if (isDevMode) {
     //    store.dispatch(
@@ -134,18 +134,18 @@ export function createStore({
     //    );
     store.dispatch(
       addListener({
-        matcher: ({ type }) => type.endsWith("/rejected"),
+        matcher: ({ type }) => type.endsWith('/rejected'),
         effect: ({ type, error }) => {
           if (error.stack) {
             logger(
-              ["... cut output ---", ...error.stack.split("\n").reverse().slice(-3)].join("\n"),
+              ['... cut output ---', ...error.stack.split('\n').reverse().slice(-3)].join('\n')
             );
           } else {
-            logger(type, "No error stack ??!?");
+            logger(type, 'No error stack ??!?');
           }
-          logger(type, error.message || "No error message ??!?");
+          logger(type, error.message || 'No error message ??!?');
         },
-      }),
+      })
     );
   }
   if (isDevMode) {

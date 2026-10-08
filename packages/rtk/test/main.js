@@ -1,27 +1,27 @@
-import rtk from "../lib";
-import { createActionsHook } from "../react";
-const { createEvents, createActions } = rtk("test-slice");
+import rtk from '../lib';
+import { createActionsHook } from '../react';
+const { createEvents, createActions } = rtk('test-slice');
 
 const E = createEvents({
   ab: (x) => x,
-  az: "toto",
+  az: 'toto',
   ty: null,
   wx: ({ x: { a, b }, y }) => ({ y, a, b }),
 });
 
 console.log(
   Object.keys(E),
-  Object.values(E).map((x) => "" + x),
+  Object.values(E).map((x) => '' + x)
 );
 
 const A = createActions({
   action_a: async ({ x, y }, $) => {
-    console.log("async 1", $.dispatch, $.getState);
+    console.log('async 1', $.dispatch, $.getState);
   },
   action_b:
     (dispatch, getState) =>
     async ({ x, y }) => {
-      console.log("do something with", getState());
+      console.log('do something with', getState());
     },
 });
 console.log(
@@ -30,7 +30,7 @@ console.log(
     .flatMap((x) => [x.pending, x.fulfilled, x.rejected])
     .filter(Boolean)
     .filter(Boolean)
-    .map((x) => "" + x),
+    .map((x) => '' + x)
 );
 
 // ---- createEvents ---------

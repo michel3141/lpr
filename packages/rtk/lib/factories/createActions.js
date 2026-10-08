@@ -1,7 +1,7 @@
-import { addDebug } from "../utils";
-import { symbols } from "../constants";
-import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { mkAction } from "./formaters";
+import { addDebug } from '../utils';
+import { symbols } from '../constants';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { mkAction } from './formaters';
 
 /*
  * thunk signature
@@ -20,7 +20,7 @@ import { mkAction } from "./formaters";
  * });
  */
 
-const isAsyncFunc = (def) => def?.constructor?.name === "AsyncFunction";
+const isAsyncFunc = (def) => def?.constructor?.name === 'AsyncFunction';
 
 const safePayload = (obj) => {
   if (obj === undefined) return undefined;
@@ -29,11 +29,11 @@ const safePayload = (obj) => {
 
   return JSON.parse(
     JSON.stringify(obj, function (_, value) {
-      if (typeof value === "bigint") return null;
-      if (typeof value === "function") return null;
-      if (typeof value === "symbol") return null;
+      if (typeof value === 'bigint') return null;
+      if (typeof value === 'function') return null;
+      if (typeof value === 'symbol') return null;
 
-      if (value !== null && typeof value === "object") {
+      if (value !== null && typeof value === 'object') {
         if (ancestors.has(value)) {
           return null; // référence cyclique
         }
@@ -42,7 +42,7 @@ const safePayload = (obj) => {
       }
 
       return value;
-    }),
+    })
   );
 };
 const createThunk = (type, def) => {
@@ -76,7 +76,7 @@ const createActionsFactory = (name) => (actionsMap) => {
     symbols.actions[name][actionId] = actionType;
   });
 
-  addDebug(name)("actions", actions);
+  addDebug(name)('actions', actions);
   return actions;
 };
 

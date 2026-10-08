@@ -1,11 +1,11 @@
-import { reducers, symbols } from "./constants";
+import { reducers, symbols } from './constants';
 
 import {
   createActionsFactory,
   createEventsFactory,
   createReducerFactory,
   createSelectorsFactory,
-} from "./factories";
+} from './factories';
 
 const rtk = (name) => {
   return {
@@ -25,11 +25,11 @@ export {
   addListenerAction,
   removeListenerAction,
   clearAllListenersAction,
-} from "./listeners";
+} from './listeners';
 
 // faut-il encore les garder ? pourquoi ?
-export { createAction, createSelector } from "@reduxjs/toolkit";
-export { createStore } from "./createStore";
+export { createAction, createSelector } from '@reduxjs/toolkit';
+export { createStore } from './createStore';
 export {
   reducers, // à laisser ici ? ou à importer depuis constants si besoin ?
   symbols, // à laisser ici ? ou à importer depuis constants si besoin ?

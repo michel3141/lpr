@@ -63,7 +63,7 @@ updatePost.rejected;
 Exemple synchrone :
 
 ```js
-const updatePost = createAsyncThunk("posts/update", ({ id, changes }, { getState }) => {
+const updatePost = createAsyncThunk('posts/update', ({ id, changes }, { getState }) => {
   const post = selectPost(getState(), id);
 
   return {
@@ -84,7 +84,7 @@ builder.addCase(updatePost.fulfilled, (state, action) => {
 L'intention peut ensuite devenir asynchrone sans changer son interface :
 
 ```js
-const updatePost = createAsyncThunk("posts/update", async ({ id, changes }) => {
+const updatePost = createAsyncThunk('posts/update', async ({ id, changes }) => {
   return await api.updatePost(id, changes);
 });
 ```

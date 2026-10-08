@@ -1,7 +1,7 @@
-import { addDebug } from "../utils";
-import { symbols } from "../constants";
-import { pascalize } from "@lpr/helpers-text";
-import { createSelector } from "@reduxjs/toolkit";
+import { addDebug } from '../utils';
+import { symbols } from '../constants';
+import { pascalize } from '@lpr/helpers-text';
+import { createSelector } from '@reduxjs/toolkit';
 
 const mkSelect = (prop) => `select${pascalize(prop)}`;
 
@@ -33,7 +33,7 @@ const createSelectorsFactory =
       symbols.selectors[name].add(selectorName);
       const normalizedName = mkSelect(selectorName);
 
-      if (typeof selector === "function") {
+      if (typeof selector === 'function') {
         selectors[normalizedName] = mapToLocalState(selector);
         continue;
       }
@@ -44,7 +44,7 @@ const createSelectorsFactory =
       }
     }
 
-    addDebug(name)("selectors", selectors);
+    addDebug(name)('selectors', selectors);
 
     return selectors;
   };

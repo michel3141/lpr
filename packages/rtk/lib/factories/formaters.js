@@ -1,5 +1,4 @@
-import { camelize, constantize } from "@lpr/helpers-text";
-
+import { camelize, constantize } from '@lpr/helpers-text';
 
 export const mkEvent = (eventName) => constantize(`${eventName}_EVENT`);
 
