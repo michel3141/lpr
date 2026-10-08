@@ -1,11 +1,11 @@
-import { symbols } from "./constants";
-import { boot } from "../actions";
+import { symbols } from './constants';
+import { boot } from '../actions';
 import {
   isAnyOf,
   addListener as addListenerAction,
   removeListener as removeListenerAction,
   clearAllListeners as clearAllListenersAction,
-} from "@reduxjs/toolkit";
+} from '@reduxjs/toolkit';
 
 const addListener = (actionCreator, baseEffect, logger = console.log) => {
   const listenerMiddleware = [];
@@ -13,20 +13,20 @@ const addListener = (actionCreator, baseEffect, logger = console.log) => {
     if (logger) {
       logger(`triggered '${action.type}'`);
     }
-    baseEffect(action, thunkApi);
+    return baseEffect(action, thunkApi);
   };
   if (!actionCreator) {
-    logger("Something is wrong in addListener");
-    throw new Error("Something is wrong in addListener");
+    logger('Something is wrong in addListener');
+    throw new Error('Something is wrong in addListener');
   }
   if (Array.isArray(actionCreator)) {
-    symbols.listeners.add(actionCreator.map((x) => x.toString()).join("|"));
+    symbols.listeners.add(actionCreator.map((x) => x.toString()).join('|'));
     const thunkList = actionCreator
       .filter((action) => action.fulfilled)
       .map((action) => action.typePrefix);
     if (thunkList.length > 0) {
       throw new Error(
-        `Use of a thunk instead of action inside addListener group: ${thunkList.join(", ")}`,
+        `Use of a thunk instead of action inside addListener group: ${thunkList.join(', ')}`
       );
     } else {
       listenerMiddleware.push({
@@ -40,7 +40,7 @@ const addListener = (actionCreator, baseEffect, logger = console.log) => {
     symbols.listeners.add(actionCreator);
     listenerMiddleware.push({ actionCreator, effect });
   } else {
-    symbols.listeners.add("fn=" + actionCreator);
+    symbols.listeners.add('fn=' + actionCreator);
     listenerMiddleware.push({ matcher: actionCreator, effect });
   }
   return listenerMiddleware;
