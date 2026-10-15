@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { pascalize, camelize } from '@lpr/helpers-text';
+import { camelize } from '@lpr/helpers-text';
 import prettier from '@prettier/sync';
 import fs from 'fs';
 
