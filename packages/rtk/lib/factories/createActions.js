@@ -45,20 +45,46 @@ const safePayload = (obj) => {
     })
   );
 };
+
 const createThunk = (type, def) => {
-  const begin = createAction(`${type}/begin`, (arg) => ({ payload: safePayload(arg) }));
+  const begin = createAction(`${type}/begin`, (...args) => ({ payload: safePayload({ args }) }));
   const end = createAction(`${type}/end`, (response) => ({ payload: safePayload(response) }));
-  const thunkCreator = (arg) => async (dispatch, getState, extra) => {
-    dispatch(begin(arg));
-    const response = await def(arg)(dispatch, getState, extra);
-    dispatch(end(response));
-    return { unwrap: () => response };
-  };
   // should not be listened nor reduced
   // only to debug redux flow
+  // J'ai supprimé cette possibilité :
   // thunkCreator.begin=begin
   // thunkCreator.end=end
   // for life cycle : use async
+
+  const thunkCreator =
+    (...args) =>
+    (dispatch, getState, extra) => {
+      dispatch(begin(...args));
+
+      let response;
+      try {
+        response = def(...args)(dispatch, getState, extra);
+      } catch (error) {
+        dispatch(end({ error }));
+        throw error;
+      }
+
+      if (response && typeof response.then === 'function') {
+        return response
+          .then((result) => {
+            dispatch(end(result));
+            return result;
+          })
+          .catch((error) => {
+            dispatch(end({ error }));
+            throw error;
+          });
+      }
+
+      dispatch(end(response));
+      return response;
+    };
+
   return thunkCreator;
 };
 
