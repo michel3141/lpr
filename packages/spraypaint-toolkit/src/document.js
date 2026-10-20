@@ -163,9 +163,13 @@ class SpraypaintDocument {
   }
 
   async destroy() {
-    await this.#data.destroy();
+  if (await this.#data.destroy()) {
     this.emit('destroy', this.#data);
+  } else {
+    // refus de validation (422) : les erreurs sont dans data.errors
+    this.emit('fulfilled', this);
   }
+}
 }
 
 export default SpraypaintDocument;
