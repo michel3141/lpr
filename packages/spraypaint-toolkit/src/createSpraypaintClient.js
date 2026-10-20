@@ -1,6 +1,6 @@
 import { camelize } from '@lpr/helpers-text';
 import { attr, belongsTo, hasOne, hasMany } from 'spraypaint';
-import { createBaseApi, createResource, createEndpoint } from './BaseApi';
+import { createBaseApi, createResource, createEndpoint } from './BaseApi.js';
 
 /**
  * ---------------------------------------------------------------------------
@@ -158,7 +158,7 @@ function createApiConfig(clientApplication, params = {}) {
 async function fetchSpraypaintClient(clientApplication, params = {}) {
   const apiConfig = createApiConfig(clientApplication, params);
   const { url, apiPath } = apiConfig;
-  const schema = await fetch(`${url}${apiPath}/vandal/schema.json`);
+  const schema = await fetch(`${url}${apiPath}/vandal/schema.json`).then((x) => x.json());
   return createSpraypaintClient(clientApplication, schema, apiConfig);
 }
 

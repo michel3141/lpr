@@ -39,31 +39,29 @@ function createBaseApi({ url, apiPath, clientApplication = 'web-app' }, extra = 
  * différents
  */
 function createResource(baseApi, { attrs, jsonapiType }, extra = {}) {
-  if (!(jsonapiType in baseApi._resources)) {
-    // défini en dur le endpoint par défaut
-    const endpoint = `/${jsonapiType}`;
-    baseApi._resources[jsonapiType] = baseApi.extend({
-      attrs,
+  // défini en dur le endpoint par défaut
+  const endpoint = `/${jsonapiType}`;
+  const Resource = baseApi.extend({
+    attrs,
 
-      static: {
-        sync: false, // active le lancement de afterSync
-        ...extra.static,
-        jsonapiType,
-        endpoint,
-      },
+    static: {
+      sync: false, // active le lancement de afterSync
+      ...extra.static,
+      jsonapiType,
+      endpoint,
+    },
 
-      methods: {
-        afterSync: function (diff = {}) {
-          // const { type, id } = this.resourceIdentifier
-          return this;
-          // console.log(`Change in ${type}-${id}`)
-          // console.log(diff)
-        },
-        ...extra.methods,
+    methods: {
+      afterSync: function (diff = {}) {
+        // const { type, id } = this.resourceIdentifier
+        return this;
+        // console.log(`Change in ${type}-${id}`)
+        // console.log(diff)
       },
-    });
-  }
-  return baseApi._resources[jsonapiType];
+      ...extra.methods,
+    },
+  });
+  return Resource;
 }
 
 function createEndpoint(resource, endpoint, extra = {}) {

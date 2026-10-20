@@ -1,5 +1,5 @@
-export { createBaseApi, createResource, createEndpoint } from './src/BaseApi';
+export { createBaseApi, createResource, createEndpoint } from './src/BaseApi.js';
 export {
   default as createSpraypaintClient,
   fetchSpraypaintClient,
-} from './src/createSpraypaintClient';
+} from './src/createSpraypaintClient.js';
