@@ -1,14 +1,9 @@
 # 0.3.0
 
-fix: onDocPersist (l'événement PERSIST n'était jamais émis)
-fix: REFRESH reçoit le diff (map passait l'index)
-fix: getResources ne lève plus d'erreur sans document
-fix: Watch lit doc.committing
-fix: useRequest dans PagedRequest (signature) et fallbackData dans Request
-fix: le préchargement des pages ne déclenche plus onCount, et reste dans les bornes
-fix: listener shouldRefresh stable (plus de réabonnement à chaque rendu)
-refactor: retire l'export spraypaint-adapter et les dépendances object-hash et spraypaint
-docs: réécriture (README, docs/concepts, lifecycle, react, api)
+2026-10-21 feat: réécriture complète de la lib
+2026-10-21 docs: nouvelle documentation
+2026-09-29 refactor: sort createSpraypaintClient de la lib =>spraypaint-toolkit@1.0.0
+2026-09-26 fix: calcule de document isDirty
 
 # 0.2.0
 
