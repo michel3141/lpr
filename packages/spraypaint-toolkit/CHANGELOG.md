@@ -1,3 +1,13 @@
+# 1.1.0
+
+2026-10-21 feat: create d'un spraypaint client complet  + jsonapi document adapter
+2026-10-21 fix: import schema as jsonn
+2026-09-29 refactor: remove debug
+2026-09-28 fix: exports de la lib
+2026-09-28 feat!: simplifie les modèles
+2026-09-28 feat: add createSpraypaintClient.js
+2026-09-28 feat: add createSpraypaintClient
+
 # 1.0.1
 
 fix: tools.js n'écrit plus window.aa à l'import, ni de console.log
