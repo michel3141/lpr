@@ -9,7 +9,8 @@
     "src"
   ],
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./tools": "./src/tools.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,6 +26,6 @@
     "oxlint": "^1.85.0"
   },
   "peerDependencies": {
-    "spraypaint": "^0.11.*"
+    "spraypaint": "^0.11.1"
   }
 }

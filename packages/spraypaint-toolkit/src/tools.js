@@ -1,103 +1,111 @@
-import { Scope } from 'spraypaint';
-async function getAllPages(options = {}) {
-  const { meta } = await this.per(0).stats({ total: 'count' }).all();
-  const { count } = meta.stats.total;
-  return this.per(count).all();
-  /*
-  const { per } = options;
-  let endpoint = this;
-  if (per) {
-    endpoint = endpoint.per(per);
+export function sptkFlatResource(data) {
+  if (Array.isArray(data)) {
+    console.warn(data);
+    throw Error("Ne gère pas les collection. C'est une feature");
   }
-  endpoint = endpoint.stats({ total: 'count' });
-  const items = [];
-  let page = 1;
-  let again = true;
-  while (again) {
-    const response = await endpoint.page(page).all();
-    const { meta } = response.raw;
-    const { data } = response;
-    items.push(...data);
-    page += 1;
-    again = items.length < meta.stats.total.count;
-  }
-  return items;
-  */
+  const walk = (datum) => {
+    const { attributes, relationships } = datum;
+    const resource = { ...datum.resourceIdentifier, attributes, relationships: {} };
+    for (const [relationshipName, relationshipData] of Object.entries(relationships ?? {})) {
+      if (Array.isArray(relationshipData)) {
+        resource.relationships[relationshipName] = relationshipData.map(walk);
+      } else {
+        resource.relationships[relationshipName] = walk(relationshipData);
+      }
+    }
+    return resource;
+  };
+  return walk(data);
 }
-Scope.prototype.getAllPages = getAllPages;
 
-export const oldTools = {
-  methods: {
-    afterSync: function (diff = {}) {
-      // const { type, id } = this.resourceIdentifier
-      return this;
-      // console.log(`Change in ${type}-${id}`)
-      // console.log(diff)
-    },
-    commit: async function (saveOpts = {}) {
-      const saved = await this.save(saveOpts);
-      if (saved) {
-        return this;
-      } else {
-        throw new Error(
-          Object.values(this.errors)
-            .map(({ message }) => message)
-            .join('|')
-        );
-      }
-    },
-    updateAttributes: function (attributes = {}, updateOpts = {}) {
-      const { isPersisted } = updateOpts;
-      Object.entries(attributes).forEach(
-        ([key, value]) => key !== 'id' && key in this._attributes && (this[key] = value)
-      );
-      if (isPersisted === true) {
-        if (!attributes.id) {
-          throw new Error('No id, no persistence');
-        }
-        this.isPersisted = true;
-      }
-      return this;
-    },
-    update: async function (attributes = {}, saveOpts = {}) {
-      this.updateAttributes(attributes);
-      return this.commit(saveOpts);
-    },
-    deepAttributes: function () {
-      const { attributes, relationships } = this;
-      for (const [relationshipName, relationshipData] of Object.entries(relationships)) {
-        if (Array.isArray(relationshipData)) {
-          attributes[relationshipName] = relationshipData.map((relationshipDatum) =>
-            relationshipDatum.deepAttributes()
-          );
-        } else {
-          attributes[relationshipName] = relationshipData.deepAttributes();
-        }
-      }
-      return attributes;
-    },
-  },
+export function sptkIncludedResources(data) {
+  // /!\
+  // si une resource apparait à différents endroits,
+  // elle sera présente plusieurs fois avec Map
+  // celui-ci supporte les collection aussi
+  // if (Array.isArray(data)) {
+  //   console.warn(data);
+  //   throw Error("Ne gère pas les collection. C'est une feature");
+  // }
+  const included = new Set();
 
-  static: {
-    findOrFetchAttributes: function (id, tryFetch = true) {
-      const { jsonapiType, store } = this;
-      const storeKey = `${jsonapiType}-${id}`;
-      return store.data[storeKey]
-        ? Promise.resolve(store.data[storeKey])
-        : tryFetch
-          ? this.find(id).then((x) => x.data.attributes)
-          : undefined;
-    },
-    inflate: function (raw, first) {
-      // attention, les raw_data provenant de .first()
-      // sont des tableaux
-      if (Array.isArray(raw.data)) {
-        return first
-          ? this.scope()._buildRecordResult(raw).data
-          : this.scope()._buildCollectionResult(raw).data;
+  function walk(resource, mainResource = false) {
+    if (!mainResource) {
+      included.add(resource);
+    }
+
+    Object.values(resource.relationships ?? {}).forEach((relationship) => {
+      if (Array.isArray(relationship)) {
+        relationship.forEach((item) => walk(item));
       } else {
-        return this.scope()._buildRecordResult(raw).data;
+        walk(relationship);
       }
-    },
-  },
-};
+    });
+  }
+
+  [data].flat().forEach((datum) => walk(datum, true));
+
+  return [...included];
+}
+
+export function sptkIncludedResourceIdentifiers(data) {
+  // celui-ci supporte les collection aussi
+  const included = new Map();
+  [data].flat().forEach((datum) => {
+    sptkIncludedResources(datum).forEach((resource) => {
+      const { resourceIdentifier } = resource;
+      included.set(`${resourceIdentifier.type}:${resourceIdentifier.id}`, resourceIdentifier);
+    });
+  });
+  return [...included.values()];
+}
+
+export function sptkRemoveIncluded(data, resourceIdentifier) {
+  const keepResource = (item) =>
+    item?.resourceIdentifier.type !== resourceIdentifier.type ||
+    item?.resourceIdentifier.id !== resourceIdentifier.id;
+
+  if (Array.isArray(data)) {
+    console.warn(data);
+    throw Error("Ne gère pas les collection. C'est une feature");
+  }
+
+  function walk(item) {
+    Object.entries(item.relationships || {}).forEach(([key, relationship]) => {
+      if (Array.isArray(relationship)) {
+        item.relationships[key] = relationship.filter(keepResource);
+        item.relationships[key].forEach(walk);
+      } else if (keepResource(relationship)) {
+        walk(relationship);
+      } else {
+        item.relationships[key] = null;
+      }
+    });
+  }
+
+  walk(data);
+}
+
+export function sptkKeepResources(raw) {
+  const walkResource = ({ type, id, relationships, attributes }) => ({
+    type,
+    id,
+    attributes: attributes && Object.keys(attributes),
+    relationships:
+      relationships &&
+      Object.fromEntries(
+        Object.entries(relationships).map(([relationship, { data }]) => [
+          relationship,
+          walkDoc({ data }),
+        ])
+      ),
+  });
+  const walkDoc = ({ data }) => {
+    const resources = {
+      data: data && (data.map ? data.map(walkResource) : walkResource(data)),
+    };
+
+    return resources;
+  };
+  return JSON.stringify(walkDoc(raw), undefined, 2);
+}

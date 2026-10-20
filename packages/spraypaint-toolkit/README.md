@@ -43,15 +43,7 @@ const client = createSpraypaintClient('web-app', schema, {
 }
 ```
 
-Retourne le schéma enrichi avec :
-
-```js
-{
-  ...schema,
-  resources,
-  endpoints
-}
-```
+Retourne un [`SpraypaintClient`](#spraypaintclient). Une Resource est créée par resource du schéma, et un Endpoint par couple `url` / `action` des endpoints du schéma.
 
 ---
 
@@ -217,12 +209,58 @@ const client = await fetchSpraypaintClient('web-app', {
   apiPath: '/api/v1',
 });
 
-const Post = client.resources.PostResource;
-const posts = client.endpoints['/posts'].actions.index;
-const topPosts = client.endpoints['/top_posts'].actions.index;
+// api(endpoint).<action> retourne le modèle Spraypaint autorisé pour cette action
+// (index, show… ; all/first et find/findSingle en sont des alias) : on l'interroge ensuite
+const posts = await client.api('/posts').index.all(); // ou .all.all()
+const post = await client.api('/posts').show.find(12); // ou .find.find(12)
+const top = await client.api('/top_posts').index.per(5).all();
+const Post = client.model('PostResource'); // ou client.model('posts')
 ```
 
-La structure `client.resources` contient les Resources, tandis que `client.endpoints` reprend la structure des endpoints et de leurs actions définie dans le schéma.
+## SpraypaintClient
+
+Instance retournée par `createSpraypaintClient` et `fetchSpraypaintClient`.
+
+| Méthode            | Rôle                                                                                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `api(endpointUrl)` | retourne l'endpoint (sans `apiPath`, ex. `/posts`), dont on tire le modèle Spraypaint d'une action : `index`, `show`… (alias `all`, `first`, `find`, `findSingle`), ou `create` |
+| `model(name)`      | retourne la Resource par son nom de classe (`PostResource`) ou son type (`posts`)                                                        |
+| `adapt(data)`      | enveloppe une instance de modèle Spraypaint dans un [`Document`](#document)                                                              |
+
+Les actions du schéma s'utilisent par leur nom (`index`, `show`, …) ou par un alias : `all` et `first` → `index` ; `find` et `findSingle` → `show`. `create` est une fonction : `create(attributs)` → `new <Modèle>(attributs)`. L'endpoint n'a pas de méthodes de requête (`per`, `where`, …) : elles sont sur le modèle retourné. Appeler une action absente du schéma pour cet endpoint lève une erreur.
+
+```js
+const Machines = client.api('/machines').index;
+Machines.includes('interfaces').where({ hostname: 'srv' }).all();
+const machine = client.api('/machines').create({ hostname: 'srv' });
+await machine.save();
+```
+
+## Document
+
+`client.adapt(model)` retourne un `Document` : un suivi autonome d'une instance de modèle, utilisé par `@lpr/redux-documents`.
+
+| Membre                         | Rôle                                                                            |
+| ------------------------------ | ------------------------------------------------------------------------------- |
+| `id`                           | identifiant local (uuid)                                                        |
+| `resourceId`                   | `storeKey` Spraypaint de la resource                                            |
+| `data`                         | l'instance du modèle                                                            |
+| `committing`, `error`          | état de la sauvegarde en cours                                                  |
+| `open(callbacks)`              | active l'écoute de la resource (`listen()`) et enregistre les callbacks         |
+| `close()`                      | arrête l'écoute                                                                 |
+| `modify(changes, saveOptions)` | applique les changements (attributs et relations) puis programme une sauvegarde |
+| `commit(options)`              | sauvegarde immédiatement                                                        |
+| `destroy()`                    | supprime la resource                                                            |
+
+**Sauvegarde différée.** `modify` programme une sauvegarde après `delay` ms (500 par défaut). Les `modify` suivants repoussent l'échéance. `modify(changes, false)` ne sauvegarde pas. `commit` est urgent : il remplace les sauvegardes en attente. Une seule sauvegarde est exécutée à la fois ; le reste est repris à la fin.
+
+**Callbacks de `open`.** Resource : `onResourceDestroy(model)`, `onResourceSync(model, diff)`. Document : `onDocOpen`, `onDocClose`, `onDocModify(doc, changes)`, `onDocPending`, `onDocFulfiled`, `onDocRejected`, `onDocPersist`. `onDocPersist` est émis après la première sauvegarde réussie d'une resource non encore persistée.
+
+Une sauvegarde qui échoue par validation (`save()` retourne `false`) émet `fulfilled` ; les erreurs sont dans `doc.data.errors`. Une exception (réseau, serveur) émet `rejected`, avec `doc.error`.
+
+## Outils
+
+`@lpr/spraypaint-toolkit/tools` exporte des fonctions de manipulation de resources (`sptkFlatResource`, `sptkIncludedResources`, `sptkIncludedResourceIdentifiers`, `sptkRemoveIncluded`, `sptkKeepResources`), surtout utiles au débogage.
 
 ## Concepts Spraypaint
 

@@ -26,7 +26,24 @@ function createBaseApi({ url, apiPath, clientApplication = 'web-app' }, extra = 
         baseApi.headers = {};
       },
     },
-    methods: { ...extra.methods },
+    methods: {
+      // listen() n'abonne que la resource elle-même ; unlisten() de spraypaint
+      // descend aussi dans les relations, sans garde contre les cycles : or
+      // Graphiti renvoie toujours la linkage des belongs_to, et le deserializer
+      // réutilise les instances d'un même payload (network.ips[i].network ===
+      // network) => "too much recursion" au close() d'un document.
+      // On ne désabonne donc que la resource, comme listen().
+      unlisten: function () {
+        const { relationships } = this;
+        this.relationships = {};
+        try {
+          SpraypaintBase.prototype.unlisten.call(this);
+        } finally {
+          this.relationships = relationships;
+        }
+      },
+      ...extra.methods,
+    },
   });
   return baseApi;
 }
@@ -45,7 +62,7 @@ function createResource(baseApi, { attrs, jsonapiType }, extra = {}) {
     attrs,
 
     static: {
-      sync: false, // active le lancement de afterSync
+      sync: true, // active le lancement de afterSync
       ...extra.static,
       jsonapiType,
       endpoint,

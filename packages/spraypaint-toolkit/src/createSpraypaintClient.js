@@ -1,6 +1,7 @@
 import { camelize } from '@lpr/helpers-text';
 import { attr, belongsTo, hasOne, hasMany } from 'spraypaint';
 import { createBaseApi, createResource, createEndpoint } from './BaseApi.js';
+import SpraypaintClient from './SpraypaintClient.js';
 
 /**
  * ---------------------------------------------------------------------------
@@ -158,7 +159,12 @@ function createApiConfig(clientApplication, params = {}) {
 async function fetchSpraypaintClient(clientApplication, params = {}) {
   const apiConfig = createApiConfig(clientApplication, params);
   const { url, apiPath } = apiConfig;
-  const schema = await fetch(`${url}${apiPath}/vandal/schema.json`).then((x) => x.json());
+  const schemaUrl = `${url}${apiPath}/vandal/schema.json`;
+  const response = await fetch(schemaUrl);
+  if (!response.ok) {
+    throw Error(`Impossible de charger le schéma '${schemaUrl}' (${response.status})`);
+  }
+  const schema = await response.json();
   return createSpraypaintClient(clientApplication, schema, apiConfig);
 }
 
@@ -194,7 +200,7 @@ function createSpraypaintClient(clientApplication, schema, params = {}) {
     createEndpoint(resources[resourceName], url)
   );
 
-  return { ...schema, resources, endpoints };
+  return new SpraypaintClient({ ...schema, resources, endpoints });
 }
 
 export default createSpraypaintClient;
