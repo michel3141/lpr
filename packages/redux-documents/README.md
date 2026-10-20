@@ -1,135 +1,78 @@
-# Documents
+# @lpr/redux-documents
 
-Cette librairie gère le cycle de vie de documents et maintient automatiquement synchronisées les différentes instances d'une même resource.
+Suivi du cycle de vie de documents JSON:API (Spraypaint) dans Redux, et composants React pour les afficher.
 
-Un document est identifié dans l'application par un `subscriberId`. Il peut représenter une resource unique ou une collection.
+## Principe
 
-## Ouvrir un document
+- Un **document** enveloppe une resource Spraypaint (et ses `included`). Il est créé par `@lpr/spraypaint-toolkit` (`client.adapt(data)`) et émet des signaux : `open`, `modify`, `pending`, `fulfilled`, `rejected`, `persist`, `close`…
+- Les documents **ne sont pas normalisés** : chacun reste autonome. Redux ne garde que leur état de suivi (`version`, `deleted`, `subscriptions`). Les instances vivent dans un store externe (`src/documents/store.js`).
+- Le store tient un **index des resources** (`resourceId` → documents). Quand une resource change (sync) ou disparaît (destroy), tous les documents qui la contiennent sont notifiés (`REFRESH`, `DELETE`).
+- La récupération des données est confiée à **SWR** (`createScope` + `Index` / `Show`). Il n'y a plus de notion de Request dans Redux.
 
-À partir d'une donnée existante :
+![schéma](docs/redux-documents.png)
+
+## Installation
+
+```bash
+pnpm add @lpr/redux-documents @lpr/rtk @lpr/spraypaint-toolkit swr
+```
+
+Dépendance pair : `react` ≥ 19.
+
+## Utilisation
+
+### 1. Slice Redux
 
 ```js
-dispatch(
-  open({
-    subscriberId: 'user',
-    data: user,
-  })
-);
+import reduxDocuments from '@lpr/redux-documents';
+import createReactStore from '@lpr/rtk/react';
+
+export default createReactStore({ slices: [reduxDocuments] });
 ```
 
-Ou depuis un endpoint :
+### 2. Scope SWR
 
 ```js
-dispatch(
-  find({
-    subscriberId: 'user',
-    endpoint: '/users',
-    id: 42,
-  })
-);
+import { createScope } from '@lpr/redux-documents/react';
+
+export const machineScope = createScope(client, { endpoint: '/machines', method: 'all' });
 ```
 
-Les autres opérations disponibles sont `create`, `findSingle`, `first` et `all`.
+Un scope se spécialise avec `extend({...})`. Chaque clé de la requête est appliquée comme méthode du scope Spraypaint (`include`, `where`, `order`, `per`, `page`, `stats`…).
 
-## Modifier
+### 3. Observer un document
 
-```js
-dispatch(
-  update({
-    subscriberId: 'user',
-    changes: {
-      name: 'Jane',
-    },
-  })
-);
+`Watch` crée le document, s'abonne au montage, se désabonne au démontage, et fournit un contexte au `Controller`.
+
+```jsx
+import { Watch } from '@lpr/redux-documents/react';
+
+export const Machine = Watch(client, MachineController, machineContext);
 ```
 
-La modification est d'abord locale. Les autres documents contenant la même resource sont automatiquement mis à jour.
+Dans le contexte : `data` (attributs, relations, `errors`) et `meta` (`modify`, `commit`, `destroy`, `dirty`, `persisted`, `committing`, `error`).
 
-## Sauvegarder
+### 4. Lister / afficher
 
-```js
-dispatch(
-  save({
-    subscriberId: 'user',
-  })
-);
+```jsx
+import { Index, Show } from '@lpr/redux-documents/react';
+
+<Index
+  scope={machineScope}
+  Obs={Machine}
+  request={{ include: ['interfaces'] }}
+  pager={usePager}
+  shouldRefresh={(action, payload) => action === 'create' && payload.type === 'machines'}
+/>
+
+<Show scope={machineScope} Obs={Machine} request={{ method: 'find', id }} />
 ```
 
-Le résultat indique si la sauvegarde a réussi :
+Voir [docs/react.md](docs/react.md).
 
-```js
-const { success } = await dispatch(save(...));
-```
+## Documentation
 
-`success === false` signifie que la requête a été effectuée mais que la sauvegarde a été refusée, par exemple à cause d'une validation métier.
-
-Une erreur technique provoque le rejet de l'action.
-
-## Détruire et fermer
-
-```js
-dispatch(
-  destroy({
-    subscriberId: 'user',
-  })
-);
-```
-
-Détruit la resource côté serveur et met à jour les documents qui la référencent.
-
-Pour simplement retirer un document de l'application :
-
-```js
-dispatch(CLOSE_EVENT('user'));
-```
-
-`CLOSE_EVENT` n'effectue aucune opération serveur.
-
-## Événements
-
-Les principaux événements sont :
-
-- `OPEN_EVENT` : document ouvert ;
-- `UPDATE_EVENT` : document modifié localement ;
-- `RESOURCES_EVENT` : resources contenues dans le document ;
-- `CLOSE_EVENT` : document fermé.
-
-`UPDATE_EVENT` indique une modification locale. Il ne signifie pas que le serveur est synchronisé.
-
-## État
-
-Redux conserve l'état de gestion du document :
-
-```js
-{
-  status,
-  error,
-  saveOptions,
-  updateOptions,
-  version,
-}
-```
-
-Le document lui-même est conservé dans le `documentStore`.
-
-Les statuts principaux sont :
-
-```text
-opened → pending → synced
-             ↓
-           error
-
-synced → dirty → updating → synced
-                         ↓
-                       error
-```
-
-La librairie utilise un adaptateur pour isoler Redux et le `documentStore` de la technologie utilisée pour manipuler les données. L'adaptateur fourni utilise Graphiti/Spraypaint.
-
-# React
-
-Cette lib propose :
-
-- un hook [`useApi`](./docs/react.md)
-- un créateur de Provider [`createApiProvider`](./docs/README.react.createApiProvider.md)
+- [Concepts](docs/concepts.md)
+- [Cycle de vie](docs/lifecycle.md)
+- [React](docs/react.md)
+- [API](docs/api.md)
