@@ -1,3 +1,15 @@
+# 0.3.0
+
+fix: onDocPersist (l'événement PERSIST n'était jamais émis)
+fix: REFRESH reçoit le diff (map passait l'index)
+fix: getResources ne lève plus d'erreur sans document
+fix: Watch lit doc.committing
+fix: useRequest dans PagedRequest (signature) et fallbackData dans Request
+fix: le préchargement des pages ne déclenche plus onCount, et reste dans les bornes
+fix: listener shouldRefresh stable (plus de réabonnement à chaque rendu)
+refactor: retire l'export spraypaint-adapter et les dépendances object-hash et spraypaint
+docs: réécriture (README, docs/concepts, lifecycle, react, api)
+
 # 0.2.0
 
 feat: selectDocument returns full document
