@@ -1,3 +1,8 @@
+# 1.1.1
+
+2026-10-24 fix: emet sync on successfull save
+2026-10-21 fix: destroy document gère les 422
+
 # 1.1.0
 
 2026-10-21 feat: create d'un spraypaint client complet + jsonapi document adapter
