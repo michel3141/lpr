@@ -1,4 +1,15 @@
 const defaultSaveOptions = { delay: 500 }; // ou false
+
+// comme DirtyChecker.dirtyAttributes, mais depuis un état donné : { clé: [avant, après] }
+const attributesDiff = (model, before) =>
+  Object.fromEntries(
+    Object.keys(model.attributes)
+      .filter((key) =>
+        model.klass.attributeList[key].dirtyChecker(before[key], model.attributes[key])
+      )
+      .map((key) => [key, [before[key], model.attributes[key]]])
+  );
+
 class SpraypaintDocument {
   #data;
   #listener;
@@ -146,10 +157,17 @@ class SpraypaintDocument {
     this.#error = null;
     this.emit('pending', this);
     const wasPersisted = this.#data.isPersisted;
+    // avant le save : le diff couvrira aussi ce que le serveur a calculé (réponse => fromJsonapi)
+    const before = this.#data._originalAttributes;
     try {
       const success = await this.#data.save(task.options);
-      if (success && !wasPersisted) {
-        this.emit('persist', this);
+      if (success) {
+        if (!wasPersisted) {
+          this.emit('persist', this);
+        } else {
+          const diff = attributesDiff(this.#data, before);
+          if (Object.keys(diff).length > 0) this.emit('sync', this.#data, diff);
+        }
       }
       this.#committing = false;
       this.emit('fulfilled', this);
@@ -163,13 +181,13 @@ class SpraypaintDocument {
   }
 
   async destroy() {
-  if (await this.#data.destroy()) {
-    this.emit('destroy', this.#data);
-  } else {
-    // refus de validation (422) : les erreurs sont dans data.errors
-    this.emit('fulfilled', this);
+    if (await this.#data.destroy()) {
+      this.emit('destroy', this.#data);
+    } else {
+      // refus de validation (422) : les erreurs sont dans data.errors
+      this.emit('fulfilled', this);
+    }
   }
-}
 }
 
 export default SpraypaintDocument;

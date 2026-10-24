@@ -221,11 +221,11 @@ const Post = client.model('PostResource'); // ou client.model('posts')
 
 Instance retournée par `createSpraypaintClient` et `fetchSpraypaintClient`.
 
-| Méthode            | Rôle                                                                                                                                     |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Méthode            | Rôle                                                                                                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `api(endpointUrl)` | retourne l'endpoint (sans `apiPath`, ex. `/posts`), dont on tire le modèle Spraypaint d'une action : `index`, `show`… (alias `all`, `first`, `find`, `findSingle`), ou `create` |
-| `model(name)`      | retourne la Resource par son nom de classe (`PostResource`) ou son type (`posts`)                                                        |
-| `adapt(data)`      | enveloppe une instance de modèle Spraypaint dans un [`Document`](#document)                                                              |
+| `model(name)`      | retourne la Resource par son nom de classe (`PostResource`) ou son type (`posts`)                                                                                               |
+| `adapt(data)`      | enveloppe une instance de modèle Spraypaint dans un [`Document`](#document)                                                                                                     |
 
 Les actions du schéma s'utilisent par leur nom (`index`, `show`, …) ou par un alias : `all` et `first` → `index` ; `find` et `findSingle` → `show`. `create` est une fonction : `create(attributs)` → `new <Modèle>(attributs)`. L'endpoint n'a pas de méthodes de requête (`per`, `where`, …) : elles sont sur le modèle retourné. Appeler une action absente du schéma pour cet endpoint lève une erreur.
 

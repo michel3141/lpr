@@ -12,7 +12,7 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0
       spraypaint:
-        specifier: ^0.11.*
+        specifier: ^0.11.1
         version: 0.11.1
     devDependencies:
       oxfmt:
