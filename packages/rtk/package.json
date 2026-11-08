@@ -30,9 +30,9 @@
     "ef": "oxlint --fix"
   },
   "dependencies": {
-    "@lpr/helpers-text": "^0.1.0",
-    "@lpr/is-dev-mode": "^0.1.1",
-    "@lpr/logger": "^0.0.2",
+    "@lpr/helpers-text": "workspace:^",
+    "@lpr/is-dev-mode": "workspace:^",
+    "@lpr/logger": "workspace:^",
     "@prettier/sync": "^0.5.1",
     "@reduxjs/toolkit": "^2.12.0",
     "acorn": "^8.11.2",

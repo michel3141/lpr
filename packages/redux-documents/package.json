@@ -22,8 +22,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@lpr/rtk": "^2.1.0",
-    "@lpr/spraypaint-toolkit": "^1.0.0",
+    "@lpr/rtk": "workspace:^",
+    "@lpr/spraypaint-toolkit": "workspace:^",
     "swr": "^2.5.1"
   },
   "devDependencies": {

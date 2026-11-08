@@ -9,7 +9,6 @@
   "keywords": [],
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "license": "ISC",
-  "packageManager": "pnpm@10.20.0",
   "devDependencies": {
     "@biomejs/biome": "^2.4.16"
   }

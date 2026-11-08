@@ -24,7 +24,7 @@
   "keywords": [],
   "license": "ISC",
   "dependencies": {
-    "@lpr/is-dev-mode": "^0.1.0",
+    "@lpr/is-dev-mode": "workspace:^",
     "react-native-logs": "^5.0.1"
   },
   "devDependencies": {

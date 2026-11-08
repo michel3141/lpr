@@ -19,7 +19,7 @@
     "ef": "pnpm oxlint --fix"
   },
   "dependencies": {
-    "@lpr/helpers-text": "^0.1.0"
+    "@lpr/helpers-text": "workspace:^"
   },
   "devDependencies": {
     "oxfmt": "^0.70.0",

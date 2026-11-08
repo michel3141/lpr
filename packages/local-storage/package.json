@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
-    "@lpr/logger": "0.0.1"
+    "@lpr/logger": "workspace:^"
   },
   "peerDependencies": {
     "@lpr/rtk": "^0"
