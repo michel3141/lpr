@@ -1,11 +1,11 @@
-# 0.3.0
+## redux-documents@0.3.0
 
 2026-10-21 feat: réécriture complète de la lib
 2026-10-21 docs: nouvelle documentation
 2026-09-29 refactor: sort createSpraypaintClient de la lib =>spraypaint-toolkit@1.0.0
 2026-09-26 fix: calcule de document isDirty
 
-# 0.2.0
+## redux-documents@0.2.0
 
 feat: selectDocument returns full document
 feat: ajout de la action refetch
@@ -19,11 +19,11 @@ refactor: remove selectAll
 refactor: oxfmt
 refactor: change la création de la reourceId
 
-# 0.1.1
+## redux-documents@0.1.1
 
 fix: utilise la dernière version de spraypaint-toolkit
 
-# 0.1.0
+## redux-documents@0.1.0
 
 feat: change le point de vue : resource centred => endpoint centred
 fix: resourceMap def + camelize
@@ -33,18 +33,18 @@ refactor: utilise rtk2 et helpers-text
 refactor: utilise @lpr/rtk@2
 refactor: remove rtk
 
-# 0.0.3
+## redux-documents@0.0.3
 
 fix: import rtk
 
-# 0.0.2
+## redux-documents@0.0.2
 
 fix: importe directement rtk
 
-# 0.0.1
+## redux-documents@0.0.1
 
 chrore: changement des exports
 
-# 0.0.0
+## redux-documents@0.0.0
 
 version initiale

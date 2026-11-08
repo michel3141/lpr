@@ -1,4 +1,4 @@
-# 2.1.0
+## rtk@2.1.0
 
 2026-10-15 refactor: clean up
 2026-10-15 feat: createThunk peut être sync et renvoyer directement une response
@@ -10,7 +10,7 @@
                 et la response n'a plus besoin d'être unwrap
 2026-10-08 fix: effect in addListener doesnt return a value
 
-# 2.0.0
+## rtk@2.0.0
 
 feat!: remove useSlice, useDispatch is auto unwrap()
 feat!: cli/export adapté à rtk2
@@ -24,26 +24,26 @@ docs: ajout de docs sur rtk2
 refactor: suppression de inflected
 refactor: cleanup
 
-# 1.1.0
+## rtk@1.1.0
 
 ne publie plus build
 
-# 1.0.19
+## rtk@1.0.19
 
 passe react en peerDependency
 un peu de clean up
 Attention utiliser cette lib en peerDependency
 
-# 1.0.0
+## rtk@1.0.0
 
 addListener rencoie un listener et ne commence pas à écouter directement
 idem pour le reducer : il n'est plus ajouter automatiquement, c'est au dev de prendre ça en charge
 
-# 1.0.0
+## rtk@1.0.0
 
 addListener rencoie un listener et ne commence pas à écouter directement
 idem pour le reducer : il n'est plus ajouter automatiquement, c'est au dev de prendre ça en charge
 
-# 0.2.0
+## rtk@0.2.0
 
 suppression de react-redux pour un remplacement minimaliste
