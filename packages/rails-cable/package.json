@@ -1,6 +1,10 @@
 {
   "name": "@lpr/rails-cable",
   "version": "0.0.0",
+  "files": [
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "description": "",
   "main": "index.js",
   "scripts": {

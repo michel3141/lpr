@@ -2,6 +2,10 @@
   "name": "@lpr/T",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "version": "0.0.3",
+  "files": [
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "description": "",
   "main": "index.js",
   "scripts": {

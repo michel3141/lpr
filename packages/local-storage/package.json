@@ -2,6 +2,10 @@
   "name": "@lpr/local-storage",
   "author": "",
   "version": "0.0.2",
+  "files": [
+    "*.js",
+    "CHANGELOG.md"
+  ],
   "description": "",
   "main": "index.js",
   "scripts": {

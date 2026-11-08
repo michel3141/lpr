@@ -1,6 +1,10 @@
 {
   "name": "@lpr/hook-timer",
   "version": "0.0.1",
+  "files": [
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "description": "",
   "main": "index.js",
   "scripts": {
