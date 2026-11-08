@@ -1,0 +1,19 @@
+{
+  "name": "@lpr/local-storage",
+  "author": "",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@lpr/logger": "0.0.1"
+  },
+  "peerDependencies": {
+    "@lpr/rtk": "^0"
+  }
+}
