@@ -1,0 +1,36 @@
+{
+  "name": "@lpr/redux-documents",
+  "version": "0.3.0",
+  "description": "Gestion du cycle de vie des documents avec Redux",
+  "keywords": [],
+  "license": "ISC",
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "files": [
+    "src",
+    "!**/.*.swp"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./src/slice/index.js",
+    "./actions": "./src/slice/actions.js",
+    "./selectors": "./src/slice/selectors.js",
+    "./react": "./src/react/index.js"
+  },
+  "scripts": {
+    "p": "oxfmt",
+    "e": "oxlint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@lpr/rtk": "^2.1.0",
+    "@lpr/spraypaint-toolkit": "^1.0.0",
+    "swr": "^2.5.1"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0"
+  },
+  "peerDependencies": {
+    "react": "^19.2.8"
+  }
+}
