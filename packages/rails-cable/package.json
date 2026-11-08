@@ -1,5 +1,5 @@
 {
-  "name": "@rails/cable",
+  "name": "@lpr/rails-cable",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
