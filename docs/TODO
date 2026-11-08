@@ -1,0 +1,10 @@
+components/qr-reader
+hooks/hook-long-press
+hooks/hook-selection
+rails/rails-cable
+rails/rails-document
+rails/rails-resource
+rails/rails-session
+rails/rails-upload
+redux/redux-fullscreen
+redux/redux-history

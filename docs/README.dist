@@ -1,0 +1,33 @@
+package.json
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "files": [
+    "src",
+    "react",
+    "docs",
+    "!**/.*.swp"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./adapter": "./src/adapter/index.js",
+    "./actions": "./src/actions.js",
+    "./selectors": "./src/selectors.js",
+    "./react": "./react/index.js"
+  },
+
+*************
+$ pn pack --dry-run                         ## pour voir la liste des fichiers publiés
+$ pn publish --dry-run  --no-git-checks     ## check la publication
+$ pn publish                                ## publication
+$ pn unpublish @lpr/package-name@@0.0.0     ## supprimer une publication
+
+*************
+à lire par claude 
+rappel du workflow (un WORKFLOW.md qui démèle me Makfile, lisible en 5s)
+bump n => remplacer par cz
+CHANGELOG.md + bump l => remplacer par cz
+pn p ## pour formatter package.json et CHANGELOG.md 
+git commit package.json CHANGELOG.md -m "chore: bump version" => remplacer par cz
+bump t ****************  => remplacer par cz
+pn publish
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+# Usage : bin/release <lib> [--dry-run]
+# Calcule la version de la lib (cz), commite, tague, puis publie. Le push reste à faire.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+lib=${1:?usage : bin/release <lib> [--dry-run]}
+dry=${2:-}
+CZ=${CZ:-cz}
+dir=$PWD/packages/$lib
+
+[ -f "$dir/package.json" ] || { echo "lib inconnue : $lib" >&2; exit 1; }
+# cz bump commite tout fichier modifié : le dépôt doit être propre.
+[ -z "$(git status --porcelain)" ] || { echo "dépôt modifié : commiter ou remiser d'abord" >&2; exit 1; }
+[ "$(git branch --show-current)" = main ] || { echo "pas sur main" >&2; exit 1; }
+
+# cz lit ses chemins (CHANGELOG.md) depuis le dossier de sa configuration : elle est écrite
+# dans celui de la lib (ignorée par git) et retirée à la fin.
+autres=$(ls packages | grep -vx "$lib" | sed 's/.*/"&@$version"/' | paste -sd, | sed 's/,/, /g')
+sed -e "s/@LIB@/$lib/g" -e "s/@AUTRES@/$autres/" cz.toml.in > "$dir/.cz.toml"
+trap 'rm -f "$dir/.cz.toml"' EXIT
+
+cd "$dir"
+if [ "$dry" = --dry-run ]; then
+  $CZ --config .cz.toml bump --yes --dry-run
+else
+  $CZ --config .cz.toml bump --yes
+  pnpm publish
+fi

@@ -1,0 +1,112 @@
+note pour claude => projet beaucoup plus complexexe que je ne l'imaginais
+Il reste en cours et je souhaite continuer à sortir des lib de mon monorepo (et refactor les app concernés)
+
+### Procédure de migration d'une lib du monorepo vers Verdaccio
+
+#### 1. Identifier les `peerDependencies`
+
+Mettre en `peerDependencies` les libs qui doivent être partagées avec l'application consommatrice :
+
+```json
+{
+  "peerDependencies": {
+    "react": "^19",
+    "react-redux": "^9",
+    "redux": "^5",
+    "@reduxjs/toolkit": "^2"
+  }
+}
+```
+
+---
+
+#### 2. Configurer Vite en mode bibliothèque
+
+* Définir les points d'entrée.
+* Déclarer les peers en `external` pour qu'ils ne soient pas embarqués dans le bundle.
+
+```js
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  build: {
+    emptyOutDir: true,
+
+    lib: {
+      entry: {
+        index: 'lib/index.js',
+        react: 'react/index.jsx'
+      },
+      formats: ['es']
+    },
+
+    rollupOptions: {
+      external: [
+        'react',
+        'react-redux',
+        'redux',
+        '@reduxjs/toolkit'
+      ]
+    }
+  }
+})
+```
+
+`external` signifie : conserver les imports dans le bundle au lieu de copier le code des dépendances.
+
+---
+
+#### 3. Limiter les fichiers publiés
+
+```json
+{
+  "files": [
+    "dist",
+    "cli"
+  ]
+}
+```
+
+Cela détermine le contenu envoyé dans l'archive npm/Verdaccio.
+
+---
+
+#### 4. Déclarer les points d'entrée
+
+```json
+{
+  "exports": {
+    ".": "./dist/index.js",
+    "./react": "./dist/react.js"
+  }
+}
+```
+
+Utilisation :
+
+```js
+import rtk from '@lpr/rtk'
+import { createReactStore } from '@lpr/rtk/react'
+```
+
+---
+
+#### 5. Construire
+
+```bash
+pnpm build
+```
+
+---
+
+### Check-list rapide
+
+```txt
+□ peerDependencies
+□ vite build + external
+□ files
+□ exports
+□ pnpm build
+□ pnpm publish
+```
+

@@ -1,0 +1,22 @@
+# Modèle : bin/release en tire la configuration de chaque lib (@LIB@, @AUTRES@).
+[tool.commitizen]
+name = "cz_customize"
+version_provider = "npm"
+tag_format = "@LIB@@$version"
+# Les tags des autres libs, nommés un à un : un joker masquerait aussi ceux de la lib.
+ignored_tag_formats = [@AUTRES@]
+annotated_tag = true
+major_version_zero = true
+bump_message = "chore(@LIB@): version $new_version"
+update_changelog_on_bump = true
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true
+
+# Seuls les commits au scope de la lib comptent : feat(@LIB@): …
+[tool.commitizen.customize]
+commit_parser = '^(?P<change_type>feat|fix|refactor|perf)\(@LIB@\)(?P<breaking>!)?:\s(?P<message>.*)'
+bump_pattern = '^((feat|fix|refactor|perf)\(@LIB@\)(!)?|BREAKING CHANGE)'
+bump_map = { "BREAKING CHANGE" = "MAJOR", "feat" = "MINOR", "fix" = "PATCH", "perf" = "PATCH" }
+changelog_pattern = '^(feat|fix|refactor|perf)\(@LIB@\)(!)?:'
+change_type_map = { feat = "Nouveautés", fix = "Corrections", refactor = "Remaniements", perf = "Performances" }
+change_type_order = ["Nouveautés", "Corrections", "Performances", "Remaniements"]
