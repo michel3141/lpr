@@ -13,6 +13,22 @@ dir=$PWD/packages/$lib
 [ -z "$(git status --porcelain)" ] || { echo "dépôt modifié : commiter ou remiser d'abord" >&2; exit 1; }
 [ "$(git branch --show-current)" = main ] || { echo "pas sur main" >&2; exit 1; }
 
+# Une lib du dépôt dont elle dépend (workspace:) doit être publiée d'abord : la version
+# publiée de celle-ci demandera la version actuelle de l'autre.
+deps=$(jq -r '[.dependencies, .peerDependencies, .optionalDependencies]
+    | map((. // {}) | to_entries[] | select(.value | startswith("workspace:")) | .key)
+    | unique[]' "$dir/package.json")
+for dep in $deps; do
+  d=${dep#@lpr/}
+  tag=$d@$(jq -r .version "packages/$d/package.json")
+  git rev-parse -q --verify "refs/tags/$tag" >/dev/null ||
+    { echo "$dep : tag $tag absent, publier $d d'abord" >&2; exit 1; }
+  # grep sans -q : avec pipefail, -q fermerait le tube et ferait échouer git log.
+  if git log --format=%s "$tag..HEAD" | grep -E "^(feat|fix|perf|refactor)\($d\)" >/dev/null; then
+    echo "$dep : commits non publiés depuis $tag, publier $d d'abord" >&2; exit 1
+  fi
+done
+
 # cz lit ses chemins (CHANGELOG.md) depuis le dossier de sa configuration : elle est écrite
 # dans celui de la lib (ignorée par git) et retirée à la fin.
 autres=$(ls packages | grep -vx "$lib" | sed 's/.*/"&@$version"/' | paste -sd, | sed 's/,/, /g')
