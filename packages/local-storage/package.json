@@ -1,12 +1,14 @@
 {
   "name": "@lpr/local-storage",
-  "author": "",
   "version": "0.0.2",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "files": [
     "*.js",
     "CHANGELOG.md"
   ],
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,11 +16,9 @@
     "e": "oxlint",
     "ef": "oxlint --fix"
   },
-  "keywords": [],
-  "license": "ISC",
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
-    "@lpr/logger": "workspace:^"
+    "@lpr/logger": "workspace:^",
+    "@react-native-async-storage/async-storage": "^2.2.0"
   },
   "peerDependencies": {
     "@lpr/rtk": "^0"

@@ -31,9 +31,7 @@ export default function createLogger(name) {
 }
 
 export function fullLogger(name) {
-  const FL = name
-    ? (...args) => logger(`%c[${name}]`, ...args)
-    : (...args) => logger(...args);
+  const FL = name ? (...args) => logger(`%c[${name}]`, ...args) : (...args) => logger(...args);
   FL.action = (...args) => FL('background: #222; color: #bada55', ...args);
   FL.end = (arg) => FL('%c' + arg, 'background: #222; color: #777');
   return FL;

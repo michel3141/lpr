@@ -1,8 +1,8 @@
 {
   "name": "@lpr/create-rtk",
   "version": "0.0.3",
-  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "license": "ISC",
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "bin": {
     "create-rtk": "index.js"
   },

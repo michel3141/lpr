@@ -1,8 +1,15 @@
 {
   "name": "@lpr/logger",
-  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "version": "0.0.2",
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "files": [
+    "index.js",
+    "index.native.js",
+    "README.md"
+  ],
   "type": "module",
   "exports": {
     ".": {
@@ -10,19 +17,12 @@
       "default": "./index.js"
     }
   },
-  "files": [
-    "index.js",
-    "index.native.js",
-    "README.md"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "p": "oxfmt",
     "e": "oxlint",
     "ef": "oxlint --fix"
   },
-  "keywords": [],
-  "license": "ISC",
   "dependencies": {
     "@lpr/is-dev-mode": "workspace:^",
     "react-native-logs": "^5.0.1"

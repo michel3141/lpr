@@ -20,63 +20,63 @@ pnpm add @lpr/helpers-text
 ## Usage
 
 ```js
-import { camelize, pascalize, decamelize, constantize } from "@lpr/helpers-text";
+import { camelize, pascalize, decamelize, constantize } from '@lpr/helpers-text';
 ```
 
 ### `camelize(text)`
 
 ```js
-camelize("hello world");
+camelize('hello world');
 // "helloWorld"
 
-camelize("Hello world");
+camelize('Hello world');
 // "helloWorld"
 
-camelize("hello-world");
+camelize('hello-world');
 // "helloWorld"
 ```
 
 ### `pascalize(text)`
 
 ```js
-pascalize("hello world");
+pascalize('hello world');
 // "HelloWorld"
 
-pascalize("hello-world");
+pascalize('hello-world');
 // "HelloWorld"
 
-pascalize("helloWorld");
+pascalize('helloWorld');
 // "HelloWorld"
 ```
 
 ### `decamelize(str, separator = "_")`
 
 ```js
-decamelize("helloWorld");
+decamelize('helloWorld');
 // "hello_world"
 
-decamelize("HelloWorld");
+decamelize('HelloWorld');
 // "hello_world"
 
-decamelize("helloWorld", "-");
+decamelize('helloWorld', '-');
 // "hello-world"
 
-decamelize("XMLHttpRequest");
+decamelize('XMLHttpRequest');
 // "xml_http_request"
 ```
 
 ### `constantize(str, separator = "_")`
 
 ```js
-constantize("helloWorld");
+constantize('helloWorld');
 // "HELLO_WORLD"
 
-constantize("HelloWorld");
+constantize('HelloWorld');
 // "HELLO_WORLD"
 
-constantize("helloWorld", "-");
+constantize('helloWorld', '-');
 // "HELLO-WORLD"
 
-constantize("XMLHttpRequest");
+constantize('XMLHttpRequest');
 // "XML_HTTP_REQUEST"
 ```

@@ -8,7 +8,7 @@ Ce module dépend de :
 
 ```js
 import isDevMode from '@lpr/is-dev-mode';
-````
+```
 
 Les logs sont affichés uniquement lorsque `isDevMode` est vrai.
 
@@ -128,8 +128,6 @@ syncLog.end('Synchronisation terminée');
 
 ## Notes
 
-* Les logs ne sont affichés qu'en mode développement.
-* Une implémentation de logging distant est présente mais actuellement commentée dans le code.
-* Les objets passés en argument sont transmis directement à `console.log`.
-
-
+- Les logs ne sont affichés qu'en mode développement.
+- Une implémentation de logging distant est présente mais actuellement commentée dans le code.
+- Les objets passés en argument sont transmis directement à `console.log`.

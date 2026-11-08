@@ -19,8 +19,7 @@ const persisted = (value) => ({
 // for reducers
 const actionMatcher = (name, key) => [
   // item = [key, value]
-  ({ type, payload }) =>
-    type === updateItem.type && payload.item[0] === `${name}/${key}`,
+  ({ type, payload }) => type === updateItem.type && payload.item[0] === `${name}/${key}`,
   (state, { payload }) => {
     state[key] = payload.item[1];
   },

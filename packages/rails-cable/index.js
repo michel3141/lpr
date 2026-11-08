@@ -64,8 +64,7 @@ function disconnectConsumer() {
 function subscribe(identifier, onActions = {}) {
   const defaultOnActions = {
     onRejected: () => debug('rejected', identifier),
-    onConnected: ({ reconnected }) =>
-      debug('connected', identifier, { reconnected }),
+    onConnected: ({ reconnected }) => debug('connected', identifier, { reconnected }),
     onDisconnected: ({ willAttemptReconnect }) =>
       debug('disconnected', identifier, { willAttemptReconnect }),
     onReceived: (message) => debug('received', identifier, message),
@@ -135,14 +134,7 @@ function unsubscribe(identifier) {
   }
 }
 
-export {
-  getConsumer,
-  openAndConnectConsumer,
-  disconnectConsumer,
-  subscribe,
-  unsubscribe,
-  say,
-};
+export { getConsumer, openAndConnectConsumer, disconnectConsumer, subscribe, unsubscribe, say };
 window.cc = disconnectConsumer;
 window.ss = state;
 window.oc = openAndConnectConsumer;

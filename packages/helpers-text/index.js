@@ -9,13 +9,13 @@ export function pascalize(text) {
   return camelize(text).replace(/^./, (char) => char.toUpperCase());
 }
 
-export function decamelize(str, separator = "_") {
+export function decamelize(str, separator = '_') {
   return str
-    .replace(/([a-z\d])([A-Z])/g, "$1" + separator + "$2")
-    .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, "$1" + separator + "$2")
+    .replace(/([a-z\d])([A-Z])/g, '$1' + separator + '$2')
+    .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2')
     .toLowerCase();
 }
 
-export function constantize(str, separator = "_") {
+export function constantize(str, separator = '_') {
   return decamelize(str, separator).toUpperCase();
 }

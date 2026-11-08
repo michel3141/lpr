@@ -20,12 +20,12 @@ Chaque librairie doit exposer son `name` et ses `exports` dans son `package.json
 ## Vite
 
 ```js
-import { defineConfig } from "vite";
-import { importLibs } from "vite-local-libs";
+import { defineConfig } from 'vite';
+import { importLibs } from 'vite-local-libs';
 
 export default defineConfig({
   resolve: {
-    alias: importLibs("libs"),
+    alias: importLibs('libs'),
   },
 });
 ```

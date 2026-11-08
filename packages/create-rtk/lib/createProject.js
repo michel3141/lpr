@@ -1,7 +1,7 @@
-import fs from "node:fs";
-import path from "node:path";
-import { writeFiles } from "./writeFiles.js";
-import { initializeProject } from "./initializeProject.js";
+import fs from 'node:fs';
+import path from 'node:path';
+import { writeFiles } from './writeFiles.js';
+import { initializeProject } from './initializeProject.js';
 
 export function createProject(sliceName, options) {
   const { react, verbose, init } = options;
@@ -25,7 +25,7 @@ export function createProject(sliceName, options) {
   }
 
   if (verbose) {
-    console.log("Generated slice:", sliceName);
-    console.log("React mode:", react ? "On" : "Off");
+    console.log('Generated slice:', sliceName);
+    console.log('React mode:', react ? 'On' : 'Off');
   }
 }

@@ -1,14 +1,14 @@
 {
   "name": "@lpr/vite-local-libs",
   "version": "0.0.2",
-  "files": [
-    "index.js",
-    "CHANGELOG.md"
-  ],
   "description": "Use local library sources in a Vite application.",
   "keywords": [],
   "license": "ISC",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "files": [
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "type": "module",
   "exports": {
     ".": "./index.js"
@@ -19,14 +19,14 @@
     "e": "oxlint",
     "ef": "oxlint --fix"
   },
+  "dependencies": {
+    "glob": "^14.0.4"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "12.6.0",
       "onFail": "download"
     }
-  },
-  "dependencies": {
-    "glob": "^14.0.4"
   }
 }

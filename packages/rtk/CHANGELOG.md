@@ -2,12 +2,12 @@
 
 2026-10-15 refactor: clean up
 2026-10-15 feat: createThunk peut être sync et renvoyer directement une response
-               un thunk standard reste synchrone tant que possible.
-               (arg)=>dispatch=>return myResponse
-               J'en ai profité pour libérer (arg) :
-               la signature devient :
-               (...args)=>dispatch=>return myResponse
-                et la response n'a plus besoin d'être unwrap
+un thunk standard reste synchrone tant que possible.
+(arg)=>dispatch=>return myResponse
+J'en ai profité pour libérer (arg) :
+la signature devient :
+(...args)=>dispatch=>return myResponse
+et la response n'a plus besoin d'être unwrap
 2026-10-08 fix: effect in addListener doesnt return a value
 
 ## rtk@2.0.0

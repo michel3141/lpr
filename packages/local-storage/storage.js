@@ -86,26 +86,9 @@ const AsyncStorage = {
   },
 };
 
-const {
-  getItem,
-  setItem,
-  removeItem,
-  getAllKeys,
-  multiGet,
-  multiSet,
-  multiRemove,
-  clear,
-} = AsyncStorage;
+const { getItem, setItem, removeItem, getAllKeys, multiGet, multiSet, multiRemove, clear } =
+  AsyncStorage;
 
-export {
-  getItem,
-  setItem,
-  removeItem,
-  getAllKeys,
-  multiGet,
-  multiSet,
-  multiRemove,
-  clear,
-};
+export { getItem, setItem, removeItem, getAllKeys, multiGet, multiSet, multiRemove, clear };
 
 export default AsyncStorage;

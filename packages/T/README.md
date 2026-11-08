@@ -4,39 +4,36 @@ Mini utilitaire de traduction (i18n) sans dépendance.
 
 `createT()` crée une fonction `T` permettant :
 
-* d'enregistrer des traductions ;
-* de récupérer une traduction dans une langue donnée ;
-* de retourner le texte original lorsqu'aucune traduction n'est disponible ;
-* d'utiliser une syntaxe de template literal pour faciliter le repérage des chaînes.
+- d'enregistrer des traductions ;
+- de récupérer une traduction dans une langue donnée ;
+- de retourner le texte original lorsqu'aucune traduction n'est disponible ;
+- d'utiliser une syntaxe de template literal pour faciliter le repérage des chaînes.
 
 ## Philosophie
 
 Ce module ne gère volontairement que le minimum :
 
-* dictionnaires clé → valeur ;
-* plusieurs langues ;
-* fallback automatique sur la clé d'origine ;
-* aucune dépendance ;
-* aucune interpolation ;
-* aucun chargement asynchrone ;
-* aucune gestion de pluriels ou de formats régionaux.
+- dictionnaires clé → valeur ;
+- plusieurs langues ;
+- fallback automatique sur la clé d'origine ;
+- aucune dépendance ;
+- aucune interpolation ;
+- aucun chargement asynchrone ;
+- aucune gestion de pluriels ou de formats régionaux.
 
 Il est adapté aux petits projets ou comme couche i18n très légère.
 
 ## Installation
 
-
 ```js
 import createT from '@lpr/T';
-
 ```
 
 ou pour le dictionnaire global :
+
 ```js
-import {T} from '@lpr/T';
+import { T } from '@lpr/T';
 ```
-
-
 
 ## Utilisation
 
@@ -45,7 +42,7 @@ import {T} from '@lpr/T';
 ```js
 T({
   Hello: 'Bonjour',
-  Goodbye: 'Au revoir'
+  Goodbye: 'Au revoir',
 });
 ```
 
@@ -72,19 +69,25 @@ T('Unknown message');
 Ajouter des traductions françaises :
 
 ```js
-T({
-  Hello: 'Bonjour',
-  Goodbye: 'Au revoir'
-}, 'fr');
+T(
+  {
+    Hello: 'Bonjour',
+    Goodbye: 'Au revoir',
+  },
+  'fr'
+);
 ```
 
 Ajouter des traductions anglaises :
 
 ```js
-T({
-  Hello: 'Hello',
-  Goodbye: 'Goodbye'
-}, 'en');
+T(
+  {
+    Hello: 'Hello',
+    Goodbye: 'Goodbye',
+  },
+  'en'
+);
 ```
 
 Utiliser une langue spécifique :
@@ -102,13 +105,13 @@ T('Hello', 'en');
 La fonction accepte également une chaîne sous forme de template literal :
 
 ```js
-T`Hello`
+T`Hello`;
 ```
 
 Équivalent à :
 
 ```js
-T('Hello')
+T('Hello');
 ```
 
 Cette syntaxe est utile pour repérer facilement les chaînes traduisibles dans le code.
@@ -118,7 +121,7 @@ Cette syntaxe est utile pour repérer facilement les chaînes traduisibles dans 
 Seuls les templates sans interpolation sont acceptés :
 
 ```js
-T`Hello`
+T`Hello`;
 ```
 
 est valide.
@@ -154,10 +157,13 @@ Retourne une fonction `T`.
 #### Ajouter des traductions
 
 ```js
-T({
-  Save: 'Enregistrer',
-  Cancel: 'Annuler'
-}, 'fr');
+T(
+  {
+    Save: 'Enregistrer',
+    Cancel: 'Annuler',
+  },
+  'fr'
+);
 ```
 
 #### Lire une traduction
@@ -183,13 +189,16 @@ const T = createT('fr');
 
 T({
   Hello: 'Bonjour',
-  Goodbye: 'Au revoir'
+  Goodbye: 'Au revoir',
 });
 
-T({
-  Hello: 'Hello',
-  Goodbye: 'Goodbye'
-}, 'en');
+T(
+  {
+    Hello: 'Hello',
+    Goodbye: 'Goodbye',
+  },
+  'en'
+);
 
 console.log(T('Hello'));
 // Bonjour
@@ -200,4 +209,3 @@ console.log(T('Hello', 'en'));
 console.log(T('Unknown'));
 // Unknown
 ```
-

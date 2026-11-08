@@ -1,14 +1,14 @@
 {
   "name": "@lpr/helpers-text",
   "version": "0.1.0",
-  "files": [
-    "index.js",
-    "CHANGELOG.md"
-  ],
   "description": "Tiny JavaScript helpers for camelCase, decamelized and constant-style text transformations.",
   "keywords": [],
   "license": "ISC",
   "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "files": [
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "type": "module",
   "exports": {
     ".": "./index.js"

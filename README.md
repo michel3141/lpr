@@ -4,7 +4,7 @@ Libs JavaScript généralistes, publiées sur `npm.lespyjamasrouges.fr` sous le 
 Une lib par dossier, `packages/<nom>` (le nom du paquet sans le scope).
 
 | Lib                  | Thème | Rôle                                                        |
-|----------------------|-------|-------------------------------------------------------------|
+| -------------------- | ----- | ----------------------------------------------------------- |
 | `create-rtk`         | dev   | génère un slice `@lpr/rtk` (`pnpm create @lpr/rtk <slice>`) |
 | `vite-local-libs`    | dev   | sources locales d'une lib dans une app Vite                 |
 | `hook-timer`         | hooks | hooks `setTimeout` et `setInterval`                         |
