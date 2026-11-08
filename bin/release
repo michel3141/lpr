@@ -4,7 +4,32 @@
 #   bin/release <lib>             version calculée par cz, commit, tag, pnpm publish
 #   bin/release <lib> --dry-run   affiche ce qui serait fait, sans rien écrire
 #
-# Le push reste à faire (git push ; push.followTags envoie le tag).
+# D'habitude lancé par make release-plan / make release depuis packages/<lib>.
+#
+# Fonctionnement
+#
+# 1. Vérifications. La lib existe, le dépôt est propre (cz bump commite tout fichier
+#    modifié) et on est sur main. Chaque lib du dépôt dont elle dépend (workspace:) doit
+#    être publiée dans sa version actuelle, taguée, sans commit à son scope depuis ce
+#    tag : la version publiée de <lib> demandera cette version, qui doit donc exister.
+#
+# 2. cz (commitizen), en une commande, avec la configuration tirée de cz.toml.in :
+#    - lit les commits depuis le dernier tag <lib>@x.y.z ; seuls feat, fix, perf et
+#      refactor au scope de la lib comptent (feat(<lib>): …) ;
+#    - en déduit la version : fix et perf → patch, feat → minor, rupture (!) → major,
+#      ou minor tant que la lib est en 0.x ;
+#    - l'écrit dans package.json, ajoute en tête du CHANGELOG.md une section rangée
+#      par type (titres des commits seulement) ;
+#    - commite chore(<lib>): version x.y.z et pose le tag annoté <lib>@x.y.z.
+#
+# 3. pnpm publish envoie la lib (sa liste files, package.json, README, LICENSE) au
+#    registre @lpr du .npmrc, jeton dans ~/.npmrc ; les workspace:^ y deviennent
+#    ^<version actuelle>.
+#
+# Reste à faire : git push (push.followTags envoie le tag).
+#
+# Pas atomique : commit et tag précèdent la publication. Si pnpm publish échoue, relancer
+# pnpm publish dans packages/<lib> (make release répondrait « rien à faire »).
 
 set -euo pipefail
 
@@ -43,6 +68,12 @@ has_unreleased_commits() {
   git log --format=%s "$tag..HEAD" | grep -E "^(feat|fix|perf|refactor)\($dep\)" >/dev/null
 }
 
+# Vrai si <paquet>@<version> est sur le registre (pnpm view n'affiche rien sinon).
+is_published() {
+  local package=$1 version=$2
+  [ "$(pnpm view "$package@$version" version 2>/dev/null)" = "$version" ]
+}
+
 # Tags des autres libs, au format attendu par ignored_tag_formats de cz :
 # "logger@$version", "rtk@$version"…
 other_tag_formats() {
@@ -62,9 +93,12 @@ other_tag_formats() {
 # version actuelle de cette dépendance, qui doit donc exister sur le registre.
 for dep_name in $(workspace_deps); do
   dep=${dep_name#@lpr/}
-  tag=$dep@$(version_of "$dep")
+  version=$(version_of "$dep")
+  tag=$dep@$version
+  is_published "$dep_name" "$version" ||
+    die "$dep_name@$version absent du registre, publier $dep d'abord"
   git rev-parse -q --verify "refs/tags/$tag" >/dev/null ||
-    die "$dep_name : tag $tag absent, publier $dep d'abord"
+    die "$dep_name : tag $tag absent"
   ! has_unreleased_commits "$dep" "$tag" ||
     die "$dep_name : commits non publiés depuis $tag, publier $dep d'abord"
 done
