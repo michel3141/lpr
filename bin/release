@@ -1,44 +1,94 @@
 #!/bin/bash
-# Usage : bin/release <lib> [--dry-run]
-# Calcule la version de la lib (cz), commite, tague, puis publie. Le push reste à faire.
+# Publie une version d'une lib du dépôt.
+#
+#   bin/release <lib>             version calculée par cz, commit, tag, pnpm publish
+#   bin/release <lib> --dry-run   affiche ce qui serait fait, sans rien écrire
+#
+# Le push reste à faire (git push ; push.followTags envoie le tag).
+
 set -euo pipefail
-cd "$(dirname "$0")/.."
-lib=${1:?usage : bin/release <lib> [--dry-run]}
-dry=${2:-}
+
+usage="usage : bin/release <lib> [--dry-run]"
+lib=${1:?$usage}
+mode=${2:-}
 CZ=${CZ:-cz}
-dir=$PWD/packages/$lib
 
-[ -f "$dir/package.json" ] || { echo "lib inconnue : $lib" >&2; exit 1; }
-# cz bump commite tout fichier modifié : le dépôt doit être propre.
-[ -z "$(git status --porcelain)" ] || { echo "dépôt modifié : commiter ou remiser d'abord" >&2; exit 1; }
-[ "$(git branch --show-current)" = main ] || { echo "pas sur main" >&2; exit 1; }
+cd "$(dirname "$0")/.."
+root=$PWD
+lib_dir=$root/packages/$lib
 
-# Une lib du dépôt dont elle dépend (workspace:) doit être publiée d'abord : la version
-# publiée de celle-ci demandera la version actuelle de l'autre.
-deps=$(jq -r '[.dependencies, .peerDependencies, .optionalDependencies]
+die() {
+  echo "$*" >&2
+  exit 1
+}
+
+# Version actuelle d'une lib, lue dans son package.json.
+version_of() {
+  jq -r .version "$root/packages/$1/package.json"
+}
+
+# Libs du dépôt dont <lib> dépend (dépendances en workspace:).
+workspace_deps() {
+  jq -r '
+    [.dependencies, .peerDependencies, .optionalDependencies]
     | map((. // {}) | to_entries[] | select(.value | startswith("workspace:")) | .key)
-    | unique[]' "$dir/package.json")
-for dep in $deps; do
-  d=${dep#@lpr/}
-  tag=$d@$(jq -r .version "packages/$d/package.json")
+    | unique[]
+  ' "$lib_dir/package.json"
+}
+
+# Vrai si <dep> a des commits à son scope (feat, fix, perf, refactor) depuis <tag>.
+has_unreleased_commits() {
+  local dep=$1 tag=$2
+  # Pas de grep -q : avec pipefail, il fermerait le tube et ferait échouer git log.
+  git log --format=%s "$tag..HEAD" | grep -E "^(feat|fix|perf|refactor)\($dep\)" >/dev/null
+}
+
+# Tags des autres libs, au format attendu par ignored_tag_formats de cz :
+# "logger@$version", "rtk@$version"…
+other_tag_formats() {
+  ls "$root/packages" | grep -vx "$lib" | sed 's/.*/"&@$version"/' | paste -sd, | sed 's/,/, /g'
+}
+
+# --- Vérifications -----------------------------------------------------------------------
+
+[ -f "$lib_dir/package.json" ] || die "lib inconnue : $lib"
+
+# cz bump commite tout fichier modifié : le dépôt doit être propre.
+[ -z "$(git status --porcelain)" ] || die "dépôt modifié : commiter ou remiser d'abord"
+
+[ "$(git branch --show-current)" = main ] || die "pas sur main"
+
+# Une dépendance du dépôt se publie d'abord : la version publiée de <lib> demandera la
+# version actuelle de cette dépendance, qui doit donc exister sur le registre.
+for dep_name in $(workspace_deps); do
+  dep=${dep_name#@lpr/}
+  tag=$dep@$(version_of "$dep")
   git rev-parse -q --verify "refs/tags/$tag" >/dev/null ||
-    { echo "$dep : tag $tag absent, publier $d d'abord" >&2; exit 1; }
-  # grep sans -q : avec pipefail, -q fermerait le tube et ferait échouer git log.
-  if git log --format=%s "$tag..HEAD" | grep -E "^(feat|fix|perf|refactor)\($d\)" >/dev/null; then
-    echo "$dep : commits non publiés depuis $tag, publier $d d'abord" >&2; exit 1
-  fi
+    die "$dep_name : tag $tag absent, publier $dep d'abord"
+  ! has_unreleased_commits "$dep" "$tag" ||
+    die "$dep_name : commits non publiés depuis $tag, publier $dep d'abord"
 done
+
+# --- Configuration de cz -----------------------------------------------------------------
 
 # cz lit ses chemins (CHANGELOG.md) depuis le dossier de sa configuration : elle est écrite
 # dans celui de la lib (ignorée par git) et retirée à la fin.
-autres=$(ls packages | grep -vx "$lib" | sed 's/.*/"&@$version"/' | paste -sd, | sed 's/,/, /g')
-sed -e "s/@LIB@/$lib/g" -e "s/@AUTRES@/$autres/" cz.toml.in > "$dir/.cz.toml"
-trap 'rm -f "$dir/.cz.toml"' EXIT
+sed -e "s/@LIB@/$lib/g" -e "s/@AUTRES@/$(other_tag_formats)/" "$root/cz.toml.in" \
+  > "$lib_dir/.cz.toml"
+trap 'rm -f "$lib_dir/.cz.toml"' EXIT
 
-cd "$dir"
-if [ "$dry" = --dry-run ]; then
-  $CZ --config .cz.toml bump --yes --dry-run
-else
-  $CZ --config .cz.toml bump --yes
-  pnpm publish
-fi
+# --- Version, commit, tag, publication ---------------------------------------------------
+
+cd "$lib_dir"
+case $mode in
+  --dry-run)
+    $CZ --config .cz.toml bump --yes --dry-run
+    ;;
+  "")
+    $CZ --config .cz.toml bump --yes
+    pnpm publish
+    ;;
+  *)
+    die "$usage"
+    ;;
+esac
