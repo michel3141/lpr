@@ -1,0 +1,19 @@
+{
+  "name": "@lpr/rails-cable",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,html,md}'",
+    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
+    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'",
+    "rtk": "pnpm rtk-export -w './**/*.js'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rails/actioncable": "^7.1.3"
+  }
+}
