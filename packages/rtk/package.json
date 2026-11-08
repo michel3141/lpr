@@ -2,8 +2,8 @@
   "name": "@lpr/rtk",
   "version": "2.1.0",
   "description": "easy use redux-toolkit",
-  "license": "MIT",
-  "author": "MicheL <michel@itneo.fr>",
+  "license": "ISC",
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
   "bin": {
     "rtk-deps": "./cli/deps.mjs",
     "rtk-export": "./cli/export.mjs",
