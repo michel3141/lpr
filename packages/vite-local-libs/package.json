@@ -18,5 +18,8 @@
       "version": "12.6.0",
       "onFail": "download"
     }
+  },
+  "dependencies": {
+    "glob": "^14.0.4"
   }
 }
