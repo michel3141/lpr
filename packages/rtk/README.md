@@ -1,29 +1,35 @@
-# install
+# @lpr/rtk
 
-yarn add git+ssh://git@git.boloco.fr:npm/rtk#1.0.1
-ou
-yarn add ssh://git@git.boloco.fr:npm/rtk#1.0.1
+Store Redux et flux hors composants, sur redux-toolkit : events, intentions, thunks
+d'orchestration, listeners.
 
-# rollup-plugin
+## Installation
 
-pour l'instant pas d'install automatique
-cp node_modules/rtk/lib/rollup-plugin-rtk-autoexport.js src/ ## <-- dans le dossier contenant vite.config.js
+Le paquet est sur le registre `@lpr` ; dans le `.npmrc` du projet :
 
-vite.config.js
-import rtkAutoexport from './rollup-plugin-rtk-autoexport';
+```ini
+@lpr:registry=https://npm.lespyjamasrouges.fr/
+```
 
-    export default defineConfig({
-      resolve: {
-        alias: {
-          '~': path.resolve(__dirname, './'),
-        },
-      },
-      plugins: [react(), rtkAutoexport()],
-    });
+```sh
+pnpm add @lpr/rtk
+```
 
-# publication
+`react` est en `peerDependencies` : l'app fournit le sien.
 
-pnpm build
-bump p|m|M
-pnpm publish
-~
+```js
+import { addListener } from '@lpr/rtk';
+import createReactStore from '@lpr/rtk/react';
+```
+
+## Documentation
+
+- `Docs/README.rtk2.md` : events, intentions métier, orchestration.
+- `Docs/README.rtk2.compléments.md` : compléments.
+- `Docs/README.md` : conventions et dépendances entre reducers, middlewares, actions,
+  thunks et sélecteurs.
+
+## Release
+
+Depuis la racine du dépôt : `make release-plan LIB=rtk`, puis `make release LIB=rtk`
+(voir le `README.md` de la racine).
