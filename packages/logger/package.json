@@ -1,0 +1,33 @@
+{
+  "name": "@lpr/logger",
+  "author": "michel3141 <michel3141@wanadoo.fr> (https://github.com/michel3141)",
+  "version": "0.0.2",
+  "description": "",
+  "type": "module",
+  "exports": {
+    ".": {
+      "react-native": "./index.native.js",
+      "default": "./index.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.native.js",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json}'",
+    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
+    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "@lpr/is-dev-mode": "^0.1.0",
+    "react-native-logs": "^5.0.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
+  }
+}
