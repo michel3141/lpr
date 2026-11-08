@@ -3,5 +3,9 @@
   "private": true,
   "description": "Dépôt commun des libs @lpr (workspace pnpm)",
   "license": "ISC",
-  "packageManager": "pnpm@12.16.1"
+  "packageManager": "pnpm@12.16.1",
+  "devDependencies": {
+    "oxfmt": "^0.77.0",
+    "oxlint": "^1.92.0"
+  }
 }

@@ -1,6 +1,0 @@
-#!/bin/bash
-pnpm dlx prettier -w *js &&
-pnpm rtk-export -w *.js &&
-pnpm dlx prettier -w *js &&
-pnpm dlx eslint@8 *js 
-echo 'pnpm dlx eslint@8 *js --fix'

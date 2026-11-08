@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "p": "prettier -w './**/*.{js,jsx,css,scss,ts,mjs,cjs,json,html,md}'",
-    "e": "pnpm eslint --report-unused-disable-directives --max-warnings 0 './**/*.{js,jsx,,mjs,cjs}'",
-    "ef": "pnpm eslint --fix './**/*.{js,jsx,,mjs,cjs}'",
-    "rtk": "pnpm rtk-export -w './**/*.js'"
+    "rtk": "pnpm rtk-export -w './**/*.js'",
+    "p": "oxfmt",
+    "e": "oxlint",
+    "ef": "oxlint --fix"
   },
   "keywords": [],
   "author": "",
